@@ -52,7 +52,7 @@ public class SimulatorData extends JFrame {
 			Resource rs = i.next();
 			columnNames[j] = rs.getName();
 			dataExistingResouces[0][j]= rs.getAmount();
-			dataAvilableResouces[0][j++] = rs.getAvailableResourse().availablePermits();
+			dataAvilableResouces[0][j++] = rs.getAvailable();
 		}
 
 		/*Existing Resources Table*/

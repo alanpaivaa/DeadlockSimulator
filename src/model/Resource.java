@@ -27,6 +27,10 @@ public class Resource {
 	}
 	
 
+	public int getAvailable()
+	{
+		return available.availablePermits();
+	}
 	/**
 	 * Takes an instance of this resource (downs the semaphore).
 	 * */
