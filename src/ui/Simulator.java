@@ -39,8 +39,8 @@ public class Simulator extends JFrame {
 		getContentPane().add(startUpZone);
 		startUpZone.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JLabel lblNewLabel = new JLabel("N\u00FAmero de Tipos de Recursos");
-		startUpZone.add(lblNewLabel);
+		JLabel lbResourcesTypes = new JLabel("N\u00FAmero de Tipos de Recursos");
+		startUpZone.add(lbResourcesTypes);
 		
 		tfTypesResources = new JTextField();
 		startUpZone.add(tfTypesResources);
@@ -75,25 +75,25 @@ public class Simulator extends JFrame {
 		taProcessRelease.setBounds(10, 36, 145, 259);
 		statusZone.add(taProcessRelease);
 		
-		JLabel lblNewLabel_1 = new JLabel("Bloqueados");
-		lblNewLabel_1.setBounds(663, 11, 81, 14);
-		statusZone.add(lblNewLabel_1);
+		JLabel lbBlocked = new JLabel("Bloqueados");
+		lbBlocked.setBounds(663, 11, 81, 14);
+		statusZone.add(lbBlocked);
 		
-		JLabel lblNewLabel_2 = new JLabel("Solicita\u00E7\u00E3o");
-		lblNewLabel_2.setBounds(203, 11, 63, 14);
-		statusZone.add(lblNewLabel_2);
+		JLabel lbRequest = new JLabel("Solicita\u00E7\u00E3o");
+		lbRequest.setBounds(203, 11, 63, 14);
+		statusZone.add(lbRequest);
 		
-		JLabel lblNewLabel_3 = new JLabel("Executando");
-		lblNewLabel_3.setBounds(357, 11, 81, 14);
-		statusZone.add(lblNewLabel_3);
+		JLabel lbExecution = new JLabel("Executando");
+		lbExecution.setBounds(357, 11, 81, 14);
+		statusZone.add(lbExecution);
 		
-		JLabel lblNewLabel_4 = new JLabel("Libera\u00E7\u00E3o");
-		lblNewLabel_4.setBounds(525, 11, 63, 14);
-		statusZone.add(lblNewLabel_4);
+		JLabel lbRelease = new JLabel("Libera\u00E7\u00E3o");
+		lbRelease.setBounds(525, 11, 63, 14);
+		statusZone.add(lbRelease);
 		
-		JLabel lblCriao = new JLabel("Cria\u00E7\u00E3o");
-		lblCriao.setBounds(57, 11, 46, 14);
-		statusZone.add(lblCriao);
+		JLabel lbCreation = new JLabel("Cria\u00E7\u00E3o");
+		lbCreation.setBounds(57, 11, 46, 14);
+		statusZone.add(lbCreation);
 		
 		JTextArea taProcessExecution = new JTextArea();
 		taProcessExecution.setBounds(630, 36, 145, 259);
@@ -105,9 +105,9 @@ public class Simulator extends JFrame {
 		getContentPane().add(deadlockZone);
 		deadlockZone.setLayout(null);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setBounds(10, 26, 767, 99);
-		deadlockZone.add(textArea);
+		JTextArea taDeadlockProcess = new JTextArea();
+		taDeadlockProcess.setBounds(10, 26, 767, 99);
+		deadlockZone.add(taDeadlockProcess);
 		
 		JLabel lblProcessosEmDeadlock = new JLabel("Processos em Deadlock");
 		lblProcessosEmDeadlock.setBounds(342, 9, 150, 14);
