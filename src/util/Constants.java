@@ -1,6 +1,9 @@
 package util;
 
-/** This class contains all the constants that will be used on the project. */
+/**
+ * This class contains all the constants that will be used on the project.
+ * @author ajeferson
+ * */
 public class Constants {
 
 	// Simulator constants

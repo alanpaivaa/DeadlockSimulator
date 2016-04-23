@@ -27,20 +27,18 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	private static final long serialVersionUID = -845469012426866915L;
 
-	// View Attrs
+	// View Attributes
 	private JTextField tfRequestTime;
 	private JTextField tfUsageTime;
 	private JButton btnStartSimulation;
-
-
 	private JTextField tfTypesResources;
+	
+	private ArrayList<Resource> resources; 
 
 	/**
 	 *  Class creator
 	 */
 	public Simulator() {
-
-		//		this.systemSetupDialog.setDelegate(delegate);
 
 		/*Main window UI setup*/
 		setTitle("Deadlock Simulator");
@@ -240,11 +238,12 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	@Override
 	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources) {
+		this.resources = resources;
+		System.out.println("Resources received");
 	}
 
 	@Override
 	public void simulatorSetupDidCancel() {
-		System.out.println("User cancelled the simulation start.");
 	}
 
 }

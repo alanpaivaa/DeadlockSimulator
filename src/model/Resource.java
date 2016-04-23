@@ -2,6 +2,7 @@ package model;
 
 /**
  * Represents a resource on the operational system. I.E. an printer, a hard driver, etc.
+ * @author ajeferson
  * */
 public class Resource {
 	
@@ -20,20 +21,30 @@ public class Resource {
 	public String getName() {
 		return name;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public int getId() {
 		return id;
 	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
+	
 	public int getAmount() {
 		return amount;
 	}
+	
 	public void setAmount(int amount) {
 		this.amount = amount;
+	}
+	
+	@Override
+	public String toString() {
+		return "Id: " + this.id + "\nName: " + this.name + "\nAmount: " + this.amount;
 	}
 	
 }
