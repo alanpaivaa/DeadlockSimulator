@@ -11,8 +11,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
+import enums.LogType;
+import interfaces.SimulatorFacade;
 import interfaces.SimulatorSetupDelegate;
+import model.CoolSemaphore;
 import model.Resource;
+import thread.OperationalSystem;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -23,7 +27,7 @@ import java.awt.event.ActionEvent;
  * @author TARDIS
  *
  */
-public class Simulator extends JFrame implements ActionListener, SimulatorSetupDelegate {
+public class Simulator extends JFrame implements ActionListener, SimulatorSetupDelegate, SimulatorFacade {
 
 	private static final long serialVersionUID = -845469012426866915L;
 
@@ -33,7 +37,11 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JButton btnStartSimulation;
 	private JTextField tfTypesResources;
 	
-	private ArrayList<Resource> resources; 
+	// Core
+	private ArrayList<Resource> resources;
+	private ArrayList<Process> processes = new ArrayList<Process>();
+	private OperationalSystem operationalSystem = new OperationalSystem(5); // TODO Mocked interval
+	private CoolSemaphore mutex = new CoolSemaphore(1);
 
 	/**
 	 *  Class creator
@@ -244,6 +252,35 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	@Override
 	public void simulatorSetupDidCancel() {
+	}
+
+
+	// SimulatorFacade implementations.
+	
+	@Override
+	public Process processAtIndex(int index) {
+		return this.processes.get(index);
+	}
+	
+	public CoolSemaphore getMutex() {
+		return this.mutex;
+	}
+
+	@Override
+	public void log(LogType logType, String text) {
+		switch (logType) {
+		case PROCESS_CREATION:
+			// Do something
+			break;
+		case PROCESS_REQUEST:
+			break;
+		case PROCESS_RUNNING:
+			break;
+		case RESOURCE_RELEASE:
+			break;
+		case RESOURCE_BLOCK:
+			break;
+		}
 	}
 
 }
