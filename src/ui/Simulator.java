@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 
 import util.Constants;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,6 +16,7 @@ import enums.LogType;
 import interfaces.SimulatorFacade;
 import interfaces.SimulatorSetupDelegate;
 import model.CoolSemaphore;
+import model.CoolTextArea;
 import model.Resource;
 import thread.OperationalSystem;
 
@@ -36,11 +38,12 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JTextField tfUsageTime;
 	private JButton btnStartSimulation;
 	private JTextField tfTypesResources;
+	private CoolTextArea taDeadlockProcess;
 	
 	// Core
 	private ArrayList<Resource> resources;
 	private ArrayList<Process> processes = new ArrayList<Process>();
-	private OperationalSystem operationalSystem = new OperationalSystem(5); // TODO Mocked interval
+	private OperationalSystem operationalSystem; 
 	private CoolSemaphore mutex = new CoolSemaphore(1);
 
 	/**
@@ -151,11 +154,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		getContentPane().add(deadlockZone);
 		deadlockZone.setLayout(null);
 
-		JTextArea taDeadlockProcess = new JTextArea();
-		taDeadlockProcess.setEnabled(false);
-		taDeadlockProcess.setEditable(false);
-		taDeadlockProcess.setBounds(10, 26, 767, 99);
-		deadlockZone.add(taDeadlockProcess);
+		this.taDeadlockProcess = new CoolTextArea(10, 26, 767, 99);
+		deadlockZone.add(this.taDeadlockProcess);
 
 		JLabel lblDeadlockProcess = new JLabel("Processos em Deadlock");
 		lblDeadlockProcess.setBounds(342, 9, 150, 14);
@@ -203,6 +203,17 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		processCreationZone.add(tfUsageTime);
 		tfUsageTime.setColumns(10);
 		this.setVisible(true);
+		
+		// Starting the SO
+		this.setupOpeationalSystem();
+	}
+	
+	/**
+	 * Creates and starts an OperationalSystem.
+	 * */
+	private void setupOpeationalSystem() {
+		this.operationalSystem = new OperationalSystem(5, this); // TODO Mocked interval
+		this.operationalSystem.start();
 	}
 
 
@@ -279,6 +290,9 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		case RESOURCE_RELEASE:
 			break;
 		case RESOURCE_BLOCK:
+			break;
+		case DEADLOCK:
+			this.taDeadlockProcess.log(text);
 			break;
 		}
 	}

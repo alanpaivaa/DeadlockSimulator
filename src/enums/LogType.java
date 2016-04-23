@@ -13,7 +13,8 @@ public enum LogType {
 	PROCESS_REQUEST("Process request"),
 	PROCESS_RUNNING("Process running"),
 	RESOURCE_RELEASE("Resource release"),
-	RESOURCE_BLOCK("Resource block");
+	RESOURCE_BLOCK("Resource block"),
+	DEADLOCK("Deadlock");
 	
 	private String description;
 	

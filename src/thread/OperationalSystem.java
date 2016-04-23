@@ -1,5 +1,7 @@
 package thread;
 
+import enums.LogType;
+import interfaces.SimulatorFacade;
 import model.CoolThread;
 
 /**
@@ -10,16 +12,28 @@ import model.CoolThread;
 public class OperationalSystem extends CoolThread {
 
 	private int interval;
+	private SimulatorFacade simulator;
 	
-	public OperationalSystem(int interval) {
+	public OperationalSystem(int interval, SimulatorFacade simulator) {
 		this.interval = interval;
+		this.simulator = simulator;
 	}
 	
 	@Override
 	public void run() {
 		while(true) {
+			if(this.checkForDeadlock()) {
+				this.simulator.log(LogType.DEADLOCK, "Deadlock :(");
+			}
 			sleep(1);
 		}
+	}
+	
+	/**
+	 * Checks if there's a deadlock happening.
+	 * */
+	private boolean checkForDeadlock() {
+		return true;
 	}
 
 	
