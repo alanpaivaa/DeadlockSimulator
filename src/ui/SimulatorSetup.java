@@ -11,6 +11,11 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import java.awt.Dialog.ModalityType;
 
+/**
+ * This dialog sets up the System parameters
+ * @author TARDIS
+ *
+ */
 public class SimulatorSetup extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -46,9 +51,8 @@ public class SimulatorSetup extends JDialog {
 		}
 	}
 
-	public void setResourceNumber(int resourceNumber) {
-		this.resourceNumber = resourceNumber;
-		
+	private void redrawResouces()
+	{
 		for(int i = 0; i<resourceNumber; i++)
 		{
 			JLabel _lbResourceName = new JLabel("Nome do recurso "+(i+1));
@@ -61,15 +65,17 @@ public class SimulatorSetup extends JDialog {
 			
 			
 			
-			
 			contentPanel.add(_lbResourceName);
 			contentPanel.add(_tfResourceName);
-			
 			contentPanel.add(_lbResourceInstance);
 			contentPanel.add(_tfResourceInstance);
 			
 			contentPanel.revalidate();
 		}
+	}
+	public void setResourceNumber(int resourceNumber) {
+		this.resourceNumber = resourceNumber;
+		redrawResouces();
 	}
 
 }
