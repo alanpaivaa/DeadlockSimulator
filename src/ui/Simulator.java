@@ -65,11 +65,13 @@ public class Simulator extends JFrame {
 			if(tfTypesResources.getText().isEmpty())
 			{
 				JOptionPane.showMessageDialog(null, "Por favor, insira o número de tipos de recursos");
+				return;
 			}else
 			{
 				if(Integer.parseInt(tfTypesResources.getText().trim())>10)
 				{
 					JOptionPane.showMessageDialog(null, "Número máximo de tipos de recursos é 10, insira um valor menor");
+					return;
 				}
 			}
 			
