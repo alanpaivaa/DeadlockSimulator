@@ -5,6 +5,6 @@ public class Constants {
 
 	// Simulator constants
 	public static final int WINDOW_HEIGHT = 600;
-	public static final int WINDOW_WIDTH = 700;
+	public static final int WINDOW_WIDTH = 820;
 	
 }
