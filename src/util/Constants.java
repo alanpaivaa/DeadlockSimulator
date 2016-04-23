@@ -4,6 +4,7 @@ package util;
 public class Constants {
 
 	// Simulator constants
-	public static final int WINDOW_SIZE = 300;
+	public static final int WINDOW_HEIGHT = 600;
+	public static final int WINDOW_WIDTH = 700;
 	
 }
