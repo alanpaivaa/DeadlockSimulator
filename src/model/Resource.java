@@ -1,0 +1,39 @@
+package model;
+
+/**
+ * Represents a resource on the operational system. I.E. an printer, a hard driver, etc.
+ * */
+public class Resource {
+	
+	private static int lastId = 0;
+	
+	private String name;
+	private int id;
+	private int amount;
+	
+	public Resource(String name, int amount) {
+		this.name = name;
+		this.amount = amount;
+		this.id = ++lastId;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+	
+}

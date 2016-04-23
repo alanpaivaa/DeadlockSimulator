@@ -10,19 +10,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import java.awt.Dialog.ModalityType;
+
+import interfaces.SimulatorSetupDelegate;
 
 /**
  * This dialog sets up the System parameters
  * @author TARDIS
- *
  */
 public class SimulatorSetup extends JDialog {
 
+	private static final long serialVersionUID = -725446525058394433L;
+	
 	private final JPanel contentPanel = new JPanel();
 	private int resourceNumber;
+	
 	private ArrayList<JTextField> resourcesNames = new ArrayList<JTextField>();
 	private ArrayList<JTextField> resourcesQuantity = new ArrayList<JTextField>();
+	
+	private SimulatorSetupDelegate delegate;
 
 	/**
 	 * Create the dialog.
@@ -41,14 +46,12 @@ public class SimulatorSetup extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton okButton = new JButton("OK");
-				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
@@ -59,12 +62,13 @@ public class SimulatorSetup extends JDialog {
 	 */
 	private void redrawResouces()
 	{
+		
 		for(int i = 0; i<resourceNumber; i++)
 		{
 			JLabel _lbResourceName = new JLabel("Nome do recurso "+(i+1));
 			JTextField _tfResourceName = new JTextField();
 			_tfResourceName.setColumns(10);
-			JLabel _lbResourceInstance = new JLabel("Número de instancias do recurso "+(i+1));
+			JLabel _lbResourceInstance = new JLabel("Nï¿½mero de instancias do recurso "+(i+1));
 			JTextField _tfResourceInstance = new JTextField();
 			_tfResourceName.setColumns(10);
 			_tfResourceInstance.setColumns(10);
@@ -81,10 +85,22 @@ public class SimulatorSetup extends JDialog {
 			contentPanel.revalidate();
 		}
 	}
+	
+	
+	// Getters and setters
+	
 	public void setResourceNumber(int resourceNumber) {
 		
 		this.resourceNumber = resourceNumber;
 		redrawResouces();
+	}
+
+	public SimulatorSetupDelegate getDelegate() {
+		return delegate;
+	}
+
+	public void setDelegate(SimulatorSetupDelegate delegate) {
+		this.delegate = delegate;
 	}
 
 }

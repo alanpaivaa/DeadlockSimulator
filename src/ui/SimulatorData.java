@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 public class SimulatorData extends JFrame {
 
+	private static final long serialVersionUID = -1802463953464142976L;
 	private JPanel contentPane;
 
 	/**

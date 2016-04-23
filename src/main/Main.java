@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;
 
 import ui.Simulator;
-import ui.Simulator;
 
 public class Main {
 
