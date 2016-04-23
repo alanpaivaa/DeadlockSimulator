@@ -1,8 +1,18 @@
 package thread;
 
-/** Represents the Operational System. This class is responsible for checking the deadlocks on the simulation. */
+/**
+ * Represents the Operational System.
+ * This class is responsible for checking the deadlockson the simulation.
+ * @author ajeferson
+ * */
 public class OperationalSystem extends Thread {
 
+	private int interval;
+	
+	public OperationalSystem(int interval) {
+		this.interval = interval;
+	}
+	
 	@Override
 	public void run() {
 		while(true) {
@@ -13,6 +23,13 @@ public class OperationalSystem extends Thread {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	
+	// Getters and Setters
+	
+	public int getInterval() {
+		return interval;
 	}
 	
 }

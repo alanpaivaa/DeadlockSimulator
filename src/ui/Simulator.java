@@ -12,7 +12,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
 import interfaces.SimulatorSetupDelegate;
+import model.CoolSemaphore;
 import model.Resource;
+import thread.OperationalSystem;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -33,7 +35,11 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JButton btnStartSimulation;
 	private JTextField tfTypesResources;
 	
-	private ArrayList<Resource> resources; 
+	// Core
+	private ArrayList<Resource> resources;
+	private ArrayList<Process> processes = new ArrayList<Process>();
+	private OperationalSystem operationalSystem = new OperationalSystem(5); // TODO Mocked interval
+	private CoolSemaphore mutex = new CoolSemaphore(1);
 
 	/**
 	 *  Class creator
@@ -244,6 +250,13 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	@Override
 	public void simulatorSetupDidCancel() {
+	}
+
+
+	// Getters and Setters
+	
+	public CoolSemaphore getMutex() {
+		return mutex;
 	}
 
 }

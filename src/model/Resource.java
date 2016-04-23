@@ -11,11 +11,31 @@ public class Resource {
 	private String name;
 	private int id;
 	private int amount;
+	private CoolSemaphore available;
 	
+	/**
+	 * Constructor, builds this resource.
+	 * */
 	public Resource(String name, int amount) {
 		this.name = name;
 		this.amount = amount;
+		this.available = new CoolSemaphore(this.amount);
 		this.id = ++lastId;
+	}
+	
+	/**
+	 * Takes an instance of this resource (downs the semaphore).
+	 * */
+	public void takeInstance() {
+		this.available.down();
+	}
+	
+	
+	/**
+	 * Releases an instance of the resource. (ups the semaphore).
+	 * */
+	public void releaseInstance() {
+		this.available.up();
 	}
 	
 	public String getName() {
