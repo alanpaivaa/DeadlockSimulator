@@ -1,5 +1,7 @@
 package model;
 
+import java.util.concurrent.Semaphore;
+
 /**
  * Represents a resource on the operational system. I.E. an printer, a hard driver, etc.
  * @author ajeferson
@@ -12,12 +14,21 @@ public class Resource {
 	private int id;
 	private int amount;
 	
+	private Semaphore availableResourse;
+	
 	public Resource(String name, int amount) {
 		this.name = name;
 		this.amount = amount;
 		this.id = ++lastId;
+		this.availableResourse = new Semaphore(amount,true);
 	}
 	
+	
+	public Semaphore getAvailableResourse() {
+		return availableResourse;
+	}
+
+
 	public String getName() {
 		return name;
 	}
