@@ -51,6 +51,9 @@ public class SimulatorSetup extends JDialog {
 		}
 	}
 
+	/**
+	 * Dynamically add the Labels and Fields so the user can fill up the info about the resources 
+	 */
 	private void redrawResouces()
 	{
 		for(int i = 0; i<resourceNumber; i++)
@@ -74,6 +77,7 @@ public class SimulatorSetup extends JDialog {
 		}
 	}
 	public void setResourceNumber(int resourceNumber) {
+		
 		this.resourceNumber = resourceNumber;
 		redrawResouces();
 	}

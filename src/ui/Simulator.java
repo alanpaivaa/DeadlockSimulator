@@ -44,7 +44,7 @@ public class Simulator extends JFrame {
 	 */
 	public Simulator() {
 		
-		/*Main window setup*/
+		/*Main window UI setup*/
 		setTitle("Deadlock Simulator");
 		setResizable(false);
 		this.setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
@@ -100,6 +100,7 @@ public class Simulator extends JFrame {
 		JLabel lbSetupSystem = new JLabel("Configurar Sistema");
 		lbSetupSystem.setBounds(148, 11, 119, 14);
 		startUpZone.add(lbSetupSystem);
+		
 		
 		/*Status zone components*/
 		JPanel statusZone = new JPanel();
@@ -158,6 +159,7 @@ public class Simulator extends JFrame {
 		taProcessExecution.setBounds(630, 36, 145, 215);
 		statusZone.add(taProcessExecution);
 		
+		
 		/*Deadlock zone components*/
 		JPanel deadlockZone = new JPanel();
 		deadlockZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -174,6 +176,7 @@ public class Simulator extends JFrame {
 		JLabel lblDeadlockProcess = new JLabel("Processos em Deadlock");
 		lblDeadlockProcess.setBounds(342, 9, 150, 14);
 		deadlockZone.add(lblDeadlockProcess);
+		
 		
 		/*Process creation zone components*/
 		JPanel processCreationZone = new JPanel();
