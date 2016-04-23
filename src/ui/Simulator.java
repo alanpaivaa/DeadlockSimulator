@@ -23,20 +23,30 @@ import javax.swing.border.EtchedBorder;
 import java.awt.CardLayout;
 
 /** This class is the main UI of the project, that actually renders tue UI elements. */
+/**
+ * @author TARDIS
+ *
+ */
 public class Simulator extends JFrame {
 
 	private static final long serialVersionUID = -845469012426866915L;
 	private JTextField tfTypesResources;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField tfRequestTime;
+	private JTextField tfUsageTime;
 	
+	/**
+	 *  Class creator
+	 */
 	public Simulator() {
+		
+		/*Main window setup*/
 		setTitle("Deadlock Simulator");
 		setResizable(false);
 		this.setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
+		/*Start up zone components*/
 		JPanel startUpZone = new JPanel();
 		startUpZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		startUpZone.setBounds(10, 11, 386, 130);
@@ -61,10 +71,11 @@ public class Simulator extends JFrame {
 		lbResourcesTypes.setBounds(126, 40, 179, 14);
 		startUpZone.add(lbResourcesTypes);
 		
-		JLabel lblConfigurarSistema = new JLabel("Configurar Sistema");
-		lblConfigurarSistema.setBounds(148, 11, 119, 14);
-		startUpZone.add(lblConfigurarSistema);
+		JLabel lbSetupSystem = new JLabel("Configurar Sistema");
+		lbSetupSystem.setBounds(148, 11, 119, 14);
+		startUpZone.add(lbSetupSystem);
 		
+		/*Status zone components*/
 		JPanel statusZone = new JPanel();
 		statusZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		statusZone.setBounds(10, 152, 787, 262);
@@ -121,6 +132,7 @@ public class Simulator extends JFrame {
 		taProcessExecution.setBounds(630, 36, 145, 215);
 		statusZone.add(taProcessExecution);
 		
+		/*Deadlock zone components*/
 		JPanel deadlockZone = new JPanel();
 		deadlockZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		deadlockZone.setBounds(10, 425, 787, 136);
@@ -133,19 +145,20 @@ public class Simulator extends JFrame {
 		taDeadlockProcess.setBounds(10, 26, 767, 99);
 		deadlockZone.add(taDeadlockProcess);
 		
-		JLabel lblProcessosEmDeadlock = new JLabel("Processos em Deadlock");
-		lblProcessosEmDeadlock.setBounds(342, 9, 150, 14);
-		deadlockZone.add(lblProcessosEmDeadlock);
+		JLabel lblDeadlockProcess = new JLabel("Processos em Deadlock");
+		lblDeadlockProcess.setBounds(342, 9, 150, 14);
+		deadlockZone.add(lblDeadlockProcess);
 		
+		/*Process creation zone components*/
 		JPanel processCreationZone = new JPanel();
 		processCreationZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		processCreationZone.setBounds(409, 11, 388, 130);
 		getContentPane().add(processCreationZone);
 		processCreationZone.setLayout(null);
 		
-		JLabel lblCriadorDeProcessos = new JLabel("Criador de Processos");
-		lblCriadorDeProcessos.setBounds(143, 5, 127, 14);
-		processCreationZone.add(lblCriadorDeProcessos);
+		JLabel lbProcessCreator = new JLabel("Criador de Processos");
+		lbProcessCreator.setBounds(143, 5, 127, 14);
+		processCreationZone.add(lbProcessCreator);
 		
 		JButton btnCreateProcess = new JButton("Criar processo");
 		btnCreateProcess.setEnabled(false);
@@ -157,25 +170,25 @@ public class Simulator extends JFrame {
 		btnDeleteProcess.setBounds(237, 96, 141, 23);
 		processCreationZone.add(btnDeleteProcess);
 		
-		JLabel lblNewLabel = new JLabel("Intervalo de solicita\u00E7\u00F5es");
-		lblNewLabel.setBounds(10, 30, 151, 14);
-		processCreationZone.add(lblNewLabel);
+		JLabel lbRequestTime = new JLabel("Intervalo de solicita\u00E7\u00F5es");
+		lbRequestTime.setBounds(10, 30, 151, 14);
+		processCreationZone.add(lbRequestTime);
 		
-		JLabel lblTempoDeUtilizao = new JLabel("Tempo de Utiliza\u00E7\u00E3o");
-		lblTempoDeUtilizao.setBounds(10, 58, 127, 14);
-		processCreationZone.add(lblTempoDeUtilizao);
+		JLabel lbUsageTime = new JLabel("Tempo de Utiliza\u00E7\u00E3o");
+		lbUsageTime.setBounds(10, 58, 127, 14);
+		processCreationZone.add(lbUsageTime);
 		
-		textField = new JTextField();
-		textField.setEnabled(false);
-		textField.setBounds(166, 30, 86, 20);
-		processCreationZone.add(textField);
-		textField.setColumns(10);
+		tfRequestTime = new JTextField();
+		tfRequestTime.setEnabled(false);
+		tfRequestTime.setBounds(166, 30, 86, 20);
+		processCreationZone.add(tfRequestTime);
+		tfRequestTime.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setEnabled(false);
-		textField_1.setBounds(166, 55, 86, 20);
-		processCreationZone.add(textField_1);
-		textField_1.setColumns(10);
+		tfUsageTime = new JTextField();
+		tfUsageTime.setEnabled(false);
+		tfUsageTime.setBounds(166, 55, 86, 20);
+		processCreationZone.add(tfUsageTime);
+		tfUsageTime.setColumns(10);
 		this.setVisible(true);
 	}
 }
