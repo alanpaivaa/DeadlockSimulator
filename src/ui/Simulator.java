@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
+import enums.LogType;
+import interfaces.SimulatorFacade;
 import interfaces.SimulatorSetupDelegate;
 import model.CoolSemaphore;
 import model.Resource;
@@ -25,7 +27,7 @@ import java.awt.event.ActionEvent;
  * @author TARDIS
  *
  */
-public class Simulator extends JFrame implements ActionListener, SimulatorSetupDelegate {
+public class Simulator extends JFrame implements ActionListener, SimulatorSetupDelegate, SimulatorFacade {
 
 	private static final long serialVersionUID = -845469012426866915L;
 
@@ -253,10 +255,32 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	}
 
 
-	// Getters and Setters
+	// SimulatorFacade implementations.
+	
+	@Override
+	public Process processAtIndex(int index) {
+		return this.processes.get(index);
+	}
 	
 	public CoolSemaphore getMutex() {
-		return mutex;
+		return this.mutex;
+	}
+
+	@Override
+	public void log(LogType logType, String text) {
+		switch (logType) {
+		case PROCESS_CREATION:
+			// Do something
+			break;
+		case PROCESS_REQUEST:
+			break;
+		case PROCESS_RUNNING:
+			break;
+		case RESOURCE_RELEASE:
+			break;
+		case RESOURCE_BLOCK:
+			break;
+		}
 	}
 
 }
