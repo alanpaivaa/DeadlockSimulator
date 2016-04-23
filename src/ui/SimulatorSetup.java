@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -20,6 +21,8 @@ public class SimulatorSetup extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private int resourceNumber;
+	private ArrayList<JTextField> resourcesNames = new ArrayList<JTextField>();
+	private ArrayList<JTextField> resourcesQuantity = new ArrayList<JTextField>();
 
 	/**
 	 * Create the dialog.
@@ -70,8 +73,10 @@ public class SimulatorSetup extends JDialog {
 			
 			contentPanel.add(_lbResourceName);
 			contentPanel.add(_tfResourceName);
+			resourcesNames.add(_tfResourceName);
 			contentPanel.add(_lbResourceInstance);
 			contentPanel.add(_tfResourceInstance);
+			resourcesQuantity.add(_tfResourceInstance);
 			
 			contentPanel.revalidate();
 		}
