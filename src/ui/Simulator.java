@@ -15,12 +15,16 @@ import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import java.awt.CardLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /** This class is the main UI of the project, that actually renders tue UI elements. */
 /**
@@ -30,10 +34,11 @@ import java.awt.CardLayout;
 public class Simulator extends JFrame {
 
 	private static final long serialVersionUID = -845469012426866915L;
-	private JTextField tfTypesResources;
 	private JTextField tfRequestTime;
 	private JTextField tfUsageTime;
 	
+	public SimulatorSetup systemSetupDialog = new SimulatorSetup();;
+	private JTextField tfTypesResources;
 	/**
 	 *  Class creator
 	 */
@@ -54,6 +59,25 @@ public class Simulator extends JFrame {
 		startUpZone.setLayout(null);
 		
 		JButton btnStartSimulation = new JButton("Iniciar Simula\u00E7\u00E3o");
+		btnStartSimulation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			if(tfTypesResources.getText().isEmpty())
+			{
+				JOptionPane.showMessageDialog(null, "Por favor, insira o número de tipos de recursos");
+			}else
+			{
+				if(Integer.parseInt(tfTypesResources.getText().trim())>10)
+				{
+					JOptionPane.showMessageDialog(null, "Número máximo de tipos de recursos é 10, insira um valor menor");
+				}
+			}
+			
+			systemSetupDialog.setResourceNumber(Integer.parseInt(tfTypesResources.getText().trim()));
+			systemSetupDialog.setVisible(true);
+				
+			}
+		});
 		btnStartSimulation.setBounds(20, 96, 142, 23);
 		startUpZone.add(btnStartSimulation);
 		

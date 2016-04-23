@@ -7,28 +7,18 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import java.awt.Dialog.ModalityType;
 
 public class SimulatorSetup extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			SimulatorSetup dialog = new SimulatorSetup();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private int resourceNumber;
 
 	/**
 	 * Create the dialog.
 	 */
 	public SimulatorSetup() {
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -50,6 +40,11 @@ public class SimulatorSetup extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+
+	public void setResourceNumber(int resourceNumber) {
+		this.resourceNumber = resourceNumber;
+		
 	}
 
 }
