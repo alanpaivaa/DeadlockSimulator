@@ -19,6 +19,7 @@ public class Process extends Thread {
 	
 	private Resource requestedResouce;
 	private boolean keepAlive = true;
+	
 	/**
 	 * Constructor, builds this process.
 	 * */
@@ -29,8 +30,6 @@ public class Process extends Thread {
 		this.simulator = simulator;
 		this.pid = ++lastPid;
 		this.simulator.log(LogType.PROCESS_CREATION, "Processo"+this.pid+" criado");
-		
-
 	}
 	
 	@Override
@@ -77,6 +76,13 @@ public class Process extends Thread {
 			}
 			
 		}
+	}
+	
+	/**
+	 * Acts like a setKeepAlive(false).
+	 * */
+	public void kill() {
+		this.keepAlive = false;
 	}
 	
 	

@@ -1,9 +1,5 @@
 package model;
 
-import java.util.concurrent.Semaphore;
-
-import enums.LogType;
-
 /**
  * Represents a resource on the operational system. I.E. an printer, a hard driver, etc.
  * @author ajeferson
@@ -20,14 +16,12 @@ public class Resource {
 	/**
 	 * Constructor, builds this resource.
 	 * */
-
 	public Resource(String name, int amount) {
 		this.name = name;
 		this.amount = amount;
 		this.available = new CoolSemaphore(this.amount);
 		this.id = ++lastId;
 	}
-	
 
 	public int getAvailable()
 	{
@@ -55,7 +49,17 @@ public class Resource {
 		this.available.up();
 	}
 	
+	/**
+	 * Releases instances of this resource.
+	 * @param amount The number of instances to release.
+	 * */
+	public void releaseInstances(int amount) {
+		this.available.up(amount);
+	}
+	
 
+	// Getters and Setters
+	
 	public String getName() {
 		return name;
 	}

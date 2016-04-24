@@ -109,12 +109,38 @@ public class OperationalSystem extends CoolThread {
 
 	}
 
+	/**
+	 * Builds a string from a list of deadlock processes' pids.
+	 * */
 	private String deadlockString(ArrayList<Integer> pids) {
 		String str = "Processos entraram em deadlock:";
 		for(Integer pid : pids) {
 			str += (" " + pid);
 		}
 		return str;
+	}
+	
+	/**
+	 * Kills the process at the given index.
+	 * */
+	public void killProcessAtIndex(int index) {
+		
+		// Locking
+		this.simulator.getMutex().down();
+		
+		// Getting the resources instances used by the process
+		int[] resourcesIndexes = this.processes.get(index).getResourcesInstances();
+		
+		// Telling the process that it does not need to run anymore
+		this.processes.get(index).kill();
+		
+		// Releasing the resources
+		for(int i = 0; i < resourcesIndexes.length; i++) {
+			this.resources.get(i).releaseInstances(resourcesIndexes[i]);
+		}
+		
+		// Releasing
+		this.simulator.getMutex().up();
 	}
 	
 	// Getters and Setters

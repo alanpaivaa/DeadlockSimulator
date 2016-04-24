@@ -23,8 +23,8 @@ public interface SimulatorFacade {
 	public void log(LogType logType, String text);
 	
 	/**
-	 * Randmonly selects a resource
-	 * @return Returns the position of the selected resouce in the OS arrayLIST
+	 * Randomly selects a resource
+	 * @return Returns the position of the selected resource in the OS arrayLIST
 	 * 
 	 * */
 	public int requestResourcePos();
