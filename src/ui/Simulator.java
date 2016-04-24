@@ -43,6 +43,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private OperationalSystem operationalSystem = new OperationalSystem(5); // TODO Mocked interval
 	private CoolSemaphore mutex = new CoolSemaphore(1);
 	private JButton btnStopSimulation;
+	private JButton btnCreateProcess;
+	private JButton btnDeleteProcess;
 
 	/**
 	 *  Class creator
@@ -174,14 +176,14 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		lbProcessCreator.setBounds(143, 5, 127, 14);
 		processCreationZone.add(lbProcessCreator);
 
-		JButton btnCreateProcess = new JButton("Criar processo");
+		btnCreateProcess = new JButton("Criar processo");
 		btnCreateProcess.setEnabled(false);
 		btnCreateProcess.setBounds(10, 96, 121, 23);
 		processCreationZone.add(btnCreateProcess);
 
-		JButton btnDeleteProcess = new JButton("Excluir Processo...");
+		btnDeleteProcess = new JButton("Excluir Processo...");
 		btnDeleteProcess.setEnabled(false);
-		btnDeleteProcess.setBounds(237, 96, 141, 23);
+		btnDeleteProcess.setBounds(227, 96, 151, 23);
 		processCreationZone.add(btnDeleteProcess);
 
 		JLabel lbRequestTime = new JLabel("Intervalo de solicita\u00E7\u00F5es");
@@ -251,6 +253,10 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		btnStartSimulation.setEnabled(false);
 		btnStopSimulation.setEnabled(true);
 		tfTypesResources.setEnabled(false);
+		
+		btnCreateProcess.setEnabled(true);
+		tfRequestTime.setEnabled(true);
+		tfUsageTime.setEnabled(true);
 		//System.out.println("Resources received");
 	}
 
