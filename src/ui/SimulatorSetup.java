@@ -125,7 +125,7 @@ public class SimulatorSetup extends JDialog implements ActionListener {
 	private void didClickOnOkButton() {
 		ArrayList<Resource> resources = this.buildResources();
 		if(resources != null) {
-			this.delegate.simulatorSetupDidSucceedWithResources(resources);
+			this.delegate.simulatorSetupDidSucceedWithResources(resources, simuladorDataWindow);
 			this.dispose();
 			simuladorDataWindow.setVisible(true);
 			simuladorDataWindow.setResources(resources);

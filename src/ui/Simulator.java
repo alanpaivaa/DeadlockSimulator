@@ -38,6 +38,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JTextField tfUsageTime;
 	private JButton btnStartSimulation;
 	private JTextField tfTypesResources;
+	
+	private SimulatorData simulatorDataWindow;
 
 	private JButton btnStopSimulation;
 	private JButton btnCreateProcess;
@@ -265,7 +267,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	// SimulatorSetupDelegate implementations.
 
 	@Override
-	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources) {
+	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources,  SimulatorData dataWindow) {
 
 		btnStartSimulation.setEnabled(false);
 		btnStopSimulation.setEnabled(true);
@@ -276,6 +278,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		tfUsageTime.setEnabled(true);
 
 		this.operationalSystem.addResources(resources);
+		this.simulatorDataWindow = dataWindow;
 
 	}
 
@@ -292,18 +295,21 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	@Override
 	public void log(LogType logType, String text) {
+		
 		switch (logType) {
 		case PROCESS_CREATION:
 			this.taProcessCreation.log(text);
 			break;
 		case PROCESS_REQUEST:
 			this.taProcessRequest.log(text);
+			simulatorDataWindow.redrawStructures();
 			break;
 		case PROCESS_RUNNING:
 			this.taProcessExecution.log(text);
 			break;
 		case RESOURCE_RELEASE:
 			this.taProcessRelease.log(text);
+			simulatorDataWindow.redrawStructures();
 			break;
 		case RESOURCE_BLOCK:
 			this.taProcessBlocked.log(text);
@@ -312,6 +318,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 			this.taDeadlockProcess.log(text);
 			break;
 		}
+		
+
 	}
 
 	@Override

@@ -43,7 +43,8 @@ public class SimulatorData extends JFrame {
 	public void redrawStructures()
 	{
 		
-		
+		existingResources.removeAll();
+		availableResources.removeAll();
 		String[] columnNames = new String[resources.size()];
 		Object[][] dataExistingResouces = new Object[1][resources.size()];
 		Object[][] dataAvilableResouces = new Object[1][resources.size()];
@@ -56,6 +57,7 @@ public class SimulatorData extends JFrame {
 		}
 
 		/*Existing Resources Table*/
+		existingResources.add(lblRecursosExistentes);
 		JTable tableExistingResources = new JTable(dataExistingResouces,columnNames );
 		existingResources.add(tableExistingResources.getTableHeader(), BorderLayout.PAGE_START);
 		existingResources.add(tableExistingResources, BorderLayout.CENTER);
@@ -63,7 +65,8 @@ public class SimulatorData extends JFrame {
 		
 		
 		/*Avialable Resources Table*/
-		JTable tableAvailableResources = new JTable(dataExistingResouces,columnNames );
+		availableResources.add(lblRecursosDisponveis);
+		JTable tableAvailableResources = new JTable(dataAvilableResouces,columnNames );
 		availableResources.add(tableAvailableResources.getTableHeader(), BorderLayout.PAGE_START);
 		availableResources.add(tableAvailableResources, BorderLayout.CENTER);
 		availableResources.revalidate();
@@ -95,7 +98,7 @@ public class SimulatorData extends JFrame {
 		
 		lblRecursosExistentes = new JLabel("Recursos Existentes");
 		lblRecursosExistentes.setHorizontalAlignment(SwingConstants.CENTER);
-		existingResources.add(lblRecursosExistentes);
+		
 		
 		availableResources = new JPanel();
 		availableResources.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -105,7 +108,7 @@ public class SimulatorData extends JFrame {
 		availableResources.setLayout(new BoxLayout(availableResources, BoxLayout.Y_AXIS));
 		
 		lblRecursosDisponveis = new JLabel("Recursos Dispon\u00EDveis");
-		availableResources.add(lblRecursosDisponveis);
+		
 		
 		requestVector = new JPanel();
 		contentPane.add(Box.createVerticalStrut(40));

@@ -3,6 +3,7 @@ package interfaces;
 import java.util.ArrayList;
 
 import model.Resource;
+import ui.SimulatorData;
 import ui.SimulatorSetup;
 
 /**
@@ -15,7 +16,7 @@ public interface SimulatorSetupDelegate {
 	/**
 	 * When the user clicks on the Ok button.
 	 * */
-	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources);
+	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources, SimulatorData dataWindow);
 	
 	/**
 	 * When the user clicks on the Cancel button.
