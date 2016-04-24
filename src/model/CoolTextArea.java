@@ -16,11 +16,11 @@ public class CoolTextArea extends JScrollPane {
 	/***
 	 * Constructor.
 	 * */
-	public CoolTextArea(int x, int y, int width, int heigh) {
+	public CoolTextArea(int x, int y, int width, int height) {
 		this.textArea = new JTextArea();
 		this.textArea.setEnabled(false);
 		this.textArea.setEditable(false);
-		this.setBounds(10, 26, 767, 99);
+		this.setBounds(x, y, width, height);
 		this.getViewport().add(textArea);
 	}
 	
@@ -31,6 +31,13 @@ public class CoolTextArea extends JScrollPane {
 	public void log(String text) {
 		this.textArea.append(text + "\n");
 		this.textArea.setCaretPosition(this.textArea.getDocument().getLength());
+	}
+	
+	
+	// Getters and Setters
+	
+	public JTextArea getTextArea() {
+		return this.textArea;
 	}
 	
 }

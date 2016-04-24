@@ -4,12 +4,10 @@ import javax.swing.JFrame;
 
 import util.Constants;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
 import enums.LogType;
@@ -38,7 +36,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JTextField tfUsageTime;
 	private JButton btnStartSimulation;
 	private JTextField tfTypesResources;
-	private CoolTextArea taDeadlockProcess;
+	private CoolTextArea taDeadlockProcess, taProcessCreation, taProcessBlocked;
+	private CoolTextArea taProcessRequest, taProcessRelease, taProcessExecution;
 	
 	// Core
 	private ArrayList<Resource> resources;
@@ -96,29 +95,17 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		getContentPane().add(statusZone);
 		statusZone.setLayout(null);
 
-		JTextArea taProcessCreation = new JTextArea();
-		taProcessCreation.setEnabled(false);
-		taProcessCreation.setEditable(false);
-		taProcessCreation.setBounds(475, 36, 145, 215);
-		statusZone.add(taProcessCreation);
+		this.taProcessCreation = new CoolTextArea(475, 36, 145, 215);
+		statusZone.add(this.taProcessCreation);
 
-		JTextArea taProcessBlocked = new JTextArea();
-		taProcessBlocked.setEnabled(false);
-		taProcessBlocked.setEditable(false);
-		taProcessBlocked.setBounds(320, 36, 145, 215);
-		statusZone.add(taProcessBlocked);
+		this.taProcessBlocked = new CoolTextArea(320, 36, 145, 215);
+		statusZone.add(this.taProcessBlocked);
 
-		JTextArea taProcessRequest = new JTextArea();
-		taProcessRequest.setEnabled(false);
-		taProcessRequest.setEditable(false);
-		taProcessRequest.setBounds(165, 36, 145, 215);
-		statusZone.add(taProcessRequest);
+		this.taProcessRequest = new CoolTextArea(165, 36, 145, 215);
+		statusZone.add(this.taProcessRequest);
 
-		JTextArea taProcessRelease = new JTextArea();
-		taProcessRelease.setEnabled(false);
-		taProcessRelease.setEditable(false);
-		taProcessRelease.setBounds(10, 36, 145, 215);
-		statusZone.add(taProcessRelease);
+		this.taProcessRelease = new CoolTextArea(10, 36, 145, 215);
+		statusZone.add(this.taProcessRelease);
 
 		JLabel lbBlocked = new JLabel("Bloqueados");
 		lbBlocked.setBounds(663, 11, 81, 14);
@@ -140,11 +127,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		lbCreation.setBounds(57, 11, 46, 14);
 		statusZone.add(lbCreation);
 
-		JTextArea taProcessExecution = new JTextArea();
-		taProcessExecution.setEnabled(false);
-		taProcessExecution.setEditable(false);
-		taProcessExecution.setBounds(630, 36, 145, 215);
-		statusZone.add(taProcessExecution);
+		this.taProcessExecution = new CoolTextArea(630, 36, 145, 215);
+		statusZone.add(this.taProcessExecution);
 
 
 		/*Deadlock zone components*/
@@ -281,15 +265,19 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	public void log(LogType logType, String text) {
 		switch (logType) {
 		case PROCESS_CREATION:
-			// Do something
+			this.taProcessCreation.log(text);
 			break;
 		case PROCESS_REQUEST:
+			this.taProcessRequest.log(text);
 			break;
 		case PROCESS_RUNNING:
+			this.taProcessExecution.log(text);
 			break;
 		case RESOURCE_RELEASE:
+			this.taProcessRelease.log(text);
 			break;
 		case RESOURCE_BLOCK:
+			this.taProcessBlocked.log(text);
 			break;
 		case DEADLOCK:
 			this.taDeadlockProcess.log(text);
