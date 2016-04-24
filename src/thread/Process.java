@@ -8,13 +8,16 @@ public class Process extends Thread {
 	private int[] resourcesInstances;
 	private int id;
 	private int currentRequest = -1;
-	
+	private int processRequestTime;
+	private int processUsageTime;
 	/**
 	 * Constructor, builds this process.
 	 * */
-	public Process(int numberOfResources) {
+	public Process(int numberOfResources,int requestTime, int usageTime) {
 		this.resourcesInstances = new int[numberOfResources];
 		this.id = ++lastId;
+		this.processRequestTime = requestTime;
+		this.processUsageTime = usageTime;
 	}
 	
 	@Override
