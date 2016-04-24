@@ -76,6 +76,9 @@ public class Process extends Thread {
 			}
 			
 		}
+		
+		this.simulator.log(LogType.PROCESS_CREATION, "P" + this.pid + " finalizou");
+		
 	}
 	
 	/**

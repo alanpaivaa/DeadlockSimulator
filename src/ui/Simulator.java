@@ -6,6 +6,7 @@ import util.Constants;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,8 +26,6 @@ import java.util.ArrayList;
 
 import java.util.Random;
 
-import java.awt.Color;
-
 import java.awt.event.ActionEvent;
 
 /** This class is the main UI of the project, that actually renders tue UI elements. */
@@ -43,22 +42,19 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JTextField tfUsageTime;
 	private JButton btnStartSimulation;
 	private JTextField tfTypesResources;
-	
+
 	private SimulatorData simulatorDataWindow;
 
 	private JButton btnStopSimulation;
 	private JButton btnCreateProcess;
 	private JButton btnDeleteProcess;
-	
+
 	private CoolTextArea taDeadlockProcess, taProcessRelease, taProcessExecution;
 	private CoolTextArea taProcessRequest, taProcessCreation, taProcessBlocked;
-	
+
 	// Core
 	private OperationalSystem operationalSystem; 
 	private CoolSemaphore mutex = new CoolSemaphore(1);
-
-
-
 
 
 	/**
@@ -112,7 +108,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		statusZone.setBounds(10, 152, 787, 262);
 		getContentPane().add(statusZone);
 		statusZone.setLayout(null);
-		
+
 		this.taProcessExecution = new CoolTextArea(630, 36, 145, 215);
 		statusZone.add(this.taProcessExecution);
 
@@ -127,9 +123,9 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 		this.taProcessCreation = new CoolTextArea(10, 36, 145, 215);
 		statusZone.add(this.taProcessCreation);
-		
-				this.taProcessBlocked = new CoolTextArea(630, 36, 145, 215);
-				statusZone.add(this.taProcessBlocked);
+
+		this.taProcessBlocked = new CoolTextArea(630, 36, 145, 215);
+		statusZone.add(this.taProcessBlocked);
 
 		JLabel lbBlocked = new JLabel("Bloqueados");
 		lbBlocked.setBounds(630, 11, 145, 14);
@@ -171,7 +167,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		lblDeadlockProcess.setBounds(342, 9, 150, 14);
 		deadlockZone.add(lblDeadlockProcess);
 
-
 		/*Process creation zone components*/
 		JPanel processCreationZone = new JPanel();
 		processCreationZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -185,21 +180,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		processCreationZone.add(lbProcessCreator);
 
 		btnCreateProcess = new JButton("Criar processo");
-		btnCreateProcess.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				if(tfRequestTime.getText().isEmpty() || tfUsageTime.getText().isEmpty())
-				{
-					JOptionPane.showMessageDialog(null, "Por favor, insira todas as informações sobre o Processo");
-					return;
-				}
-				Process process = new Process(Integer.parseInt(tfTypesResources.getText().trim()), Integer.parseInt(tfRequestTime.getText().trim()), Integer.parseInt(tfUsageTime.getText().trim()),operationalSystem.getSimulator());
-				
-				operationalSystem.addProcess(process);
-				process.start();
-
-			}
-		});
+		btnCreateProcess.addActionListener(this);
 		btnCreateProcess.setEnabled(false);
 		btnCreateProcess.setBounds(10, 96, 121, 23);
 		processCreationZone.add(btnCreateProcess);
@@ -207,6 +188,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		btnDeleteProcess = new JButton("Excluir Processo");
 		btnDeleteProcess.setEnabled(false);
 		btnDeleteProcess.setBounds(227, 96, 151, 23);
+		btnDeleteProcess.addActionListener(this);
 		processCreationZone.add(btnDeleteProcess);
 
 		JLabel lbRequestTime = new JLabel("Intervalo de solicitações");
@@ -231,11 +213,11 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		processCreationZone.add(tfUsageTime);
 		tfUsageTime.setColumns(10);
 		this.setVisible(true);
-		
+
 		// Starting the SO
 		this.setupOpeationalSystem();
 	}
-	
+
 	/**
 	 * Creates and starts an OperationalSystem.
 	 * */
@@ -251,6 +233,10 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == this.btnStartSimulation) {
 			this.didClickOnBtnStartSimulation();
+		} else if(e.getSource() == this.btnCreateProcess) {
+			this.didClickOnBtnCreateProcess();
+		} else if(e.getSource() == this.btnDeleteProcess) {
+			this.didClickOnBtnDeleteProcess();
 		}
 	}
 
@@ -277,6 +263,60 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		new SimulatorSetup(Integer.parseInt(this.tfTypesResources.getText().trim()), this);
 	}
 
+	/**
+	 * Called whenever the user clicks on the create process button.
+	 * */
+	private void didClickOnBtnCreateProcess() {
+		if(tfRequestTime.getText().isEmpty() || tfUsageTime.getText().isEmpty())
+		{
+			JOptionPane.showMessageDialog(null, "Por favor, insira todas as informações sobre o Processo");
+			return;
+		}
+		Process process = new Process(Integer.parseInt(tfTypesResources.getText().trim()), Integer.parseInt(tfRequestTime.getText().trim()), Integer.parseInt(tfUsageTime.getText().trim()),operationalSystem.getSimulator());
+
+		operationalSystem.addProcess(process);
+		process.start();
+
+		this.btnDeleteProcess.setEnabled(true);
+	}
+
+	/**
+	 * Called whenever the user clicks on the delete process button.
+	 * */
+	private void didClickOnBtnDeleteProcess() {
+		
+		try {
+			
+			Integer pid = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite o pid do processo:", "Excluir Processo", JOptionPane.QUESTION_MESSAGE));
+			int index = this.operationalSystem.getIndexOfProcessWihPid(pid);
+			
+			if(index < 0) {
+				this.showInvalidPidMessage();
+			}
+			
+			// New Thread, so the mutex stuff will never block the UI.
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					if(operationalSystem.killProcessAtIndex(index)) {
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								btnDeleteProcess.setEnabled(false);
+							}
+						});
+					}
+				}
+			}).start();
+			
+		} catch(Exception e) {
+			this.showInvalidPidMessage();
+		}		
+		
+	}
+	
+	
+
 
 	// SimulatorSetupDelegate implementations.
 
@@ -286,7 +326,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		btnStartSimulation.setEnabled(false);
 		btnStopSimulation.setEnabled(true);
 		tfTypesResources.setEnabled(false);
-		
+
 		btnCreateProcess.setEnabled(true);
 		tfRequestTime.setEnabled(true);
 		tfUsageTime.setEnabled(true);
@@ -302,14 +342,14 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 
 	// SimulatorFacade implementations.
-	
+
 	public CoolSemaphore getMutex() {
 		return this.mutex;
 	}
 
 	@Override
 	public void log(LogType logType, String text) {
-		
+
 		switch (logType) {
 		case PROCESS_CREATION:
 			this.taProcessCreation.log(text);
@@ -332,7 +372,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 			this.taDeadlockProcess.log(text);
 			break;
 		}
-		
 
 	}
 
@@ -344,8 +383,17 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	@Override
 	public Resource getResourceAt(int index) {
-		
 		return operationalSystem.getResourceAt(index);
+	}
+	
+	
+	// Other methods
+	
+	/**
+	 * Displays a message of invalid pid.
+	 * */
+	private void showInvalidPidMessage() {
+		JOptionPane.showMessageDialog(this, "Pid inválido!");
 	}
 
 }
