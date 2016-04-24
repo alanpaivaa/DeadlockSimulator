@@ -45,20 +45,20 @@ public class Process extends Thread {
 				this.resourcesInstances[currentRequest]++;
 				
 				requestedResouce = this.simulator.getResourceAt(currentRequest);
-				this.simulator.log(LogType.PROCESS_REQUEST, "P"+this.pid+" solicitou Recurso "+requestedResouce.getName());
+				this.simulator.log(LogType.PROCESS_REQUEST, "P"+this.pid+" solicitou "+requestedResouce.getName());
 				
 				if(requestedResouce.getAvailable()==0)
 				{
-					this.simulator.log(LogType.RESOURCE_BLOCK, "P"+this.pid+" esta bloqueado com Recurso "+requestedResouce.getName());	
+					this.simulator.log(LogType.RESOURCE_BLOCK, "P"+this.pid+" bloqueiou com  "+requestedResouce.getName());	
 				}
 				requestedResouce.takeInstance();
-				this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com Recurso "+requestedResouce.getName());
+				this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com "+requestedResouce.getName());
 				
 				
 				Thread.sleep(processUsageTime*1000);
 				currentRequest = -1;
 				requestedResouce.releaseInstance();
-				this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid+" liberou o Recurso "+requestedResouce.getName());
+				this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid+" liberou "+requestedResouce.getName());
 				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

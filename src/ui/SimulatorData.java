@@ -43,8 +43,8 @@ public class SimulatorData extends JFrame {
 	public void redrawStructures()
 	{
 		
-		existingResources.removeAll();
-		availableResources.removeAll();
+		
+		
 		String[] columnNames = new String[resources.size()];
 		Object[][] dataExistingResouces = new Object[1][resources.size()];
 		Object[][] dataAvilableResouces = new Object[1][resources.size()];
@@ -55,7 +55,8 @@ public class SimulatorData extends JFrame {
 			dataExistingResouces[0][j]= rs.getAmount();
 			dataAvilableResouces[0][j++] = rs.getAvailable();
 		}
-
+		
+		existingResources.removeAll();
 		/*Existing Resources Table*/
 		existingResources.add(lblRecursosExistentes);
 		JTable tableExistingResources = new JTable(dataExistingResouces,columnNames );
@@ -63,7 +64,7 @@ public class SimulatorData extends JFrame {
 		existingResources.add(tableExistingResources, BorderLayout.CENTER);
 		existingResources.revalidate();
 		
-		
+		availableResources.removeAll();
 		/*Avialable Resources Table*/
 		availableResources.add(lblRecursosDisponveis);
 		JTable tableAvailableResources = new JTable(dataAvilableResouces,columnNames );
