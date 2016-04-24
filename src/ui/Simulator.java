@@ -36,12 +36,14 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JTextField tfUsageTime;
 	private JButton btnStartSimulation;
 	private JTextField tfTypesResources;
+	private JButton btnStopSimulation;
 	
 	// Core
 	private ArrayList<Resource> resources;
 	private ArrayList<Process> processes = new ArrayList<Process>();
 	private OperationalSystem operationalSystem = new OperationalSystem(5); // TODO Mocked interval
 	private CoolSemaphore mutex = new CoolSemaphore(1);
+	
 
 	/**
 	 *  Class creator
@@ -67,7 +69,12 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		btnStartSimulation.setBounds(20, 96, 142, 23);
 		startUpZone.add(btnStartSimulation);
 
-		JButton btnStopSimulation = new JButton("Parar Simula\u00E7\u00E3o");
+		btnStopSimulation = new JButton("Parar Simula\u00E7\u00E3o");
+		btnStopSimulation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
 		btnStopSimulation.setBounds(234, 96, 142, 23);
 		btnStopSimulation.setEnabled(false);
 		startUpZone.add(btnStopSimulation);
@@ -247,7 +254,10 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	@Override
 	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources) {
 		this.resources = resources;
-		System.out.println("Resources received");
+		btnStartSimulation.setEnabled(false);
+		btnStopSimulation.setEnabled(true);
+		tfTypesResources.setEnabled(false);
+		//System.out.println("Resources received");
 	}
 
 	@Override
