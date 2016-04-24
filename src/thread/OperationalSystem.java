@@ -28,12 +28,17 @@ public class OperationalSystem extends CoolThread {
 	@Override
 	public void run() {
 		while(true) {
+			
+			this.simulator.getMutex().down();
 			ArrayList<Integer> deadlockedProcesses = this.deadlockedProcesses();
+			this.simulator.getMutex().up();
+			
 			if(deadlockedProcesses != null) {
 				this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
 			} else {
 				this.simulator.log(LogType.DEADLOCK, "Nenhum processo em deadlock.");	
 			}
+			
 			sleep(this.interval);
 		}
 	}
@@ -45,7 +50,7 @@ public class OperationalSystem extends CoolThread {
 	 * */
 	// TODO mutex stuff.
 	private ArrayList<Integer> deadlockedProcesses() {
-
+		
 		int n = this.processes.size();
 		int m = this.resources.size();
 
