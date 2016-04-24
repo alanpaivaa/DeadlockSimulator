@@ -194,7 +194,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	 * Creates and starts an OperationalSystem.
 	 * */
 	private void setupOpeationalSystem() {
-		this.operationalSystem = new OperationalSystem(5, this); // TODO Mocked interval
+		this.operationalSystem = new OperationalSystem(1, this); // TODO Mocked interval
 		this.operationalSystem.start();
 	}
 

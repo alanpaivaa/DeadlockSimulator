@@ -3,10 +3,10 @@ package thread;
 /** This class is responsible for requesting resources in intervals, simulating a real SO process.  */
 public class Process extends Thread {
 	
-	private static int lastId = 0;
+	private static int lastPid = 0;
 	
 	private int[] resourcesInstances;
-	private int id;
+	private int pid;
 	private int currentRequest = -1;
 	
 	/**
@@ -14,7 +14,7 @@ public class Process extends Thread {
 	 * */
 	public Process(int numberOfResources) {
 		this.resourcesInstances = new int[numberOfResources];
-		this.id = ++lastId;
+		this.pid = ++lastPid;
 	}
 	
 	@Override
@@ -40,11 +40,15 @@ public class Process extends Thread {
 	
 	@Override
 	public String toString() {
-		return "Processo: " + this.id;
+		return "Processo: " + this.pid;
 	}
 
 	public int getCurrentRequest() {
 		return currentRequest;
+	}
+	
+	public int getPid() {
+		return this.pid;
 	}
 	
 }
