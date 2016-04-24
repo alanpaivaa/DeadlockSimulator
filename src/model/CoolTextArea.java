@@ -40,4 +40,9 @@ public class CoolTextArea extends JScrollPane {
 		return this.textArea;
 	}
 	
+	public void clear()
+	{
+		this.textArea.setText("");
+	}
+	
 }

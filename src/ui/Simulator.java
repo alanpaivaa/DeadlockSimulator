@@ -86,6 +86,28 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		startUpZone.add(btnStartSimulation);
 
 		btnStopSimulation = new JButton("Parar Simulação");
+		btnStopSimulation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				operationalSystem.restartSystem();
+				simulatorDataWindow.dispose();
+				
+
+				btnStartSimulation.setEnabled(true);
+				btnStopSimulation.setEnabled(false);
+				tfTypesResources.setEnabled(true);
+				
+				btnCreateProcess.setEnabled(false);
+				tfRequestTime.setEnabled(false);
+				tfUsageTime.setEnabled(false);
+
+			    taDeadlockProcess.clear();
+			    taProcessBlocked.clear();
+			    taProcessCreation.clear();
+			    taProcessExecution.clear();
+			    taProcessRelease.clear();
+			    taProcessRequest.clear();
+			}
+		});
 
 		btnStopSimulation.setBounds(234, 96, 142, 23);
 		btnStopSimulation.setEnabled(false);

@@ -140,7 +140,16 @@ public class OperationalSystem extends CoolThread {
 		this.processes.addAll(processes);
 	}
 	
-
+	 public void restartSystem()
+	 {
+		 for (Process process : processes) {
+			 process.setKeepAlice(false);
+		 }
+		 
+		 processes.clear();
+		 resources.clear();
+		 
+	 }
 
 	public Resource getResourceAt(int index) {
 		
