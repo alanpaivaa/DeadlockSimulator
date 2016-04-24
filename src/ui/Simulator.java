@@ -42,8 +42,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JButton btnCreateProcess;
 	private JButton btnDeleteProcess;
 	
-	private CoolTextArea taDeadlockProcess, taProcessCreation, taProcessBlocked;
-	private CoolTextArea taProcessRequest, taProcessRelease, taProcessExecution;
+	private CoolTextArea taDeadlockProcess, taProcessRelease, taProcessBlocked;
+	private CoolTextArea taProcessRequest, taProcessCreation, taProcessExecution;
 	
 	// Core
 	private OperationalSystem operationalSystem; 
@@ -104,8 +104,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		getContentPane().add(statusZone);
 		statusZone.setLayout(null);
 
-		this.taProcessCreation = new CoolTextArea(475, 36, 145, 215);
-		statusZone.add(this.taProcessCreation);
+		this.taProcessRelease = new CoolTextArea(475, 36, 145, 215);
+		statusZone.add(this.taProcessRelease);
 
 		this.taProcessBlocked = new CoolTextArea(320, 36, 145, 215);
 		statusZone.add(this.taProcessBlocked);
@@ -113,8 +113,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		this.taProcessRequest = new CoolTextArea(165, 36, 145, 215);
 		statusZone.add(this.taProcessRequest);
 
-		this.taProcessRelease = new CoolTextArea(10, 36, 145, 215);
-		statusZone.add(this.taProcessRelease);
+		this.taProcessCreation = new CoolTextArea(10, 36, 145, 215);
+		statusZone.add(this.taProcessCreation);
 
 		JLabel lbBlocked = new JLabel("Bloqueados");
 		lbBlocked.setBounds(663, 11, 81, 14);
@@ -175,10 +175,11 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 					JOptionPane.showMessageDialog(null, "Por favor, insira todas as informações sobre o Processo");
 					return;
 				}
-
-				Process process = new Process(Integer.parseInt(tfTypesResources.getText().trim()), Integer.parseInt(tfRequestTime.getText().trim()), Integer.parseInt(tfUsageTime.getText().trim()));
+				Process process = new Process(Integer.parseInt(tfTypesResources.getText().trim()), Integer.parseInt(tfRequestTime.getText().trim()), Integer.parseInt(tfUsageTime.getText().trim()),operationalSystem.getSimulator());
+				
 				operationalSystem.addProcess(process);
 				process.start();
+
 			}
 		});
 		btnCreateProcess.setEnabled(false);

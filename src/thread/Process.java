@@ -1,9 +1,14 @@
 package thread;
 
+import enums.LogType;
+import interfaces.SimulatorFacade;
+
 /** This class is responsible for requesting resources in intervals, simulating a real SO process.  */
 public class Process extends Thread {
 	
 	private static int lastId = 0;
+	
+	private SimulatorFacade simulator;
 	
 	private int[] resourcesInstances;
 	private int id;
@@ -13,11 +18,14 @@ public class Process extends Thread {
 	/**
 	 * Constructor, builds this process.
 	 * */
-	public Process(int numberOfResources,int requestTime, int usageTime) {
+	public Process(int numberOfResources,int requestTime, int usageTime, SimulatorFacade simulator) {
 		this.resourcesInstances = new int[numberOfResources];
 		this.id = ++lastId;
 		this.processRequestTime = requestTime;
 		this.processUsageTime = usageTime;
+		
+		this.simulator = simulator;
+		this.simulator.log(LogType.PROCESS_CREATION, "Processo"+this.id+" criado");
 	}
 	
 	@Override

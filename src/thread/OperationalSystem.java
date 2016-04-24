@@ -76,6 +76,10 @@ public class OperationalSystem extends CoolThread {
 		return interval;
 	}
 	
+	public SimulatorFacade getSimulator() {
+		return simulator;
+	}
+
 	public void addResource(Resource resource) {
 		this.resources.add(resource);
 	}
@@ -85,6 +89,7 @@ public class OperationalSystem extends CoolThread {
 	}
 	
 	public void addProcess(Process process) {
+		
 		this.processes.add(process);
 	}
 	
