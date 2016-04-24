@@ -66,7 +66,7 @@ public class SimulatorSetup extends JDialog implements ActionListener {
 
 		// Scroll
 		JScrollPane scroll = new JScrollPane(contentPanel);
-		scroll.setPreferredSize(new Dimension(450, this.resourceNumber <= 3 ? this.resourceNumber * 95 : 300));
+		scroll.setPreferredSize(new Dimension(450, 95 * (this.resourceNumber <= 3 ? this.resourceNumber : 3)));
 		getContentPane().add(scroll, BorderLayout.CENTER);
 
 		// ContentPanel Setup
