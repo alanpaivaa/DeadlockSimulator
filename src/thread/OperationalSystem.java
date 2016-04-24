@@ -139,4 +139,14 @@ public class OperationalSystem extends CoolThread {
 	public void addProcesses(ArrayList<Process> processes) {
 		this.processes.addAll(processes);
 	}
+	
+	public int requestResource()
+	{
+		return 0;
+	}
+
+	public Resource getResourceAt(int index) {
+		
+		return resources.get(index);
+	}
 }

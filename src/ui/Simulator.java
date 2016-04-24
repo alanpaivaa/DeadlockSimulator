@@ -21,6 +21,7 @@ import thread.Process;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 
 /** This class is the main UI of the project, that actually renders tue UI elements. */
@@ -42,8 +43,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JButton btnCreateProcess;
 	private JButton btnDeleteProcess;
 	
-	private CoolTextArea taDeadlockProcess, taProcessRelease, taProcessBlocked;
-	private CoolTextArea taProcessRequest, taProcessCreation, taProcessExecution;
+	private CoolTextArea taDeadlockProcess, taProcessRelease, taProcessExecution;
+	private CoolTextArea taProcessRequest, taProcessCreation, taProcessBlocked;
 	
 	// Core
 	private OperationalSystem operationalSystem; 
@@ -107,14 +108,17 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		this.taProcessRelease = new CoolTextArea(475, 36, 145, 215);
 		statusZone.add(this.taProcessRelease);
 
-		this.taProcessBlocked = new CoolTextArea(320, 36, 145, 215);
-		statusZone.add(this.taProcessBlocked);
+		this.taProcessExecution = new CoolTextArea(320, 36, 145, 215);
+		statusZone.add(this.taProcessExecution);
 
 		this.taProcessRequest = new CoolTextArea(165, 36, 145, 215);
 		statusZone.add(this.taProcessRequest);
 
 		this.taProcessCreation = new CoolTextArea(10, 36, 145, 215);
 		statusZone.add(this.taProcessCreation);
+		
+				this.taProcessBlocked = new CoolTextArea(630, 36, 145, 215);
+				statusZone.add(this.taProcessBlocked);
 
 		JLabel lbBlocked = new JLabel("Bloqueados");
 		lbBlocked.setBounds(663, 11, 81, 14);
@@ -135,9 +139,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		JLabel lbCreation = new JLabel("Cria\u00E7\u00E3o");
 		lbCreation.setBounds(57, 11, 46, 14);
 		statusZone.add(lbCreation);
-
-		this.taProcessExecution = new CoolTextArea(630, 36, 145, 215);
-		statusZone.add(this.taProcessExecution);
 
 
 		/*Deadlock zone components*/
@@ -311,6 +312,18 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 			this.taDeadlockProcess.log(text);
 			break;
 		}
+	}
+
+	@Override
+	public int requestResourcePos() {
+		Random rand = new Random();
+		return rand.nextInt(Integer.parseInt(tfTypesResources.getText().trim()));
+	}
+
+	@Override
+	public Resource getResourceAt(int index) {
+		
+		return operationalSystem.getResourceAt(index);
 	}
 
 }

@@ -2,6 +2,8 @@ package model;
 
 import java.util.concurrent.Semaphore;
 
+import enums.LogType;
+
 /**
  * Represents a resource on the operational system. I.E. an printer, a hard driver, etc.
  * @author ajeferson
@@ -36,6 +38,7 @@ public class Resource {
 	 * */
 	public void takeInstance() {
 		this.available.down();
+		
 	}
 	
 	/**

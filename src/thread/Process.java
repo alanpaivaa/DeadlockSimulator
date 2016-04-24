@@ -2,6 +2,7 @@ package thread;
 
 import enums.LogType;
 import interfaces.SimulatorFacade;
+import model.Resource;
 
 /** This class is responsible for requesting resources in intervals, simulating a real SO process.  */
 public class Process extends Thread {
@@ -15,28 +16,55 @@ public class Process extends Thread {
 	private int currentRequest = -1;
 	private int processRequestTime;
 	private int processUsageTime;
+	
+	private Resource requestedResouce;
+	private boolean keepAlive = true;
 	/**
 	 * Constructor, builds this process.
 	 * */
 	public Process(int numberOfResources,int requestTime, int usageTime, SimulatorFacade simulator) {
 		this.resourcesInstances = new int[numberOfResources];
-
 		this.processRequestTime = requestTime;
 		this.processUsageTime = usageTime;
-		
 		this.simulator = simulator;
-		this.simulator.log(LogType.PROCESS_CREATION, "Processo"+this.pid+" criado");
 		this.pid = ++lastPid;
+		this.simulator.log(LogType.PROCESS_CREATION, "Processo"+this.pid+" criado");
+		
 
 	}
 	
 	@Override
 	public void run() {
-		System.out.println("This is a cool process requesting for random resources...");
-		try {
-			Thread.sleep(1500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		while(keepAlive)
+		{
+			try {
+				Thread.sleep(processRequestTime*1000);
+				
+				currentRequest = this.simulator.requestResourcePos();
+				
+				this.resourcesInstances[currentRequest]++;
+				
+				requestedResouce = this.simulator.getResourceAt(currentRequest);
+				this.simulator.log(LogType.PROCESS_REQUEST, "P"+this.pid+" solicitou Recurso "+requestedResouce.getName());
+				
+				if(requestedResouce.getAvailable()==0)
+				{
+					this.simulator.log(LogType.RESOURCE_BLOCK, "P"+this.pid+" esta bloqueado com Recurso "+requestedResouce.getName());	
+				}
+				requestedResouce.takeInstance();
+				this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com Recurso "+requestedResouce.getName());
+				
+				
+				Thread.sleep(processUsageTime*1000);
+				currentRequest = -1;
+				requestedResouce.releaseInstance();
+				this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid+" liberou o Recurso "+requestedResouce.getName());
+				
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 	}
 	
