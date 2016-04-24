@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import util.Constants;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,7 +22,11 @@ import thread.Process;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 import java.util.Random;
+
+import java.awt.Color;
+
 import java.awt.event.ActionEvent;
 
 /** This class is the main UI of the project, that actually renders tue UI elements. */
@@ -80,7 +85,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		btnStartSimulation.setBounds(20, 96, 142, 23);
 		startUpZone.add(btnStartSimulation);
 
-		btnStopSimulation = new JButton("Parar Simula\u00E7\u00E3o");
+		btnStopSimulation = new JButton("Parar Simulação");
 
 		btnStopSimulation.setBounds(234, 96, 142, 23);
 		btnStopSimulation.setEnabled(false);
@@ -91,14 +96,15 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		startUpZone.add(tfTypesResources);
 		tfTypesResources.setColumns(10);
 
-		JLabel lbResourcesTypes = new JLabel("N\u00FAmero de Tipos de Recursos");
-		lbResourcesTypes.setBounds(126, 40, 179, 14);
+		JLabel lbResourcesTypes = new JLabel("Número de Recursos");
+		lbResourcesTypes.setBounds(0, 40, 386, 14);
+		lbResourcesTypes.setHorizontalAlignment(SwingConstants.CENTER);
 		startUpZone.add(lbResourcesTypes);
 
 		JLabel lbSetupSystem = new JLabel("Configurar Sistema");
-		lbSetupSystem.setBounds(148, 11, 119, 14);
+		lbSetupSystem.setBounds(0, 11, 386, 14);
+		lbSetupSystem.setHorizontalAlignment(SwingConstants.CENTER);
 		startUpZone.add(lbSetupSystem);
-
 
 		/*Status zone components*/
 		JPanel statusZone = new JPanel();
@@ -106,6 +112,9 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		statusZone.setBounds(10, 152, 787, 262);
 		getContentPane().add(statusZone);
 		statusZone.setLayout(null);
+		
+		this.taProcessExecution = new CoolTextArea(630, 36, 145, 215);
+		statusZone.add(this.taProcessExecution);
 
 		this.taProcessRelease = new CoolTextArea(475, 36, 145, 215);
 		statusZone.add(this.taProcessRelease);
@@ -123,23 +132,28 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 				statusZone.add(this.taProcessBlocked);
 
 		JLabel lbBlocked = new JLabel("Bloqueados");
-		lbBlocked.setBounds(663, 11, 81, 14);
+		lbBlocked.setBounds(630, 11, 145, 14);
+		lbBlocked.setHorizontalAlignment(SwingConstants.CENTER);
 		statusZone.add(lbBlocked);
 
-		JLabel lbRequest = new JLabel("Solicita\u00E7\u00E3o");
-		lbRequest.setBounds(203, 11, 63, 14);
+		JLabel lbRequest = new JLabel("Solicitação");
+		lbRequest.setBounds(165, 11, 145, 14);
+		lbRequest.setHorizontalAlignment(SwingConstants.CENTER);
 		statusZone.add(lbRequest);
 
 		JLabel lbExecution = new JLabel("Executando");
-		lbExecution.setBounds(357, 11, 81, 14);
+		lbExecution.setBounds(320, 11, 145, 14);
+		lbExecution.setHorizontalAlignment(SwingConstants.CENTER);
 		statusZone.add(lbExecution);
 
-		JLabel lbRelease = new JLabel("Libera\u00E7\u00E3o");
-		lbRelease.setBounds(525, 11, 63, 14);
+		JLabel lbRelease = new JLabel("Liberação");
+		lbRelease.setBounds(475, 11, 145, 14);
+		lbRelease.setHorizontalAlignment(SwingConstants.CENTER);
 		statusZone.add(lbRelease);
 
-		JLabel lbCreation = new JLabel("Cria\u00E7\u00E3o");
-		lbCreation.setBounds(57, 11, 46, 14);
+		JLabel lbCreation = new JLabel("Criação");
+		lbCreation.setBounds(10, 11, 145, 14);
+		lbCreation.setHorizontalAlignment(SwingConstants.CENTER);
 		statusZone.add(lbCreation);
 
 
@@ -166,7 +180,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		processCreationZone.setLayout(null);
 
 		JLabel lbProcessCreator = new JLabel("Criador de Processos");
-		lbProcessCreator.setBounds(143, 5, 127, 14);
+		lbProcessCreator.setBounds(0, 5, 388, 14);
+		lbProcessCreator.setHorizontalAlignment(SwingConstants.CENTER);
 		processCreationZone.add(lbProcessCreator);
 
 		btnCreateProcess = new JButton("Criar processo");
@@ -175,7 +190,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 				
 				if(tfRequestTime.getText().isEmpty() || tfUsageTime.getText().isEmpty())
 				{
-					JOptionPane.showMessageDialog(null, "Por favor, insira todas as informa��es sobre o Processo");
+					JOptionPane.showMessageDialog(null, "Por favor, insira todas as informações sobre o Processo");
 					return;
 				}
 				Process process = new Process(Integer.parseInt(tfTypesResources.getText().trim()), Integer.parseInt(tfRequestTime.getText().trim()), Integer.parseInt(tfUsageTime.getText().trim()),operationalSystem.getSimulator());
@@ -189,28 +204,30 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		btnCreateProcess.setBounds(10, 96, 121, 23);
 		processCreationZone.add(btnCreateProcess);
 
-		btnDeleteProcess = new JButton("Excluir Processo...");
+		btnDeleteProcess = new JButton("Excluir Processo");
 		btnDeleteProcess.setEnabled(false);
 		btnDeleteProcess.setBounds(227, 96, 151, 23);
 		processCreationZone.add(btnDeleteProcess);
 
-		JLabel lbRequestTime = new JLabel("Intervalo de solicita\u00E7\u00F5es");
-		lbRequestTime.setBounds(10, 30, 151, 14);
+		JLabel lbRequestTime = new JLabel("Intervalo de solicitações");
+		lbRequestTime.setBounds(55, 30, 160, 14);
+		lbRequestTime.setHorizontalAlignment(SwingConstants.RIGHT);
 		processCreationZone.add(lbRequestTime);
 
-		JLabel lbUsageTime = new JLabel("Tempo de Utiliza\u00E7\u00E3o");
-		lbUsageTime.setBounds(10, 58, 127, 14);
+		JLabel lbUsageTime = new JLabel("Tempo de Utilização");
+		lbUsageTime.setBounds(55, 58, 160, 14);
+		lbUsageTime.setHorizontalAlignment(SwingConstants.RIGHT);
 		processCreationZone.add(lbUsageTime);
 
 		tfRequestTime = new JTextField();
 		tfRequestTime.setEnabled(false);
-		tfRequestTime.setBounds(166, 30, 86, 20);
+		tfRequestTime.setBounds(220, 30, 86, 20);
 		processCreationZone.add(tfRequestTime);
 		tfRequestTime.setColumns(10);
 
 		tfUsageTime = new JTextField();
 		tfUsageTime.setEnabled(false);
-		tfUsageTime.setBounds(166, 55, 86, 20);
+		tfUsageTime.setBounds(220, 55, 86, 20);
 		processCreationZone.add(tfUsageTime);
 		tfUsageTime.setColumns(10);
 		this.setVisible(true);
