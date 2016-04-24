@@ -14,7 +14,7 @@ import model.Resource;
  * */
 public class OperationalSystem extends CoolThread {
 
-	private ArrayList<Resource> resources;
+	private ArrayList<Resource> resources = new ArrayList<Resource>();
 	private ArrayList<Process> processes = new ArrayList<Process>();
 	
 	private int interval;

@@ -17,6 +17,7 @@ import model.CoolSemaphore;
 import model.CoolTextArea;
 import model.Resource;
 import thread.OperationalSystem;
+import thread.Process;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -166,6 +167,20 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		processCreationZone.add(lbProcessCreator);
 
 		btnCreateProcess = new JButton("Criar processo");
+		btnCreateProcess.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(tfRequestTime.getText().isEmpty() || tfUsageTime.getText().isEmpty())
+				{
+					JOptionPane.showMessageDialog(null, "Por favor, insira todas as informações sobre o Processo");
+					return;
+				}
+
+				Process process = new Process(Integer.parseInt(tfTypesResources.getText().trim()), Integer.parseInt(tfRequestTime.getText().trim()), Integer.parseInt(tfUsageTime.getText().trim()));
+				operationalSystem.addProcess(process);
+				process.start();
+			}
+		});
 		btnCreateProcess.setEnabled(false);
 		btnCreateProcess.setBounds(10, 96, 121, 23);
 		processCreationZone.add(btnCreateProcess);
