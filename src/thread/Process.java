@@ -38,24 +38,35 @@ public class Process extends Thread {
 		while(keepAlive)
 		{
 			try {
+				//Waits for the next time to get a resource
 				Thread.sleep(processRequestTime*1000);
 				
+				//Selects a resource randomly
 				currentRequest = this.simulator.requestResourcePos();
 				
+				//Increments the resource array
 				this.resourcesInstances[currentRequest]++;
 				
+				//get the actual resource from the array list
 				requestedResouce = this.simulator.getResourceAt(currentRequest);
 				this.simulator.log(LogType.PROCESS_REQUEST, "P"+this.pid+" solicitou "+requestedResouce.getName());
 				
+				//if there are no resources left, the process will be blocked
 				if(requestedResouce.getAvailable()==0)
 				{
 					this.simulator.log(LogType.RESOURCE_BLOCK, "P"+this.pid+" bloqueiou com  "+requestedResouce.getName());	
 				}
+				
 				requestedResouce.takeInstance();
+				
+				//process runs for a certain amount of time
 				this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com "+requestedResouce.getName());
 				
 				
 				Thread.sleep(processUsageTime*1000);
+
+				//free the resource
+				this.resourcesInstances[currentRequest]--;
 				currentRequest = -1;
 				requestedResouce.releaseInstance();
 				this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid+" liberou "+requestedResouce.getName());

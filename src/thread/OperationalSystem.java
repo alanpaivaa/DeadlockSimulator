@@ -140,10 +140,7 @@ public class OperationalSystem extends CoolThread {
 		this.processes.addAll(processes);
 	}
 	
-	public int requestResource()
-	{
-		return 0;
-	}
+
 
 	public Resource getResourceAt(int index) {
 		

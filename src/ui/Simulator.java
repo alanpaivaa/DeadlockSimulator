@@ -299,14 +299,14 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 			break;
 		case PROCESS_REQUEST:
 			this.taProcessRequest.log(text);
-			simulatorDataWindow.redrawStructures();
+			simulatorDataWindow.redrawStructures(); //data structures changed, redraw panels
 			break;
 		case PROCESS_RUNNING:
 			this.taProcessExecution.log(text);
 			break;
 		case RESOURCE_RELEASE:
 			this.taProcessRelease.log(text);
-			simulatorDataWindow.redrawStructures();
+			simulatorDataWindow.redrawStructures(); //data structures changed, redraw panels
 			break;
 		case RESOURCE_BLOCK:
 			this.taProcessBlocked.log(text);
