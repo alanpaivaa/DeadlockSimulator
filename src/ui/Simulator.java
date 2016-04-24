@@ -172,7 +172,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 				
 				if(tfRequestTime.getText().isEmpty() || tfUsageTime.getText().isEmpty())
 				{
-					JOptionPane.showMessageDialog(null, "Por favor, insira todas as informações sobre o Processo");
+					JOptionPane.showMessageDialog(null, "Por favor, insira todas as informaï¿½ï¿½es sobre o Processo");
 					return;
 				}
 				Process process = new Process(Integer.parseInt(tfTypesResources.getText().trim()), Integer.parseInt(tfRequestTime.getText().trim()), Integer.parseInt(tfUsageTime.getText().trim()),operationalSystem.getSimulator());
@@ -254,10 +254,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		}
 
 		// Showing the SimulatorSetup
-		SimulatorSetup simulatorSetup = new SimulatorSetup();
-		simulatorSetup.setDelegate(this);
-		simulatorSetup.setResourceNumber(Integer.parseInt(this.tfTypesResources.getText().trim()));
-		simulatorSetup.setVisible(true);
+		new SimulatorSetup(Integer.parseInt(this.tfTypesResources.getText().trim()), this);
 	}
 
 
