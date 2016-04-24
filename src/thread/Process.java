@@ -3,13 +3,18 @@ package thread;
 /** This class is responsible for requesting resources in intervals, simulating a real SO process.  */
 public class Process extends Thread {
 	
+	private static int lastId = 0;
+	
 	private int[] resourcesInstances;
+	private int id;
+	private int currentRequest = -1;
 	
 	/**
 	 * Constructor, builds this process.
 	 * */
 	public Process(int numberOfResources) {
 		this.resourcesInstances = new int[numberOfResources];
+		this.id = ++lastId;
 	}
 	
 	@Override
@@ -31,6 +36,15 @@ public class Process extends Thread {
 
 	public void setResourcesInstances(int[] resourcesInstances) {
 		this.resourcesInstances = resourcesInstances;
+	}
+	
+	@Override
+	public String toString() {
+		return "Processo: " + this.id;
+	}
+
+	public int getCurrentRequest() {
+		return currentRequest;
 	}
 	
 }
