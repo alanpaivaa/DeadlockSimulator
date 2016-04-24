@@ -29,6 +29,12 @@ public interface SimulatorFacade {
 	 * */
 	public int requestResourcePos();
 	
+	/**
+	 * Gets a resource from the resources Array List at a certain index
+	 * @param index The index where to get the Resource
+	 * @return Returns the Resource at index
+	 * 
+	 * */
 	public Resource getResourceAt(int index);
 	
 }
