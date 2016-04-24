@@ -8,11 +8,6 @@ import model.CoolSemaphore;
  * @author ajeferson
  * */
 public interface SimulatorFacade {
-
-	/**
-	 * Returns the process on a given index.
-	 * */
-	public Process processAtIndex(int index);
 	
 	/**
 	 * Give access to the mutex semaphore.

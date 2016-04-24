@@ -40,8 +40,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private CoolTextArea taProcessRequest, taProcessRelease, taProcessExecution;
 	
 	// Core
-	private ArrayList<Resource> resources;
-	private ArrayList<Process> processes = new ArrayList<Process>();
 	private OperationalSystem operationalSystem; 
 	private CoolSemaphore mutex = new CoolSemaphore(1);
 
@@ -241,8 +239,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	@Override
 	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources) {
-		this.resources = resources;
-		System.out.println("Resources received");
+		this.operationalSystem.addResources(resources);
 	}
 
 	@Override
@@ -251,11 +248,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 
 	// SimulatorFacade implementations.
-	
-	@Override
-	public Process processAtIndex(int index) {
-		return this.processes.get(index);
-	}
 	
 	public CoolSemaphore getMutex() {
 		return this.mutex;

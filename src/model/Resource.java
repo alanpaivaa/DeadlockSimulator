@@ -30,6 +30,12 @@ public class Resource {
 		this.available.down();
 	}
 	
+	/**
+	 * Returns the number of available permits of this resource.
+	 * */
+	public int availableInstances() {
+		return this.available.availablePermits();
+	}
 	
 	/**
 	 * Releases an instance of the resource. (ups the semaphore).
