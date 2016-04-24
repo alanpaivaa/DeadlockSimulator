@@ -8,13 +8,13 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 
 import enums.LogType;
 import interfaces.SimulatorFacade;
 import interfaces.SimulatorSetupDelegate;
 import model.CoolSemaphore;
+import model.CoolTextArea;
 import model.Resource;
 import thread.OperationalSystem;
 
@@ -36,12 +36,14 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JTextField tfUsageTime;
 	private JButton btnStartSimulation;
 	private JTextField tfTypesResources;
+
 	private JButton btnStopSimulation;
+
+	private CoolTextArea taDeadlockProcess, taProcessCreation, taProcessBlocked;
+	private CoolTextArea taProcessRequest, taProcessRelease, taProcessExecution;
 	
 	// Core
-	private ArrayList<Resource> resources;
-	private ArrayList<Process> processes = new ArrayList<Process>();
-	private OperationalSystem operationalSystem = new OperationalSystem(5); // TODO Mocked interval
+	private OperationalSystem operationalSystem; 
 	private CoolSemaphore mutex = new CoolSemaphore(1);
 	
 
@@ -100,29 +102,17 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		getContentPane().add(statusZone);
 		statusZone.setLayout(null);
 
-		JTextArea taProcessCreation = new JTextArea();
-		taProcessCreation.setEnabled(false);
-		taProcessCreation.setEditable(false);
-		taProcessCreation.setBounds(475, 36, 145, 215);
-		statusZone.add(taProcessCreation);
+		this.taProcessCreation = new CoolTextArea(475, 36, 145, 215);
+		statusZone.add(this.taProcessCreation);
 
-		JTextArea taProcessBlocked = new JTextArea();
-		taProcessBlocked.setEnabled(false);
-		taProcessBlocked.setEditable(false);
-		taProcessBlocked.setBounds(320, 36, 145, 215);
-		statusZone.add(taProcessBlocked);
+		this.taProcessBlocked = new CoolTextArea(320, 36, 145, 215);
+		statusZone.add(this.taProcessBlocked);
 
-		JTextArea taProcessRequest = new JTextArea();
-		taProcessRequest.setEnabled(false);
-		taProcessRequest.setEditable(false);
-		taProcessRequest.setBounds(165, 36, 145, 215);
-		statusZone.add(taProcessRequest);
+		this.taProcessRequest = new CoolTextArea(165, 36, 145, 215);
+		statusZone.add(this.taProcessRequest);
 
-		JTextArea taProcessRelease = new JTextArea();
-		taProcessRelease.setEnabled(false);
-		taProcessRelease.setEditable(false);
-		taProcessRelease.setBounds(10, 36, 145, 215);
-		statusZone.add(taProcessRelease);
+		this.taProcessRelease = new CoolTextArea(10, 36, 145, 215);
+		statusZone.add(this.taProcessRelease);
 
 		JLabel lbBlocked = new JLabel("Bloqueados");
 		lbBlocked.setBounds(663, 11, 81, 14);
@@ -144,11 +134,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		lbCreation.setBounds(57, 11, 46, 14);
 		statusZone.add(lbCreation);
 
-		JTextArea taProcessExecution = new JTextArea();
-		taProcessExecution.setEnabled(false);
-		taProcessExecution.setEditable(false);
-		taProcessExecution.setBounds(630, 36, 145, 215);
-		statusZone.add(taProcessExecution);
+		this.taProcessExecution = new CoolTextArea(630, 36, 145, 215);
+		statusZone.add(this.taProcessExecution);
 
 
 		/*Deadlock zone components*/
@@ -158,11 +145,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		getContentPane().add(deadlockZone);
 		deadlockZone.setLayout(null);
 
-		JTextArea taDeadlockProcess = new JTextArea();
-		taDeadlockProcess.setEnabled(false);
-		taDeadlockProcess.setEditable(false);
-		taDeadlockProcess.setBounds(10, 26, 767, 99);
-		deadlockZone.add(taDeadlockProcess);
+		this.taDeadlockProcess = new CoolTextArea(10, 26, 767, 99);
+		deadlockZone.add(this.taDeadlockProcess);
 
 		JLabel lblDeadlockProcess = new JLabel("Processos em Deadlock");
 		lblDeadlockProcess.setBounds(342, 9, 150, 14);
@@ -210,6 +194,17 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		processCreationZone.add(tfUsageTime);
 		tfUsageTime.setColumns(10);
 		this.setVisible(true);
+		
+		// Starting the SO
+		this.setupOpeationalSystem();
+	}
+	
+	/**
+	 * Creates and starts an OperationalSystem.
+	 * */
+	private void setupOpeationalSystem() {
+		this.operationalSystem = new OperationalSystem(5, this); // TODO Mocked interval
+		this.operationalSystem.start();
 	}
 
 
@@ -253,11 +248,14 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	@Override
 	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources) {
-		this.resources = resources;
+
 		btnStartSimulation.setEnabled(false);
 		btnStopSimulation.setEnabled(true);
 		tfTypesResources.setEnabled(false);
 		//System.out.println("Resources received");
+
+		this.operationalSystem.addResources(resources);
+
 	}
 
 	@Override
@@ -267,11 +265,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	// SimulatorFacade implementations.
 	
-	@Override
-	public Process processAtIndex(int index) {
-		return this.processes.get(index);
-	}
-	
 	public CoolSemaphore getMutex() {
 		return this.mutex;
 	}
@@ -280,15 +273,22 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	public void log(LogType logType, String text) {
 		switch (logType) {
 		case PROCESS_CREATION:
-			// Do something
+			this.taProcessCreation.log(text);
 			break;
 		case PROCESS_REQUEST:
+			this.taProcessRequest.log(text);
 			break;
 		case PROCESS_RUNNING:
+			this.taProcessExecution.log(text);
 			break;
 		case RESOURCE_RELEASE:
+			this.taProcessRelease.log(text);
 			break;
 		case RESOURCE_BLOCK:
+			this.taProcessBlocked.log(text);
+			break;
+		case DEADLOCK:
+			this.taDeadlockProcess.log(text);
 			break;
 		}
 	}
