@@ -7,9 +7,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 import enums.LogType;
@@ -25,7 +28,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import java.util.Random;
-
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
 /** This class is the main UI of the project, that actually renders tue UI elements. */
@@ -63,159 +71,173 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	public Simulator() {
 
 		/*Main window UI setup*/
-		setTitle("Deadlock Simulator");
+		setTitle("Simulador de Deadlocks");
 		setResizable(false);
-		this.setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().setLayout(null);
+		
+		JPanel root = new JPanel();
+		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
+		getContentPane().add(root, BorderLayout.CENTER);
+		root.setBorder(new EmptyBorder(Constants.WINDOW_GAPS, Constants.WINDOW_GAPS, Constants.WINDOW_GAPS, Constants.WINDOW_GAPS));
+		
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new GridLayout(1, 2, Constants.WINDOW_GAPS, 0));
+		root.add(topPanel);
+		topPanel.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, 130));
 
 		/*Start up zone components*/
 		JPanel startUpZone = new JPanel();
 		startUpZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		startUpZone.setBounds(10, 11, 386, 130);
-		getContentPane().add(startUpZone);
-		startUpZone.setLayout(null);
+		startUpZone.setLayout(new BorderLayout());
+		topPanel.add(startUpZone);
 
-		this.btnStartSimulation = new JButton("Iniciar Simulação");
-		this.btnStartSimulation.addActionListener(this);
-		btnStartSimulation.setBounds(20, 96, 142, 23);
-		startUpZone.add(btnStartSimulation);
-
-		btnStopSimulation = new JButton("Parar Simulação");
-
-		btnStopSimulation.setBounds(234, 96, 142, 23);
-		btnStopSimulation.setEnabled(false);
-		startUpZone.add(btnStopSimulation);
-
-		tfTypesResources = new JTextField();
-		tfTypesResources.setBounds(160, 65, 86, 20);
-		startUpZone.add(tfTypesResources);
-		tfTypesResources.setColumns(10);
+		JLabel lbSetupSystem = this.horizontallyCenteredJLabel("Configurar Sistema");
+		startUpZone.add(lbSetupSystem, BorderLayout.NORTH);
+		
+		JPanel m = new JPanel();
+		m.setLayout(new GridBagLayout());
+		startUpZone.add(m, BorderLayout.CENTER);
+		
+		JPanel center = new JPanel();
+		center.setLayout(new GridLayout(1, 2));
+		center.setPreferredSize(new Dimension(300, 35)); // TODO Magic Numbers
+		GridBagConstraints c = new GridBagConstraints();
+		m.add(center, c);
 
 		JLabel lbResourcesTypes = new JLabel("Número de Recursos");
-		lbResourcesTypes.setBounds(0, 40, 386, 14);
-		lbResourcesTypes.setHorizontalAlignment(SwingConstants.CENTER);
-		startUpZone.add(lbResourcesTypes);
+		lbResourcesTypes.setHorizontalAlignment(SwingConstants.RIGHT);
+		center.add(lbResourcesTypes);
+		
+		tfTypesResources = new JTextField();
+		center.add(tfTypesResources);
+		
+		JPanel south = new JPanel();
+		south.setLayout(new FlowLayout(FlowLayout.CENTER));
+		startUpZone.add(south, BorderLayout.SOUTH);
+		
+		this.btnStartSimulation = new JButton("Iniciar Simulação");
+		this.btnStartSimulation.addActionListener(this);
+		south.add(btnStartSimulation);
 
-		JLabel lbSetupSystem = new JLabel("Configurar Sistema");
-		lbSetupSystem.setBounds(0, 11, 386, 14);
-		lbSetupSystem.setHorizontalAlignment(SwingConstants.CENTER);
-		startUpZone.add(lbSetupSystem);
+		btnStopSimulation = new JButton("Parar Simulação");
+		btnStopSimulation.setEnabled(false);
+		south.add(btnStopSimulation);
+		
+		/*Process creation zone components*/
+		JPanel processCreationZone = new JPanel();
+		processCreationZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		processCreationZone.setLayout(new BorderLayout());
+		topPanel.add(processCreationZone);
+
+		JLabel lbProcessCreator = this.horizontallyCenteredJLabel("Criador de Processos");
+		processCreationZone.add(lbProcessCreator, BorderLayout.NORTH);
+
+		JPanel middle = new JPanel();
+		middle.setLayout(new GridLayout(2, 2));
+		middle.setBorder(new EmptyBorder(0, 40, 0, 40));
+		processCreationZone.add(middle, BorderLayout.CENTER);
+		
+		JLabel lbRequestTime = new JLabel("Intervalo de solicitações");
+		lbRequestTime.setHorizontalAlignment(SwingConstants.RIGHT);
+		middle.add(lbRequestTime);
+		
+		tfRequestTime = new JTextField();
+		tfRequestTime.setEnabled(false);
+		middle.add(tfRequestTime);
+		
+		JLabel lbUsageTime = new JLabel("Tempo de Utilização");
+		lbUsageTime.setHorizontalAlignment(SwingConstants.RIGHT);
+		middle.add(lbUsageTime);
+
+		tfUsageTime = new JTextField();
+		tfUsageTime.setEnabled(false);
+		middle.add(tfUsageTime);
+		
+		JPanel bottom = new JPanel();
+		bottom.setLayout(new FlowLayout(FlowLayout.CENTER));
+		processCreationZone.add(bottom, BorderLayout.SOUTH);
+		
+		btnCreateProcess = new JButton("Criar processo");
+		btnCreateProcess.addActionListener(this);
+		btnCreateProcess.setEnabled(false);
+		bottom.add(btnCreateProcess);
+
+		btnDeleteProcess = new JButton("Excluir Processo");
+		btnDeleteProcess.setEnabled(false);
+		btnDeleteProcess.addActionListener(this);
+		bottom.add(btnDeleteProcess);
+		
+		root.add(Box.createRigidArea(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_GAPS)));
 
 		/*Status zone components*/
 		JPanel statusZone = new JPanel();
 		statusZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		statusZone.setBounds(10, 152, 787, 262);
-		getContentPane().add(statusZone);
-		statusZone.setLayout(null);
+		statusZone.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, 270));
+		root.add(statusZone);
+		statusZone.setLayout(new BorderLayout());
 
-		this.taProcessExecution = new CoolTextArea(630, 36, 145, 215);
-		statusZone.add(this.taProcessExecution);
-
-		this.taProcessRelease = new CoolTextArea(475, 36, 145, 215);
-		statusZone.add(this.taProcessRelease);
-
-		this.taProcessExecution = new CoolTextArea(320, 36, 145, 215);
-		statusZone.add(this.taProcessExecution);
-
-		this.taProcessRequest = new CoolTextArea(165, 36, 145, 215);
-		statusZone.add(this.taProcessRequest);
-
-		this.taProcessCreation = new CoolTextArea(10, 36, 145, 215);
-		statusZone.add(this.taProcessCreation);
-
-		this.taProcessBlocked = new CoolTextArea(630, 36, 145, 215);
-		statusZone.add(this.taProcessBlocked);
-
-		JLabel lbBlocked = new JLabel("Bloqueados");
-		lbBlocked.setBounds(630, 11, 145, 14);
-		lbBlocked.setHorizontalAlignment(SwingConstants.CENTER);
-		statusZone.add(lbBlocked);
-
-		JLabel lbRequest = new JLabel("Solicitação");
-		lbRequest.setBounds(165, 11, 145, 14);
-		lbRequest.setHorizontalAlignment(SwingConstants.CENTER);
-		statusZone.add(lbRequest);
-
-		JLabel lbExecution = new JLabel("Executando");
-		lbExecution.setBounds(320, 11, 145, 14);
-		lbExecution.setHorizontalAlignment(SwingConstants.CENTER);
-		statusZone.add(lbExecution);
-
-		JLabel lbRelease = new JLabel("Liberação");
-		lbRelease.setBounds(475, 11, 145, 14);
-		lbRelease.setHorizontalAlignment(SwingConstants.CENTER);
-		statusZone.add(lbRelease);
-
-		JLabel lbCreation = new JLabel("Criação");
-		lbCreation.setBounds(10, 11, 145, 14);
-		lbCreation.setHorizontalAlignment(SwingConstants.CENTER);
-		statusZone.add(lbCreation);
-
-
+		JPanel topStatusZone = new JPanel();
+		topStatusZone.setLayout(new GridLayout(1, 5));
+		statusZone.add(topStatusZone, BorderLayout.NORTH);
+		
+		JLabel lbBlocked = this.horizontallyCenteredJLabel("Bloqueados");
+		JLabel lbRequest = this.horizontallyCenteredJLabel("Solicitação");
+		JLabel lbExecution = this.horizontallyCenteredJLabel("Executando");
+		JLabel lbRelease = this.horizontallyCenteredJLabel("Liberação");
+		JLabel lbCreation = this.horizontallyCenteredJLabel("Criação");
+		
+		topStatusZone.add(lbCreation);
+		topStatusZone.add(lbBlocked);
+		topStatusZone.add(lbRequest);
+		topStatusZone.add(lbExecution);
+		topStatusZone.add(lbRelease);
+		
+		JPanel bottomStatusZone = new JPanel();
+		bottomStatusZone.setLayout(new GridLayout(1, 5));
+		statusZone.add(bottomStatusZone, BorderLayout.CENTER);
+		
+		this.taProcessCreation = new CoolTextArea();
+		this.taProcessExecution = new CoolTextArea();
+		this.taProcessRelease = new CoolTextArea();
+		this.taProcessRequest = new CoolTextArea();
+		this.taProcessBlocked = new CoolTextArea();
+		
+		bottomStatusZone.add(this.taProcessExecution);
+		bottomStatusZone.add(this.taProcessRelease);
+		bottomStatusZone.add(this.taProcessExecution);
+		bottomStatusZone.add(this.taProcessRequest);
+		bottomStatusZone.add(this.taProcessCreation);
+		bottomStatusZone.add(this.taProcessBlocked);
+		
+		root.add(Box.createRigidArea(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_GAPS)));
+		
 		/*Deadlock zone components*/
 		JPanel deadlockZone = new JPanel();
 		deadlockZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		deadlockZone.setBounds(10, 425, 787, 136);
-		getContentPane().add(deadlockZone);
-		deadlockZone.setLayout(null);
+		deadlockZone.setPreferredSize(new Dimension(800, 140));
+		root.add(deadlockZone);
+		deadlockZone.setLayout(new BorderLayout());
 
-		this.taDeadlockProcess = new CoolTextArea(10, 26, 767, 99);
-		deadlockZone.add(this.taDeadlockProcess);
+		JLabel lblDeadlockProcess = this.horizontallyCenteredJLabel("Processos em Deadlock");
+		deadlockZone.add(lblDeadlockProcess, BorderLayout.NORTH);
+		
+		this.taDeadlockProcess = new CoolTextArea();
+		deadlockZone.add(this.taDeadlockProcess,  BorderLayout.CENTER);
 
-		JLabel lblDeadlockProcess = new JLabel("Processos em Deadlock");
-		lblDeadlockProcess.setBounds(342, 9, 150, 14);
-		deadlockZone.add(lblDeadlockProcess);
-
-		/*Process creation zone components*/
-		JPanel processCreationZone = new JPanel();
-		processCreationZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		processCreationZone.setBounds(409, 11, 388, 130);
-		getContentPane().add(processCreationZone);
-		processCreationZone.setLayout(null);
-
-		JLabel lbProcessCreator = new JLabel("Criador de Processos");
-		lbProcessCreator.setBounds(0, 5, 388, 14);
-		lbProcessCreator.setHorizontalAlignment(SwingConstants.CENTER);
-		processCreationZone.add(lbProcessCreator);
-
-		btnCreateProcess = new JButton("Criar processo");
-		btnCreateProcess.addActionListener(this);
-		btnCreateProcess.setEnabled(false);
-		btnCreateProcess.setBounds(10, 96, 121, 23);
-		processCreationZone.add(btnCreateProcess);
-
-		btnDeleteProcess = new JButton("Excluir Processo");
-		btnDeleteProcess.setEnabled(false);
-		btnDeleteProcess.setBounds(227, 96, 151, 23);
-		btnDeleteProcess.addActionListener(this);
-		processCreationZone.add(btnDeleteProcess);
-
-		JLabel lbRequestTime = new JLabel("Intervalo de solicitações");
-		lbRequestTime.setBounds(55, 30, 160, 14);
-		lbRequestTime.setHorizontalAlignment(SwingConstants.RIGHT);
-		processCreationZone.add(lbRequestTime);
-
-		JLabel lbUsageTime = new JLabel("Tempo de Utilização");
-		lbUsageTime.setBounds(55, 58, 160, 14);
-		lbUsageTime.setHorizontalAlignment(SwingConstants.RIGHT);
-		processCreationZone.add(lbUsageTime);
-
-		tfRequestTime = new JTextField();
-		tfRequestTime.setEnabled(false);
-		tfRequestTime.setBounds(220, 30, 86, 20);
-		processCreationZone.add(tfRequestTime);
-		tfRequestTime.setColumns(10);
-
-		tfUsageTime = new JTextField();
-		tfUsageTime.setEnabled(false);
-		tfUsageTime.setBounds(220, 55, 86, 20);
-		processCreationZone.add(tfUsageTime);
-		tfUsageTime.setColumns(10);
+		this.pack();
 		this.setVisible(true);
-
+		
 		// Starting the SO
 		this.setupOpeationalSystem();
+	}
+	
+	/**
+	 * Returns a label that is horizontally centered.
+	 * */
+	private JLabel horizontallyCenteredJLabel(String text) {
+		JLabel label = new JLabel(text);
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		return label;
 	}
 
 	/**
