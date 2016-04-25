@@ -48,17 +48,15 @@ public class Process extends CoolThread {
 				sleep(1);
 				tic++;
 				
-				if(tic%processRequestTime==0) //the time to request resources arrived
+				if(tic%processRequestTime==0) //the time to request resources has arrived
 				{
 					//Selects a resource randomly
 					currentRequest = this.simulator.requestResourcePos();
 					
-					//Increments the resource array
-					
-					
 					//get the actual resource from the array list
 					requestedResouce = this.simulator.getResourceById(currentRequest);
 					
+					//Increments the resource array
 					this.resourcesInstances[currentRequest-1]++;
 					
 					resourcesHeld.add(requestedResouce);
@@ -78,19 +76,20 @@ public class Process extends CoolThread {
 				}
 				
 				
+				//Decrements all the times from the resources held
 				decrementResourcesTimes(resourcesTimes);
 				
+				//Check if any resource has time zero
 				toc = resourcesTimesIsZero(resourcesTimes);
 				
 				if(toc!=-1)
 				{
-					
+					//remove the time of the resource 
 					resourcesTimes.remove(toc);
 					
 					//free the resource
 					this.resourcesInstances[resourcesHeld.get(toc).getId()-1]--;
 					currentRequest = -1;
-					
 					resourcesHeld.get(toc).releaseInstance();
 					resourcesHeld.remove(toc);
 					
@@ -112,6 +111,10 @@ public class Process extends CoolThread {
 		this.keepAlive = false;
 	}
 	
+	/** Checks if a rescorce aged enough. If its time got to zero
+	 * @param resourcesTimes The times of the resources held by this process.
+	 * @return The position in the array if one of the times is zero. -1 if no time is zero.
+	 */
 	private int resourcesTimesIsZero(ArrayList<Integer> resourcesTimes) {
 		int i = 0;
 		for (Integer time : resourcesTimes) {
@@ -124,6 +127,9 @@ public class Process extends CoolThread {
 		return -1;
 	}
 
+	/** Decrements the times saved in the array list. Age the resources.
+	 * @param resourcesTimes The times of all resouces held by this process
+	 */
 	private void decrementResourcesTimes(ArrayList<Integer> resourcesTimes) {
 		int i = 0;
 		for (Integer time : resourcesTimes) {
@@ -136,8 +142,6 @@ public class Process extends CoolThread {
 
 	
 	// Getters and Setters
-
-
 	public int[] getResourcesInstances() {
 		return resourcesInstances;
 	}
