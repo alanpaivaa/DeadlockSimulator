@@ -71,7 +71,7 @@ public class OperationalSystem extends CoolThread {
 		// Requests
 		int r[] = new int[n];
 		for(int i = 0; i < n; i++) {
-			r[i] = this.processes.get(i).getCurrentRequest();
+			r[i] = this.processes.get(i).getCurrentRequest()-1;
 		}
 
 		int runnableProcesses;
@@ -198,6 +198,14 @@ public class OperationalSystem extends CoolThread {
 		return resources.get(index);
 	}
 	
+	public Resource getResourceById(int id)
+	{
+		for (Resource rs : resources) {
+			if(rs.getId()==id)
+				return rs;
+		}
+		return null;
+	}
 	/**
 	 * Returns the index of a process with the given pid.
 	 * */

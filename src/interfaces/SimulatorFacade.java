@@ -37,4 +37,6 @@ public interface SimulatorFacade {
 	 * */
 	public Resource getResourceAt(int index);
 	
+	public Resource getResourceById(int id);
+	
 }

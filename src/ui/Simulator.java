@@ -182,10 +182,10 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		statusZone.add(topStatusZone, BorderLayout.NORTH);
 		
 		JLabel lbBlocked = this.horizontallyCenteredJLabel("Bloqueados");
-		JLabel lbRequest = this.horizontallyCenteredJLabel("Solicita√ß√£o");
+		JLabel lbRequest = this.horizontallyCenteredJLabel("SolicitaÁ„o");
 		JLabel lbExecution = this.horizontallyCenteredJLabel("Executando");
-		JLabel lbRelease = this.horizontallyCenteredJLabel("Libera√ß√£o");
-		JLabel lbCreation = this.horizontallyCenteredJLabel("Cria√ß√£o");
+		JLabel lbRelease = this.horizontallyCenteredJLabel("LiberaÁ„o");
+		JLabel lbCreation = this.horizontallyCenteredJLabel("CriaÁ„o");
 		
 		topStatusZone.add(lbCreation);
 		topStatusZone.add(lbBlocked);
@@ -404,7 +404,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	@Override
 	public int requestResourcePos() {
 		Random rand = new Random();
-		return rand.nextInt(Integer.parseInt(tfTypesResources.getText().trim()));
+		return rand.nextInt(Integer.parseInt(tfTypesResources.getText().trim()))+1;
 	}
 
 	@Override
@@ -420,6 +420,12 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	 * */
 	private void showInvalidPidMessage() {
 		JOptionPane.showMessageDialog(this, "Pid inv√°lido!");
+	}
+
+	@Override
+	public Resource getResourceById(int id) {
+		
+		return this.operationalSystem.getResourceById(id);
 	}
 
 }

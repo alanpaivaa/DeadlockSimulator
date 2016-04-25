@@ -57,12 +57,12 @@ public class Process extends CoolThread {
 					
 					
 					//get the actual resource from the array list
-					requestedResouce = this.simulator.getResourceAt(currentRequest);
+					requestedResouce = this.simulator.getResourceById(currentRequest);
 					
-					this.resourcesInstances[requestedResouce.getId()-1]++;
+					this.resourcesInstances[currentRequest-1]++;
 					
 					resourcesHeld.add(requestedResouce);
-					
+
 					this.simulator.log(LogType.PROCESS_REQUEST, "P"+this.pid+" solicitou "+requestedResouce.getName());
 					
 					//if there are no resources left, the process will be blocked
