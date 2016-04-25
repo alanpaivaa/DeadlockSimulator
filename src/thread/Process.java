@@ -41,7 +41,7 @@ public class Process extends CoolThread {
 	@Override
 	public void run() {
 		int tic = 0;
-		int toc = 0;
+		int targetResource = 0;
 		while(keepAlive)
 		{
 				//Waits for the next time to get a resource
@@ -80,24 +80,24 @@ public class Process extends CoolThread {
 					resourcesTimes.add(processUsageTime);
 				}
 				
-				
+				//decrements the resouces held times
 				decrementResourcesTimes(resourcesTimes);
 				
-				toc = resourcesTimesIsZero(resourcesTimes);
+				//verifies if a resource time has reached zero
+				targetResource = resourcesTimesIsZero(resourcesTimes);
 				
-				if(toc!=-1)
+				if(targetResource!=-1)
 				{
 					
-					resourcesTimes.remove(toc);
+					resourcesTimes.remove(targetResource);
 					
 					//free the resource
-					this.resourcesInstances[resourcesHeld.get(toc).getId()-1]--;
+					this.resourcesInstances[resourcesHeld.get(targetResource).getId()-1]--;
 					currentRequest = -1;
 					
-					resourcesHeld.get(toc).releaseInstance();
-					resourcesHeld.remove(toc);
-					
-					this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid+" liberou "+requestedResouce.getName());
+					resourcesHeld.get(targetResource).releaseInstance();
+					this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid+" liberou "+resourcesHeld.get(targetResource).getName());
+					resourcesHeld.remove(targetResource);
 					
 				}
 				

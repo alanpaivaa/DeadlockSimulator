@@ -40,5 +40,7 @@ public interface SimulatorFacade {
 	public Resource getResourceById(int id);
 	
 	public Object[][] getProcessesData();
+
+	public Object[][] getProcessesRequest();
 	
 }

@@ -48,6 +48,9 @@ public class SimulatorData extends JFrame {
 	private ArrayList<Resource> resources;
 	private SimulatorFacade simulator;
 	
+	/**
+	 * Redraws the data structures in the data panel
+	 */
 	public void redrawStructures()
 	{
 			
@@ -55,6 +58,7 @@ public class SimulatorData extends JFrame {
 		Object[][] dataExistingResouces = new Object[1][resources.size()];
 		Object[][] dataAvilableResouces = new Object[1][resources.size()];
 		Object[][] dataCurrent= simulator.getProcessesData();
+		Object[][] dataRequests= simulator.getProcessesRequest();
 		int j = 0;
 		for(Iterator<Resource> i = resources.iterator(); i.hasNext(); ) {
 			Resource rs = i.next();
@@ -87,6 +91,14 @@ public class SimulatorData extends JFrame {
 		currentAlocation.add(tableCurrentAlocation.getTableHeader(), BorderLayout.PAGE_START);
 		currentAlocation.add(tableCurrentAlocation, BorderLayout.CENTER);
 		currentAlocation.revalidate();
+		
+		requestVector.removeAll();
+		/*Avialable Resources Table*/
+		requestVector.add(lblVetorDeSolicitaes);
+		JTable tableRequests = new JTable(dataRequests,columnNames );
+		requestVector.add(tableRequests.getTableHeader(), BorderLayout.PAGE_START);
+		requestVector.add(tableRequests, BorderLayout.CENTER);
+		requestVector.revalidate();
 		
 		
 	}
@@ -130,14 +142,16 @@ public class SimulatorData extends JFrame {
 		
 		
 		requestVector = new JPanel();
+		requestVector.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPane.add(Box.createVerticalStrut(40));
 		contentPane.add(requestVector);
 		requestVector.setLayout(new BoxLayout(requestVector, BoxLayout.Y_AXIS));
 		
 		lblVetorDeSolicitaes = new JLabel("Requisi\u00E7\u00F5es");
-		requestVector.add(lblVetorDeSolicitaes);
+
 		
 		currentAlocation = new JPanel();
+		currentAlocation.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPane.add(Box.createVerticalStrut(40));
 		contentPane.add(currentAlocation);
 		currentAlocation.setLayout(new BoxLayout(currentAlocation, BoxLayout.Y_AXIS));

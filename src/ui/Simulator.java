@@ -436,4 +436,10 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		return this.operationalSystem.retrieveProcessesData();
 	}
 
+	@Override
+	public Object[][] getProcessesRequest() {
+		
+		return this.operationalSystem.retrieveProcessesRequestData();
+	}
+
 }
