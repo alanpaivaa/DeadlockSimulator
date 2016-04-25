@@ -160,6 +160,9 @@ public class SimulatorData extends JFrame {
 		
 	}
 
+	/** Checks if this window has been filled in
+	 * @return True if so, false if not
+	 */
 	public boolean isOn() {
 		
 		if(resources==null)

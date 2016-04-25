@@ -56,7 +56,6 @@ public class Process extends CoolThread {
 					//get the actual resource from the array list
 					requestedResouce = this.simulator.getResourceById(currentRequest);
 
-
 					
 					resourcesHeld.add(requestedResouce);
 

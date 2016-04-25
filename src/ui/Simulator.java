@@ -409,11 +409,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		return rand.nextInt(Integer.parseInt(tfTypesResources.getText().trim()))+1;
 	}
 
-	@Override
-	public Resource getResourceAt(int index) {
-		return operationalSystem.getResourceAt(index);
-	}
-	
 	
 	// Other methods
 	

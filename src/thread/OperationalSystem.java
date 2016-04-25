@@ -181,7 +181,10 @@ public class OperationalSystem extends CoolThread {
 	}
 
 	
-	 public void restartSystem()
+	 /**
+	 * Rolls the system back to an initial state
+	 */
+	public void restartSystem()
 	 {
 		 for (Process process : processes) {
 			 process.setKeepAlice(false);
@@ -194,10 +197,11 @@ public class OperationalSystem extends CoolThread {
 
 
 
-	public Resource getResourceAt(int index) {	
-		return resources.get(index);
-	}
 	
+	/**Returns a resouce with a given id
+	 * @param id The id of the resouce
+	 * @return The resouce or null if no resource has that id
+	 */
 	public Resource getResourceById(int id)
 	{
 		for (Resource rs : resources) {
@@ -222,6 +226,9 @@ public class OperationalSystem extends CoolThread {
 		return this.processes.size();
 	}
 
+	/**Gets the Current Alocation data from the processes Array List
+	 * @return An bidimensional object  array with the current alocation info
+	 */
 	public Object[][] retrieveProcessesData() {
 		Object[][] data = new Object[processes.size()][resources.size()];
 		int i = 0, j;
@@ -235,6 +242,9 @@ public class OperationalSystem extends CoolThread {
 		return data;
 	}
 
+	/**Gets the request data from the processes Array List
+	 * @return An bidimensional object  array with the request info 
+	 */
 	public Object[][] retrieveProcessesRequestData() {
 		Object[][] data = new Object[processes.size()][resources.size()];
 		int i = 0, j;

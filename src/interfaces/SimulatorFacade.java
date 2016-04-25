@@ -30,17 +30,22 @@ public interface SimulatorFacade {
 	public int requestResourcePos();
 	
 	/**
-	 * Gets a resource from the resources Array List at a certain index
-	 * @param index The index where to get the Resource
-	 * @return Returns the Resource at index
+	 * Gets a resource from the resources Array List at a certain id
+	 * @param id The id of the Resource
+	 * @return Returns the Resource or null
 	 * 
 	 * */
-	public Resource getResourceAt(int index);
 	
 	public Resource getResourceById(int id);
 	
+	/**Gets the Current Alocation data from the processes Array List
+	 * @return An bidimensional object  array with the current alocation info
+	 */
 	public Object[][] getProcessesData();
 
+	/**Gets the request data from the processes Array List
+	 * @return An bidimensional object  array with the request info 
+	 */
 	public Object[][] getProcessesRequest();
 	
 }
