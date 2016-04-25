@@ -139,6 +139,7 @@ public class OperationalSystem extends CoolThread {
 
 		// Releasing the resources
 		for(int i = 0; i < resourcesIndexes.length; i++) {
+			this.resources.get(i).incrementInstances();
 			this.resources.get(i).releaseInstances(resourcesIndexes[i]);
 		}
 

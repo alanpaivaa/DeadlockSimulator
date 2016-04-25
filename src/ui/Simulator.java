@@ -321,19 +321,21 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 			}
 			
 			// New Thread, so the mutex stuff will never block the UI.
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					if(operationalSystem.killProcessAtIndex(index)) {
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								btnDeleteProcess.setEnabled(false);
-							}
-						});
-					}
-				}
-			}).start();
+			btnDeleteProcess.setEnabled(operationalSystem.killProcessAtIndex(index));
+				
+//			new Thread(new Runnable() {
+//				@Override
+//				public void run() {
+//					if(operationalSystem.killProcessAtIndex(index)) {
+//						SwingUtilities.invokeLater(new Runnable() {
+//							@Override
+//							public void run() {
+//								btnDeleteProcess.setEnabled(false);
+//							}
+//						});
+//					}
+//				}
+//			}).start();
 			
 		} catch(Exception e) {
 			this.showInvalidPidMessage();
