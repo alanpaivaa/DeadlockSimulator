@@ -1,7 +1,6 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -14,13 +13,6 @@ import model.Resource;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.GridLayout;
 import javax.swing.JLabel;
 import java.awt.Component;
 import javax.swing.SwingConstants;
@@ -60,7 +52,7 @@ public class SimulatorData extends JFrame {
 			Resource rs = i.next();
 			columnNames[j] = rs.getName();
 			dataExistingResouces[0][j]= rs.getAmount();
-			dataAvilableResouces[0][j++] = rs.getAvailable();
+			dataAvilableResouces[0][j++] = rs.getAvailableInstances();
 		}
 		
 		existingResources.removeAll();

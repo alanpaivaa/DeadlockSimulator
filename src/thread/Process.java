@@ -10,11 +10,11 @@ import model.Resource;
 
 /** This class is responsible for requesting resources in intervals, simulating a real SO process.  */
 public class Process extends CoolThread {
-	
+
 	private static int lastPid = 0;
-	
+
 	private SimulatorFacade simulator;
-	
+
 	private int[] resourcesInstances;
 	private LinkedList<Resource> resourcesHeld = new LinkedList<>();
 	private ArrayList<Integer> resourcesTimes = new ArrayList<Integer>(); 
@@ -22,10 +22,10 @@ public class Process extends CoolThread {
 	private int currentRequest = -1;
 	private int processRequestTime;
 	private int processUsageTime;
-	
+
 	private Resource requestedResouce;
 	private boolean keepAlive = true;
-	
+
 	/**
 	 * Constructor, builds this process.
 	 * */
@@ -35,83 +35,99 @@ public class Process extends CoolThread {
 		this.processUsageTime = usageTime;
 		this.simulator = simulator;
 		this.pid = ++lastPid;
-		this.simulator.log(LogType.PROCESS_CREATION, "Processo"+this.pid+" criado");
+		this.simulator.log(LogType.DEADLOCK, "Processo"+this.pid+" criado");
 	}
-	
+
 	@Override
 	public void run() {
 		int tic = 0;
 		int toc = 0;
 		while(keepAlive)
 		{
-				//Waits for the next time to get a resource
-				sleep(1);
-				tic++;
+			//Waits for the next time to get a resource
+			sleep(1);
+			tic++;
+
+			if(tic%processRequestTime==0) //the time to request resources arrived
+			{
 				
-				if(tic%processRequestTime==0) //the time to request resources arrived
-				{
-					//Selects a resource randomly
-					currentRequest = this.simulator.requestResourcePos();
-					
-					//Increments the resource array
-					
+				this.simulator.getMutex().down();
+				
+				//Selects a resource randomly
+				currentRequest = this.simulator.randomResourceIndexForProcessWithId(this.pid);
+
+				if(currentRequest >= 0) {
 					
 					//get the actual resource from the array list
-					requestedResouce = this.simulator.getResourceById(currentRequest);
-					
-					this.resourcesInstances[currentRequest-1]++;
-					
-					resourcesHeld.add(requestedResouce);
+					requestedResouce = this.simulator.getResourceById(currentRequest + 1);
 
-					this.simulator.log(LogType.PROCESS_REQUEST, "P"+this.pid+" solicitou "+requestedResouce.getName());
-					
+					this.simulator.log(LogType.DEADLOCK, "P"+this.pid+" solicitou "+requestedResouce.getName());
+
 					//if there are no resources left, the process will be blocked
-					if(requestedResouce.getAvailable()==0)
+					if(requestedResouce.getAvailableInstances() == 0)
 					{
-						this.simulator.log(LogType.RESOURCE_BLOCK, "P"+this.pid+" bloqueiou com  "+requestedResouce.getName());	
+						this.simulator.log(LogType.DEADLOCK, "P"+this.pid+" bloqueiou com  "+requestedResouce.getName());	
 					}
 					
+					this.simulator.getMutex().up();
+
+					// Passing through semaphore
 					requestedResouce.takeInstance();
-					//process runs for a certain amount of time
-					this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com "+requestedResouce.getName());
+					
+					this.simulator.getMutex().down();
+					
+					// Actually decrementing the instances
+					requestedResouce.decrementInstances();
+					
+					// Adding the resource data to the arrays
+					this.resourcesInstances[currentRequest]++;
+					resourcesHeld.add(requestedResouce);
 					resourcesTimes.add(processUsageTime);
-				}
-				
-				
-				decrementResourcesTimes(resourcesTimes);
-				
-				toc = resourcesTimesIsZero(resourcesTimes);
-				
-				if(toc!=-1)
-				{
 					
-					resourcesTimes.remove(toc);
-					
-					//free the resource
-					this.resourcesInstances[resourcesHeld.get(toc).getId()-1]--;
+					// Saying to SO: I got my resource, I don't anything else for now.
 					currentRequest = -1;
 					
-					resourcesHeld.get(toc).releaseInstance();
-					resourcesHeld.remove(toc);
+					//process runs for a certain amount of time
+					this.simulator.log(LogType.DEADLOCK, "P"+this.pid+" roda com "+requestedResouce.getName());
 					
-					this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid+" liberou "+requestedResouce.getName());
+					this.simulator.getMutex().up();
 					
 				}
+			} else {
+				this.simulator.getMutex().up();
+			}
+
+			decrementResourcesTimes(resourcesTimes);
+
+			toc = resourcesTimesIsZero(resourcesTimes);
+
+			if(toc!=-1)
+			{
+				// Logging the resource release
+				this.simulator.log(LogType.DEADLOCK, "P"+this.pid + " liberou " + resourcesHeld.get(toc).getName());
 				
-			
+				// Removing resource data from the arrays
+				resourcesTimes.remove(toc);
+				this.resourcesInstances[resourcesHeld.get(toc).getId()-1]--;
+				resourcesHeld.get(toc).incrementInstances();
+				resourcesHeld.get(toc).releaseInstance();
+				resourcesHeld.remove(toc);
+			}
+
+
 		}
-		
+
 		this.simulator.log(LogType.PROCESS_CREATION, "P" + this.pid + " finalizou");
-		
+
 	}
-	
+
 	/**
 	 * Acts like a setKeepAlive(false).
 	 * */
 	public void kill() {
 		this.keepAlive = false;
 	}
-	
+
 	private int resourcesTimesIsZero(ArrayList<Integer> resourcesTimes) {
 		int i = 0;
 		for (Integer time : resourcesTimes) {
@@ -127,14 +143,14 @@ public class Process extends CoolThread {
 	private void decrementResourcesTimes(ArrayList<Integer> resourcesTimes) {
 		int i = 0;
 		for (Integer time : resourcesTimes) {
-			
+
 			resourcesTimes.set(i, --time);
 			i++;
 		}
-		
+
 	}
 
-	
+
 	// Getters and Setters
 
 
@@ -145,7 +161,7 @@ public class Process extends CoolThread {
 	public void setResourcesInstances(int[] resourcesInstances) {
 		this.resourcesInstances = resourcesInstances;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Processo: " + this.pid;
@@ -154,14 +170,14 @@ public class Process extends CoolThread {
 	public int getCurrentRequest() {
 		return currentRequest;
 	}
-	
+
 	public int getPid() {
 		return this.pid;
 	}
 
 	public void setKeepAlice(boolean b) {
 		keepAlive = false;
-		
+
 	}
-	
+
 }
