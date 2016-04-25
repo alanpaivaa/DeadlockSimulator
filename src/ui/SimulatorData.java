@@ -26,11 +26,14 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
+import interfaces.SimulatorFacade;
+
 public class SimulatorData extends JFrame {
 
 	private static final long serialVersionUID = -1802463953464142976L;
+	
+	//View
 	private JPanel contentPane;
-	private ArrayList<Resource> resources;
 	private JPanel existingResources;
 	private JPanel availableResources;
 	private JPanel requestVector;
@@ -40,14 +43,18 @@ public class SimulatorData extends JFrame {
 	private JLabel lblVetorDeSolicitaes;
 	private JLabel lblVetorDeAlocao;
 
+	
+	//Core
+	private ArrayList<Resource> resources;
+	private SimulatorFacade simulator;
+	
 	public void redrawStructures()
 	{
-		
-		
-		
+			
 		String[] columnNames = new String[resources.size()];
 		Object[][] dataExistingResouces = new Object[1][resources.size()];
 		Object[][] dataAvilableResouces = new Object[1][resources.size()];
+		//Object[][] dataRequests = simulator.getProcessesData();
 		int j = 0;
 		for(Iterator<Resource> i = resources.iterator(); i.hasNext(); ) {
 			Resource rs = i.next();
@@ -73,6 +80,7 @@ public class SimulatorData extends JFrame {
 		availableResources.revalidate();
 		
 		
+		
 	}
 	
 	public void setResources(ArrayList<Resource> resources) {
@@ -84,7 +92,9 @@ public class SimulatorData extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SimulatorData() {
+	public SimulatorData(Simulator simulator) {
+		
+		this.simulator = simulator;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, util.Constants.DATA_WINDOW_WIDTH, util.Constants.DATA_WINDOW_HEIGHT);
 		contentPane = new JPanel();
@@ -116,7 +126,7 @@ public class SimulatorData extends JFrame {
 		contentPane.add(requestVector);
 		requestVector.setLayout(new BoxLayout(requestVector, BoxLayout.Y_AXIS));
 		
-		lblVetorDeSolicitaes = new JLabel("Vetor de Solicita\u00E7\u00F5es");
+		lblVetorDeSolicitaes = new JLabel("Requisi\u00E7\u00F5es");
 		requestVector.add(lblVetorDeSolicitaes);
 		
 		currentAlocationVecotr = new JPanel();
@@ -124,8 +134,10 @@ public class SimulatorData extends JFrame {
 		contentPane.add(currentAlocationVecotr);
 		currentAlocationVecotr.setLayout(new BoxLayout(currentAlocationVecotr, BoxLayout.Y_AXIS));
 		
-		lblVetorDeAlocao = new JLabel("Vetor de Aloca\u00E7\u00E3o Corrente");
+		lblVetorDeAlocao = new JLabel("Aloca\u00E7\u00E3o Corrente");
 		currentAlocationVecotr.add(lblVetorDeAlocao);
 	}
+
+
 
 }

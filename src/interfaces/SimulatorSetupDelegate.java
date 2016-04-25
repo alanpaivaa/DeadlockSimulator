@@ -16,7 +16,7 @@ public interface SimulatorSetupDelegate {
 	/**
 	 * When the user clicks on the Ok button.
 	 * */
-	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources, SimulatorData dataWindow);
+	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources);
 	
 	/**
 	 * When the user clicks on the Cancel button.

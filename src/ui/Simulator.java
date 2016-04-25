@@ -51,7 +51,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JButton btnStartSimulation;
 	private JTextField tfTypesResources;
 
-	private SimulatorData simulatorDataWindow;
+	private SimulatorData simulatorDataWindow = new SimulatorData(this);
 
 	private JButton btnStopSimulation;
 	private JButton btnCreateProcess;
@@ -347,7 +347,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	// SimulatorSetupDelegate implementations.
 
 	@Override
-	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources,  SimulatorData dataWindow) {
+	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources) {
 
 		btnStartSimulation.setEnabled(false);
 		btnStopSimulation.setEnabled(true);
@@ -356,9 +356,12 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		btnCreateProcess.setEnabled(true);
 		tfRequestTime.setEnabled(true);
 		tfUsageTime.setEnabled(true);
-
+		
+		this.simulatorDataWindow.setVisible(true);
+		this.simulatorDataWindow.setResources(resources);
+		
 		this.operationalSystem.addResources(resources);
-		this.simulatorDataWindow = dataWindow;
+
 
 	}
 
@@ -426,6 +429,12 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	public Resource getResourceById(int id) {
 		
 		return this.operationalSystem.getResourceById(id);
+	}
+
+	@Override
+	public Object[][] getProcessesData() {
+		
+		return this.operationalSystem.retrieveProcessesData();
 	}
 
 }

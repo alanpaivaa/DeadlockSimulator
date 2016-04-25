@@ -40,7 +40,7 @@ public class SimulatorSetup extends JDialog implements ActionListener {
 	private ArrayList<JTextField> resourcesQuantity = new ArrayList<JTextField>();
 
 	private SimulatorSetupDelegate delegate;
-	private SimulatorData simuladorDataWindow = new SimulatorData();
+	
 
 	/**
 	 * Create the dialog.
@@ -136,10 +136,9 @@ public class SimulatorSetup extends JDialog implements ActionListener {
 	private void didClickOnOkButton() {
 		ArrayList<Resource> resources = this.buildResources();
 		if(resources != null) {
-			this.delegate.simulatorSetupDidSucceedWithResources(resources, simuladorDataWindow);
+			this.delegate.simulatorSetupDidSucceedWithResources(resources);
 			this.dispose();
-			simuladorDataWindow.setVisible(true);
-			simuladorDataWindow.setResources(resources);
+
 		} else {
 			this.displayErrorMessage();
 		}
