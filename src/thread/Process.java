@@ -53,13 +53,12 @@ public class Process extends CoolThread {
 					//Selects a resource randomly
 					currentRequest = this.simulator.requestResourcePos();
 					
-					//Increments the resource array
 					
 					
 					//get the actual resource from the array list
 					requestedResouce = this.simulator.getResourceById(currentRequest);
 					
-					this.resourcesInstances[currentRequest-1]++;
+					
 					
 					resourcesHeld.add(requestedResouce);
 
@@ -72,6 +71,10 @@ public class Process extends CoolThread {
 					}
 					
 					requestedResouce.takeInstance();
+					
+					//Increments the resource array
+					this.resourcesInstances[currentRequest-1]++;
+					
 					//process runs for a certain amount of time
 					this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com "+requestedResouce.getName());
 					resourcesTimes.add(processUsageTime);

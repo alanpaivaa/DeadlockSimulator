@@ -37,7 +37,7 @@ public class SimulatorData extends JFrame {
 	private JPanel existingResources;
 	private JPanel availableResources;
 	private JPanel requestVector;
-	private JPanel currentAlocationVecotr;
+	private JPanel currentAlocation;
 	private JLabel lblRecursosExistentes;
 	private JLabel lblRecursosDisponveis;
 	private JLabel lblVetorDeSolicitaes;
@@ -54,7 +54,7 @@ public class SimulatorData extends JFrame {
 		String[] columnNames = new String[resources.size()];
 		Object[][] dataExistingResouces = new Object[1][resources.size()];
 		Object[][] dataAvilableResouces = new Object[1][resources.size()];
-		//Object[][] dataRequests = simulator.getProcessesData();
+		Object[][] dataCurrent= simulator.getProcessesData();
 		int j = 0;
 		for(Iterator<Resource> i = resources.iterator(); i.hasNext(); ) {
 			Resource rs = i.next();
@@ -79,6 +79,14 @@ public class SimulatorData extends JFrame {
 		availableResources.add(tableAvailableResources, BorderLayout.CENTER);
 		availableResources.revalidate();
 		
+		
+		currentAlocation.removeAll();
+		/*Avialable Resources Table*/
+		currentAlocation.add(lblVetorDeAlocao);
+		JTable tableCurrentAlocation = new JTable(dataCurrent,columnNames );
+		currentAlocation.add(tableCurrentAlocation.getTableHeader(), BorderLayout.PAGE_START);
+		currentAlocation.add(tableCurrentAlocation, BorderLayout.CENTER);
+		currentAlocation.revalidate();
 		
 		
 	}
@@ -129,13 +137,20 @@ public class SimulatorData extends JFrame {
 		lblVetorDeSolicitaes = new JLabel("Requisi\u00E7\u00F5es");
 		requestVector.add(lblVetorDeSolicitaes);
 		
-		currentAlocationVecotr = new JPanel();
+		currentAlocation = new JPanel();
 		contentPane.add(Box.createVerticalStrut(40));
-		contentPane.add(currentAlocationVecotr);
-		currentAlocationVecotr.setLayout(new BoxLayout(currentAlocationVecotr, BoxLayout.Y_AXIS));
+		contentPane.add(currentAlocation);
+		currentAlocation.setLayout(new BoxLayout(currentAlocation, BoxLayout.Y_AXIS));
 		
 		lblVetorDeAlocao = new JLabel("Aloca\u00E7\u00E3o Corrente");
-		currentAlocationVecotr.add(lblVetorDeAlocao);
+		
+	}
+
+	public boolean isOn() {
+		
+		if(resources==null)
+			return false;
+		return true;
 	}
 
 

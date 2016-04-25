@@ -224,14 +224,13 @@ public class OperationalSystem extends CoolThread {
 
 	public Object[][] retrieveProcessesData() {
 		Object[][] data = new Object[processes.size()][resources.size()];
-		int i, j;
+		int i = 0, j;
 		for (Process proc : processes) {
-			for(i = 0,j=0; j<resources.size();j++)
+			for(j=0; j<resources.size();j++)
 			{
 				data[i][j] = proc.getResourcesInstances()[j];
 			}
 			i++;
-			
 		}
 		return data;
 	}
