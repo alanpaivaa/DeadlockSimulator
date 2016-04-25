@@ -25,6 +25,7 @@ public class Process extends CoolThread {
 	
 	private Resource requestedResouce;
 	private boolean keepAlive = true;
+	
 	/**
 	 * Constructor, builds this process.
 	 * */
@@ -35,8 +36,6 @@ public class Process extends CoolThread {
 		this.simulator = simulator;
 		this.pid = ++lastPid;
 		this.simulator.log(LogType.PROCESS_CREATION, "Processo"+this.pid+" criado");
-		
-
 	}
 	
 	@Override
@@ -101,6 +100,16 @@ public class Process extends CoolThread {
 				
 			
 		}
+		
+		this.simulator.log(LogType.PROCESS_CREATION, "P" + this.pid + " finalizou");
+		
+	}
+	
+	/**
+	 * Acts like a setKeepAlive(false).
+	 * */
+	public void kill() {
+		this.keepAlive = false;
 	}
 	
 	private int resourcesTimesIsZero(ArrayList<Integer> resourcesTimes) {

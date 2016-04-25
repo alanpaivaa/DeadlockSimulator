@@ -28,12 +28,17 @@ public class OperationalSystem extends CoolThread {
 	@Override
 	public void run() {
 		while(true) {
+			
+			this.simulator.getMutex().down();
 			ArrayList<Integer> deadlockedProcesses = this.deadlockedProcesses();
+			this.simulator.getMutex().up();
+			
 			if(deadlockedProcesses != null) {
 				this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
 			} else {
 				this.simulator.log(LogType.DEADLOCK, "Nenhum processo em deadlock.");	
 			}
+			
 			sleep(this.interval);
 		}
 	}
@@ -45,7 +50,7 @@ public class OperationalSystem extends CoolThread {
 	 * */
 	// TODO mutex stuff.
 	private ArrayList<Integer> deadlockedProcesses() {
-
+		
 		int n = this.processes.size();
 		int m = this.resources.size();
 
@@ -100,16 +105,51 @@ public class OperationalSystem extends CoolThread {
 				processesInDeadlock.add(this.processes.get(i).getPid());
 			}
 		}
+		
 		return processesInDeadlock;
 
 	}
 
+	/**
+	 * Builds a string from a list of deadlock processes' pids.
+	 * */
 	private String deadlockString(ArrayList<Integer> pids) {
 		String str = "Processos entraram em deadlock:";
 		for(Integer pid : pids) {
 			str += (" " + pid);
 		}
 		return str;
+	}
+	
+	/**
+	 * Kills the process at the given index.
+	 * @return true If all processes where killed.
+	 * */
+	public boolean killProcessAtIndex(int index) {
+		
+		// Locking
+		this.simulator.getMutex().down();
+		
+		// Getting the resources instances used by the process
+		int[] resourcesIndexes = this.processes.get(index).getResourcesInstances();
+		
+		
+		// Telling the process that it does not need to run anymore
+		this.processes.get(index).kill();
+		this.processes.remove(index);
+		
+		// Releasing the resources
+		for(int i = 0; i < resourcesIndexes.length; i++) {
+			this.resources.get(i).releaseInstances(resourcesIndexes[i]);
+		}
+		
+		boolean empty = this.processes.isEmpty();
+		
+		// Releasing
+		this.simulator.getMutex().up();
+		
+		return empty;
+		
 	}
 	
 	// Getters and Setters
@@ -139,6 +179,7 @@ public class OperationalSystem extends CoolThread {
 	public void addProcesses(ArrayList<Process> processes) {
 		this.processes.addAll(processes);
 	}
+
 	
 	 public void restartSystem()
 	 {
@@ -151,8 +192,26 @@ public class OperationalSystem extends CoolThread {
 		 
 	 }
 
-	public Resource getResourceAt(int index) {
-		
+
+
+	public Resource getResourceAt(int index) {	
 		return resources.get(index);
 	}
+	
+	/**
+	 * Returns the index of a process with the given pid.
+	 * */
+	public int getIndexOfProcessWihPid(int pid) {
+		for(int i = 0; i < this.processes.size(); i++) {
+			if(this.processes.get(i).getPid() == pid) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	public int getProccessCount() {
+		return this.processes.size();
+	}
+	
 }

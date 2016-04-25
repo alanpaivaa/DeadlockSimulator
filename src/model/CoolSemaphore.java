@@ -31,5 +31,13 @@ public class CoolSemaphore extends Semaphore {
 	public void up() {
 		this.release();
 	}
+	
+	/**
+	 * Ups the semaphore.
+	 * @param permits The number of times to up this semaphore.
+	 * */
+	public void up(int permits) {
+		this.release(permits);
+	}
 
 }
