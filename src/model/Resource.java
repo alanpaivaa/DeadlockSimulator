@@ -16,6 +16,17 @@ public class Resource {
 	private int id;
 	private int amount;
 	private CoolSemaphore available;
+	private int resourceType;
+
+	public int getResourceType() {
+		return resourceType;
+	}
+
+
+	public void setResourceType(int resourceType) {
+		this.resourceType = resourceType;
+	}
+
 
 	/**
 	 * Constructor, builds this resource.
@@ -26,6 +37,7 @@ public class Resource {
 		this.amount = amount;
 		this.available = new CoolSemaphore(this.amount);
 		this.id = ++lastId;
+		
 	}
 	
 

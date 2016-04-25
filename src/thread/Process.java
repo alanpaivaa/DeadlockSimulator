@@ -43,13 +43,11 @@ public class Process extends CoolThread {
 	public void run() {
 		int tic = 0;
 		int toc = 0;
-		int i = 0;
 		while(keepAlive)
 		{
 				//Waits for the next time to get a resource
 				sleep(1);
 				tic++;
-				toc++;
 				
 				if(tic%processRequestTime==0) //the time to request resources arrived
 				{
@@ -57,11 +55,15 @@ public class Process extends CoolThread {
 					currentRequest = this.simulator.requestResourcePos();
 					
 					//Increments the resource array
-					//this.resourcesInstances[currentRequest]++;
+					
 					
 					//get the actual resource from the array list
 					requestedResouce = this.simulator.getResourceAt(currentRequest);
+					
+					this.resourcesInstances[requestedResouce.getId()-1]++;
+					
 					resourcesHeld.add(requestedResouce);
+					
 					this.simulator.log(LogType.PROCESS_REQUEST, "P"+this.pid+" solicitou "+requestedResouce.getName());
 					
 					//if there are no resources left, the process will be blocked
@@ -80,14 +82,15 @@ public class Process extends CoolThread {
 				decrementResourcesTimes(resourcesTimes);
 				
 				toc = resourcesTimesIsZero(resourcesTimes);
+				
 				if(toc!=-1)
 				{
 					
 					resourcesTimes.remove(toc);
 					
 					//free the resource
-					//this.resourcesInstances[currentRequest]--;
-					//currentRequest = -1;
+					this.resourcesInstances[resourcesHeld.get(toc).getId()-1]--;
+					currentRequest = -1;
 					
 					resourcesHeld.get(toc).releaseInstance();
 					resourcesHeld.remove(toc);
