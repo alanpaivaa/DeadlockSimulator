@@ -51,7 +51,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private JButton btnStartSimulation;
 	private JTextField tfTypesResources;
 
-	private SimulatorData simulatorDataWindow;
+	private SimulatorData simulatorDataWindow = new SimulatorData(this);
 
 	private JButton btnStopSimulation;
 	private JButton btnCreateProcess;
@@ -347,7 +347,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	// SimulatorSetupDelegate implementations.
 
 	@Override
-	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources,  SimulatorData dataWindow) {
+	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources) {
 
 		btnStartSimulation.setEnabled(false);
 		btnStopSimulation.setEnabled(true);
@@ -356,9 +356,12 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		btnCreateProcess.setEnabled(true);
 		tfRequestTime.setEnabled(true);
 		tfUsageTime.setEnabled(true);
-
+		
+		this.simulatorDataWindow.setVisible(true);
+		this.simulatorDataWindow.setResources(resources);
+		
 		this.operationalSystem.addResources(resources);
-		this.simulatorDataWindow = dataWindow;
+
 
 	}
 
@@ -382,20 +385,19 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 			break;
 		case PROCESS_REQUEST:
 			this.taProcessRequest.log(text);
-			simulatorDataWindow.redrawStructures(); //data structures changed, redraw panels
 			break;
 		case PROCESS_RUNNING:
 			this.taProcessExecution.log(text);
 			break;
 		case RESOURCE_RELEASE:
 			this.taProcessRelease.log(text);
-			simulatorDataWindow.redrawStructures(); //data structures changed, redraw panels
 			break;
 		case RESOURCE_BLOCK:
 			this.taProcessBlocked.log(text);
 			break;
 		case DEADLOCK:
 			this.taDeadlockProcess.log(text);
+			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawStructures(); //data structures changed, redraw panels
 			break;
 		}
 
@@ -419,13 +421,25 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	 * Displays a message of invalid pid.
 	 * */
 	private void showInvalidPidMessage() {
-		JOptionPane.showMessageDialog(this, "Pid inv√°lido!");
+		JOptionPane.showMessageDialog(this, "Pid inv·lido!");
 	}
 
 	@Override
 	public Resource getResourceById(int id) {
 		
 		return this.operationalSystem.getResourceById(id);
+	}
+
+	@Override
+	public Object[][] getProcessesData() {
+		
+		return this.operationalSystem.retrieveProcessesData();
+	}
+
+	@Override
+	public Object[][] getProcessesRequest() {
+		
+		return this.operationalSystem.retrieveProcessesRequestData();
 	}
 
 }

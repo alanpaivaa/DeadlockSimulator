@@ -26,28 +26,39 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
+import interfaces.SimulatorFacade;
+
 public class SimulatorData extends JFrame {
 
 	private static final long serialVersionUID = -1802463953464142976L;
+	
+	//View
 	private JPanel contentPane;
-	private ArrayList<Resource> resources;
 	private JPanel existingResources;
 	private JPanel availableResources;
 	private JPanel requestVector;
-	private JPanel currentAlocationVecotr;
+	private JPanel currentAlocation;
 	private JLabel lblRecursosExistentes;
 	private JLabel lblRecursosDisponveis;
 	private JLabel lblVetorDeSolicitaes;
 	private JLabel lblVetorDeAlocao;
 
+	
+	//Core
+	private ArrayList<Resource> resources;
+	private SimulatorFacade simulator;
+	
+	/**
+	 * Redraws the data structures in the data panel
+	 */
 	public void redrawStructures()
 	{
-		
-		
-		
+			
 		String[] columnNames = new String[resources.size()];
 		Object[][] dataExistingResouces = new Object[1][resources.size()];
 		Object[][] dataAvilableResouces = new Object[1][resources.size()];
+		Object[][] dataCurrent= simulator.getProcessesData();
+		Object[][] dataRequests= simulator.getProcessesRequest();
 		int j = 0;
 		for(Iterator<Resource> i = resources.iterator(); i.hasNext(); ) {
 			Resource rs = i.next();
@@ -73,6 +84,23 @@ public class SimulatorData extends JFrame {
 		availableResources.revalidate();
 		
 		
+		currentAlocation.removeAll();
+		/*Avialable Resources Table*/
+		currentAlocation.add(lblVetorDeAlocao);
+		JTable tableCurrentAlocation = new JTable(dataCurrent,columnNames );
+		currentAlocation.add(tableCurrentAlocation.getTableHeader(), BorderLayout.PAGE_START);
+		currentAlocation.add(tableCurrentAlocation, BorderLayout.CENTER);
+		currentAlocation.revalidate();
+		
+		requestVector.removeAll();
+		/*Avialable Resources Table*/
+		requestVector.add(lblVetorDeSolicitaes);
+		JTable tableRequests = new JTable(dataRequests,columnNames );
+		requestVector.add(tableRequests.getTableHeader(), BorderLayout.PAGE_START);
+		requestVector.add(tableRequests, BorderLayout.CENTER);
+		requestVector.revalidate();
+		
+		
 	}
 	
 	public void setResources(ArrayList<Resource> resources) {
@@ -84,7 +112,9 @@ public class SimulatorData extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SimulatorData() {
+	public SimulatorData(Simulator simulator) {
+		
+		this.simulator = simulator;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, util.Constants.DATA_WINDOW_WIDTH, util.Constants.DATA_WINDOW_HEIGHT);
 		contentPane = new JPanel();
@@ -112,20 +142,31 @@ public class SimulatorData extends JFrame {
 		
 		
 		requestVector = new JPanel();
+		requestVector.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPane.add(Box.createVerticalStrut(40));
 		contentPane.add(requestVector);
 		requestVector.setLayout(new BoxLayout(requestVector, BoxLayout.Y_AXIS));
 		
-		lblVetorDeSolicitaes = new JLabel("Vetor de Solicita\u00E7\u00F5es");
-		requestVector.add(lblVetorDeSolicitaes);
+		lblVetorDeSolicitaes = new JLabel("Requisi\u00E7\u00F5es");
+
 		
-		currentAlocationVecotr = new JPanel();
+		currentAlocation = new JPanel();
+		currentAlocation.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPane.add(Box.createVerticalStrut(40));
-		contentPane.add(currentAlocationVecotr);
-		currentAlocationVecotr.setLayout(new BoxLayout(currentAlocationVecotr, BoxLayout.Y_AXIS));
+		contentPane.add(currentAlocation);
+		currentAlocation.setLayout(new BoxLayout(currentAlocation, BoxLayout.Y_AXIS));
 		
-		lblVetorDeAlocao = new JLabel("Vetor de Aloca\u00E7\u00E3o Corrente");
-		currentAlocationVecotr.add(lblVetorDeAlocao);
+		lblVetorDeAlocao = new JLabel("Aloca\u00E7\u00E3o Corrente");
+		
 	}
+
+	public boolean isOn() {
+		
+		if(resources==null)
+			return false;
+		return true;
+	}
+
+
 
 }

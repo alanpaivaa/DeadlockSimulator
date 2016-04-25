@@ -221,5 +221,34 @@ public class OperationalSystem extends CoolThread {
 	public int getProccessCount() {
 		return this.processes.size();
 	}
+
+	public Object[][] retrieveProcessesData() {
+		Object[][] data = new Object[processes.size()][resources.size()];
+		int i = 0, j;
+		for (Process proc : processes) {
+			for(j=0; j<resources.size();j++)
+			{
+				data[i][j] = proc.getResourcesInstances()[j];
+			}
+			i++;
+		}
+		return data;
+	}
+
+	public Object[][] retrieveProcessesRequestData() {
+		Object[][] data = new Object[processes.size()][resources.size()];
+		int i = 0, j;
+		for (Process proc : processes) {
+			for(j=0; j<resources.size();j++)
+			{
+				if(j == (proc.getCurrentRequest()-1))
+					data[i][j] = 1;
+				else
+					data[i][j] = 0;	
+			}
+			i++;
+		}
+		return data;
+	}
 	
 }
