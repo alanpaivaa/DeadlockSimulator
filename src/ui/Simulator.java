@@ -173,7 +173,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		/*Status zone components*/
 		JPanel statusZone = new JPanel();
 		statusZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		statusZone.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, 0 /*270*/));
+		statusZone.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, 270));
 		root.add(statusZone);
 		statusZone.setLayout(new BorderLayout());
 
@@ -182,10 +182,10 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		statusZone.add(topStatusZone, BorderLayout.NORTH);
 		
 		JLabel lbBlocked = this.horizontallyCenteredJLabel("Bloqueados");
-		JLabel lbRequest = this.horizontallyCenteredJLabel("Solicitaï¿½ï¿½o");
+		JLabel lbRequest = this.horizontallyCenteredJLabel("Solicitação");
 		JLabel lbExecution = this.horizontallyCenteredJLabel("Executando");
-		JLabel lbRelease = this.horizontallyCenteredJLabel("Liberaï¿½ï¿½o");
-		JLabel lbCreation = this.horizontallyCenteredJLabel("Criaï¿½ï¿½o");
+		JLabel lbRelease = this.horizontallyCenteredJLabel("Liberação");
+		JLabel lbCreation = this.horizontallyCenteredJLabel("Criação");
 		
 		topStatusZone.add(lbCreation);
 		topStatusZone.add(lbBlocked);
@@ -218,7 +218,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		/*Deadlock zone components*/
 		JPanel deadlockZone = new JPanel();
 		deadlockZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		deadlockZone.setPreferredSize(new Dimension(Constants.WINDOW_WIDTH, /*140*/400));
+		deadlockZone.setPreferredSize(new Dimension(800, 140));
 		root.add(deadlockZone);
 		deadlockZone.setLayout(new BorderLayout());
 
@@ -248,7 +248,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	 * Creates and starts an OperationalSystem.
 	 * */
 	private void setupOpeationalSystem() {
-		this.operationalSystem = new OperationalSystem(2, this); // TODO Mocked interval
+		this.operationalSystem = new OperationalSystem(1, this); // TODO Mocked interval
 		this.operationalSystem.start();
 	}
 

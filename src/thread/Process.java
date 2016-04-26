@@ -35,7 +35,7 @@ public class Process extends CoolThread {
 		this.processUsageTime = usageTime;
 		this.simulator = simulator;
 		this.pid = ++lastPid;
-		this.simulator.log(LogType.DEADLOCK, "Processo"+this.pid+" criado");
+		this.simulator.log(LogType.PROCESS_CREATION, "Processo"+this.pid+" criado");
 	}
 
 	@Override
@@ -63,12 +63,12 @@ public class Process extends CoolThread {
 					//get the actual resource from the array list
 					requestedResouce = this.simulator.getResourceById(currentRequest + 1);
 
-					this.simulator.log(LogType.DEADLOCK, "P"+this.pid+" solicitou "+requestedResouce.getName());
+					this.simulator.log(LogType.PROCESS_REQUEST, "P"+this.pid+" solicitou "+requestedResouce.getName());
 
 					//if there are no resources left, the process will be blocked
 					if(requestedResouce.getAvailableInstances() == 0)
 					{
-						this.simulator.log(LogType.DEADLOCK, "P"+this.pid+" bloqueiou com  "+requestedResouce.getName());	
+						this.simulator.log(LogType.RESOURCE_BLOCK, "P"+this.pid+" bloqueiou com  "+requestedResouce.getName());	
 					}
 
 					this.simulator.getMutex().up();
@@ -93,7 +93,7 @@ public class Process extends CoolThread {
 						currentRequest = -1;
 
 						//process runs for a certain amount of time
-						this.simulator.log(LogType.DEADLOCK, "P"+this.pid+" roda com "+requestedResouce.getName());
+						this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com "+requestedResouce.getName());
 
 						this.simulator.getMutex().up();
 

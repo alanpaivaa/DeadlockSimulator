@@ -3,6 +3,7 @@ package thread;
 import java.util.ArrayList;
 import java.util.Random;
 
+import enums.LogType;
 import interfaces.SimulatorFacade;
 import model.CoolThread;
 import model.Resource;
@@ -34,7 +35,7 @@ public class OperationalSystem extends CoolThread {
 			this.simulator.getMutex().up();
 
 			if(deadlockedProcesses != null) {
-//				this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
+				this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
 				System.out.println(this.deadlockString(deadlockedProcesses));
 			}
 
@@ -140,6 +141,7 @@ public class OperationalSystem extends CoolThread {
 
 		// Releasing the resources
 		for(int i = 0; i < resourcesIndexes.length; i++) {
+			
 			this.resources.get(i).incrementInstances();
 			this.resources.get(i).releaseInstances(resourcesIndexes[i]);
 		}
