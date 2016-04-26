@@ -13,6 +13,8 @@ public class Resource {
 	private final int amount;
 	private int resourceType;
 	
+	public int deadProcesses = 0;
+	
 	private int availableInstances;
 	private CoolSemaphore available;
 
