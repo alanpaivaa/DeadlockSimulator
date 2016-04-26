@@ -48,4 +48,10 @@ public interface SimulatorFacade {
 	 */
 	public Object[][] getProcessesRequest();
 	
+	/**
+	 * Get the index of possible resource randomly.
+	 * @param id The id of the process that wants a resource.
+	 * */
+	public int randomResourceIndexForProcessWithId(int id);
+	
 }

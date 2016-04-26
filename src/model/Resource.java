@@ -10,19 +10,11 @@ public class Resource {
 	
 	private String name;
 	private int id;
-	private int amount;
-	private CoolSemaphore available;
+	private final int amount;
 	private int resourceType;
-
-	public int getResourceType() {
-		return resourceType;
-	}
-
-
-	public void setResourceType(int resourceType) {
-		this.resourceType = resourceType;
-	}
-
+	
+	private int availableInstances;
+	private CoolSemaphore available;
 
 	/**
 	 * Constructor, builds this resource.
@@ -31,20 +23,28 @@ public class Resource {
 		this.name = name;
 		this.amount = amount;
 		this.available = new CoolSemaphore(this.amount);
+		this.availableInstances = this.amount;
 		this.id = ++lastId;
 		
 	}
 
-	public int getAvailable()
-	{
-		return available.availablePermits();
+	public int getAvailableInstances() {
+		return this.availableInstances;
 	}
+	
+	public void decrementInstances() {
+		this.availableInstances--;
+	}
+	
+	public void incrementInstances() {
+		this.availableInstances++;
+	}
+	
 	/**
 	 * Takes an instance of this resource (downs the semaphore).
 	 * */
 	public void takeInstance() {
 		this.available.down();
-		
 	}
 	
 	/**
@@ -70,6 +70,10 @@ public class Resource {
 	}
 	
 
+	public void releaseAllInstances()
+	{
+		this.available.release(amount);
+	}
 	// Getters and Setters
 	
 	public String getName() {
@@ -92,8 +96,12 @@ public class Resource {
 		return amount;
 	}
 	
-	public void setAmount(int amount) {
-		this.amount = amount;
+	public int getResourceType() {
+		return resourceType;
+	}
+
+	public void setResourceType(int resourceType) {
+		this.resourceType = resourceType;
 	}
 	
 	@Override

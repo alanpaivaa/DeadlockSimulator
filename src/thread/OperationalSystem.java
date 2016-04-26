@@ -1,8 +1,8 @@
 package thread;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-import enums.LogType;
 import interfaces.SimulatorFacade;
 import model.CoolThread;
 import model.Resource;
@@ -28,17 +28,16 @@ public class OperationalSystem extends CoolThread {
 	@Override
 	public void run() {
 		while(true) {
-			
+
 			this.simulator.getMutex().down();
 			ArrayList<Integer> deadlockedProcesses = this.deadlockedProcesses();
 			this.simulator.getMutex().up();
-			
+
 			if(deadlockedProcesses != null) {
-				this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
-			} else {
-				this.simulator.log(LogType.DEADLOCK, "Nenhum processo em deadlock.");	
+//				this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
+				System.out.println(this.deadlockString(deadlockedProcesses));
 			}
-			
+
 			sleep(this.interval);
 		}
 	}
@@ -50,7 +49,7 @@ public class OperationalSystem extends CoolThread {
 	 * */
 	// TODO mutex stuff.
 	private ArrayList<Integer> deadlockedProcesses() {
-		
+
 		int n = this.processes.size();
 		int m = this.resources.size();
 
@@ -71,7 +70,7 @@ public class OperationalSystem extends CoolThread {
 		// Requests
 		int r[] = new int[n];
 		for(int i = 0; i < n; i++) {
-			r[i] = this.processes.get(i).getCurrentRequest()-1;
+			r[i] = this.processes.get(i).getCurrentRequest();
 		}
 
 		int runnableProcesses;
@@ -105,7 +104,7 @@ public class OperationalSystem extends CoolThread {
 				processesInDeadlock.add(this.processes.get(i).getPid());
 			}
 		}
-		
+
 		return processesInDeadlock;
 
 	}
@@ -114,44 +113,46 @@ public class OperationalSystem extends CoolThread {
 	 * Builds a string from a list of deadlock processes' pids.
 	 * */
 	private String deadlockString(ArrayList<Integer> pids) {
-		String str = "Processos entraram em deadlock:";
+		String str = "Deadlock:";
 		for(Integer pid : pids) {
-			str += (" " + pid);
+			str += (" P" + pid);
 		}
 		return str;
 	}
-	
+
 	/**
 	 * Kills the process at the given index.
 	 * @return true If all processes where killed.
 	 * */
 	public boolean killProcessAtIndex(int index) {
-		
+
 		// Locking
 		this.simulator.getMutex().down();
-		
+
 		// Getting the resources instances used by the process
 		int[] resourcesIndexes = this.processes.get(index).getResourcesInstances();
-		
-		
+
+
 		// Telling the process that it does not need to run anymore
+		
 		this.processes.get(index).kill();
 		this.processes.remove(index);
-		
+
 		// Releasing the resources
 		for(int i = 0; i < resourcesIndexes.length; i++) {
+			this.resources.get(i).incrementInstances();
 			this.resources.get(i).releaseInstances(resourcesIndexes[i]);
 		}
-		
+
 		boolean empty = this.processes.isEmpty();
-		
+
 		// Releasing
 		this.simulator.getMutex().up();
-		
-		return empty;
-		
+
+		return !empty;
+
 	}
-	
+
 	// Getters and Setters
 
 	public int getInterval() {
@@ -172,13 +173,14 @@ public class OperationalSystem extends CoolThread {
 	}
 
 	public void addProcess(Process process) {
-		
+
 		this.processes.add(process);
 	}
 
 	public void addProcesses(ArrayList<Process> processes) {
 		this.processes.addAll(processes);
 	}
+
 
 	
 	 /**
@@ -196,7 +198,6 @@ public class OperationalSystem extends CoolThread {
 	 }
 
 
-
 	
 	/**Returns a resouce with a given id
 	 * @param id The id of the resouce
@@ -210,6 +211,7 @@ public class OperationalSystem extends CoolThread {
 		}
 		return null;
 	}
+	
 	/**
 	 * Returns the index of a process with the given pid.
 	 * */
@@ -221,7 +223,7 @@ public class OperationalSystem extends CoolThread {
 		}
 		return -1;
 	}
-	
+
 	public int getProccessCount() {
 		return this.processes.size();
 	}
@@ -238,6 +240,7 @@ public class OperationalSystem extends CoolThread {
 				data[i][j] = proc.getResourcesInstances()[j];
 			}
 			i++;
+
 		}
 		return data;
 	}
@@ -257,8 +260,46 @@ public class OperationalSystem extends CoolThread {
 					data[i][j] = 0;	
 			}
 			i++;
+
 		}
 		return data;
 	}
-	
+
+	/**
+	 * Returns the index of a random possible resource for the process with the given id.
+	 * @param id The id of the process that wants a ramdom resource.
+	 * */
+	public int randomResourceIndexForProcessWithId(int id) {
+
+		Process process;
+
+		// Retrieving the correct process
+		int i = 0;
+		while(i < this.processes.size() && this.processes.get(i).getPid() != id) {
+			i++;
+		}
+
+		if(i >= this.processes.size()) {
+			return -1;
+		}
+
+		process = this.processes.get(i);
+
+		// Checking for possible resources
+		ArrayList<Integer> possible = new ArrayList<Integer>();
+		for(int j = 0; j < this.resources.size(); j++) {
+			if(process.getResourcesInstances()[j] < this.resources.get(j).getAmount()) {
+				possible.add(j);
+			}
+		}
+
+		if(possible.isEmpty()) {
+			return -1;
+		}
+
+		Random random = new Random();
+		return possible.get(random.nextInt(possible.size()));
+
+	}
+
 }
