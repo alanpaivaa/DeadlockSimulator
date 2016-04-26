@@ -412,11 +412,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 
 	@Override
-	public Resource getResourceAt(int index) {
-		return operationalSystem.getResourceAt(index);
-	}
-	
-	@Override
 	public int randomResourceIndexForProcessWithId(int id) {
 		return this.operationalSystem.randomResourceIndexForProcessWithId(id);
 	}
