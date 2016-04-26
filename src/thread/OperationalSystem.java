@@ -251,7 +251,7 @@ public class OperationalSystem extends CoolThread {
 		for (Process proc : processes) {
 			for(j=0; j<resources.size();j++)
 			{
-				if(j == (proc.getCurrentRequest()-1))
+				if(j == (proc.getCurrentRequest()))
 					data[i][j] = 1;
 				else
 					data[i][j] = 0;	

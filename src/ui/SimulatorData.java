@@ -43,20 +43,16 @@ public class SimulatorData extends JFrame {
 	/**
 	 * Redraws the data structures in the data panel
 	 */
-	public void redrawStructures()
+	public void redrawExistingStructure()
 	{
 			
 		String[] columnNames = new String[resources.size()];
 		Object[][] dataExistingResouces = new Object[1][resources.size()];
-		Object[][] dataAvilableResouces = new Object[1][resources.size()];
-		Object[][] dataCurrent= simulator.getProcessesData();
-		Object[][] dataRequests= simulator.getProcessesRequest();
 		int j = 0;
 		for(Iterator<Resource> i = resources.iterator(); i.hasNext(); ) {
 			Resource rs = i.next();
 			columnNames[j] = rs.getName();
-			dataExistingResouces[0][j]= rs.getAmount();
-			dataAvilableResouces[0][j++] = rs.getAvailableInstances();
+			dataExistingResouces[0][j++]= rs.getAmount();
 		}
 		
 		existingResources.removeAll();
@@ -67,6 +63,20 @@ public class SimulatorData extends JFrame {
 		existingResources.add(tableExistingResources, BorderLayout.CENTER);
 		existingResources.revalidate();
 		
+	}
+	
+	public void redrawAvailableStructure()
+	{
+			
+		String[] columnNames = new String[resources.size()];
+		Object[][] dataAvilableResouces = new Object[1][resources.size()];
+		int j = 0;
+		for(Iterator<Resource> i = resources.iterator(); i.hasNext(); ) {
+			Resource rs = i.next();
+			columnNames[j] = rs.getName();
+			dataAvilableResouces[0][j++] = rs.getAvailableInstances();
+		}
+		
 		availableResources.removeAll();
 		/*Avialable Resources Table*/
 		availableResources.add(lblRecursosDisponveis);
@@ -76,13 +86,19 @@ public class SimulatorData extends JFrame {
 		availableResources.revalidate();
 		
 		
-		currentAlocation.removeAll();
-		/*Avialable Resources Table*/
-		currentAlocation.add(lblVetorDeAlocao);
-		JTable tableCurrentAlocation = new JTable(dataCurrent,columnNames );
-		currentAlocation.add(tableCurrentAlocation.getTableHeader(), BorderLayout.PAGE_START);
-		currentAlocation.add(tableCurrentAlocation, BorderLayout.CENTER);
-		currentAlocation.revalidate();
+	}
+	
+	public void redrawRequestStructure()
+	{
+			
+		String[] columnNames = new String[resources.size()];
+
+		Object[][] dataRequests= simulator.getProcessesRequest();
+		int j = 0;
+		for(Iterator<Resource> i = resources.iterator(); i.hasNext(); ) {
+			Resource rs = i.next();
+			columnNames[j++] = rs.getName();
+		}
 		
 		requestVector.removeAll();
 		/*Avialable Resources Table*/
@@ -95,9 +111,35 @@ public class SimulatorData extends JFrame {
 		
 	}
 	
+	public void redrawCurrentStructure()
+	{
+			
+		String[] columnNames = new String[resources.size()];
+
+		Object[][] dataCurrent= simulator.getProcessesData();
+
+		int j = 0;
+		for(Iterator<Resource> i = resources.iterator(); i.hasNext(); ) {
+			Resource rs = i.next();
+			columnNames[j++] = rs.getName();
+
+		}
+		
+		currentAlocation.removeAll();
+		/*Avialable Resources Table*/
+		currentAlocation.add(lblVetorDeAlocao);
+		JTable tableCurrentAlocation = new JTable(dataCurrent,columnNames );
+		currentAlocation.add(tableCurrentAlocation.getTableHeader(), BorderLayout.PAGE_START);
+		currentAlocation.add(tableCurrentAlocation, BorderLayout.CENTER);
+		currentAlocation.revalidate();
+
+		
+	}
+	
 	public void setResources(ArrayList<Resource> resources) {
 		this.resources = resources;
-		redrawStructures();
+		redrawExistingStructure();
+		redrawAvailableStructure();
 	}
 
 

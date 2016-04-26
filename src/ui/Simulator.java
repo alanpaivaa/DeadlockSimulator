@@ -372,22 +372,29 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		switch (logType) {
 		case PROCESS_CREATION:
 			this.taProcessCreation.log(text);
+			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawAvailableStructure();
+			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawCurrentStructure();
+			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawRequestStructure();
 			break;
 		case PROCESS_REQUEST:
 			this.taProcessRequest.log(text);
+			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawAvailableStructure();
+			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawRequestStructure();
 			break;
 		case PROCESS_RUNNING:
 			this.taProcessExecution.log(text);
 			break;
 		case RESOURCE_RELEASE:
 			this.taProcessRelease.log(text);
+			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawAvailableStructure();
+			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawRequestStructure();
 			break;
 		case RESOURCE_BLOCK:
 			this.taProcessBlocked.log(text);
 			break;
 		case DEADLOCK:
 			this.taDeadlockProcess.log(text);
-			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawStructures(); //data structures changed, redraw panels
+			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawCurrentStructure(); //data structures changed, redraw panels
 			break;
 		}
 

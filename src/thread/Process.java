@@ -105,7 +105,7 @@ public class Process extends CoolThread {
 						currentRequest = -1;
 
 						//process runs for a certain amount of time
-						this.simulator.log(LogType.DEADLOCK, "P"+this.pid+" roda com "+requestedResouce.getName());
+						this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com "+requestedResouce.getName());
 
 						this.simulator.getMutex().up();
 
@@ -127,7 +127,7 @@ public class Process extends CoolThread {
 
 				if(toc!=-1) {
 					// Logging the resource release
-					this.simulator.log(LogType.DEADLOCK, "P"+this.pid + " liberou " + resourcesHeld.get(toc).getName());
+					this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid + " liberou " + resourcesHeld.get(toc).getName());
 
 					// Removing resource data from the arrays
 					resourcesTimes.remove(toc);
@@ -143,7 +143,7 @@ public class Process extends CoolThread {
 
 		}
 
-		this.simulator.log(LogType.DEADLOCK, "P" + this.pid + " finalizou");
+		this.simulator.log(LogType.PROCESS_CREATION, "P" + this.pid + " finalizou");
 
 		this.simulator.getMutex().down();
 
