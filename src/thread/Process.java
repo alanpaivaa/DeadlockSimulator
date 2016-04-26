@@ -40,10 +40,13 @@ public class Process extends CoolThread {
 
 	@Override
 	public void run() {
+		
 		int tic = 0;
-		int targetResource = 0;
-		while(keepAlive)
-		{
+
+		int toc = 0;
+		
+		while(keepAlive) {
+			
 
 			//Waits for the next time to get a resource
 			sleep(1);
@@ -74,8 +77,17 @@ public class Process extends CoolThread {
 					this.simulator.getMutex().up();
 
 					// Passing through semaphore
-					requestedResouce.takeInstance();
 
+					boolean blocked;
+					do {
+						requestedResouce.takeInstance();
+						this.simulator.getMutex().down();
+						blocked = this.keepAlive && this.requestedResouce.deadProcesses > 0;
+						if(blocked) {
+							this.requestedResouce.releaseInstance();
+						}
+						this.simulator.getMutex().up();
+					} while(blocked);
 
 					if(this.keepAlive) {
 
@@ -93,12 +105,10 @@ public class Process extends CoolThread {
 						currentRequest = -1;
 
 						//process runs for a certain amount of time
-						this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com "+requestedResouce.getName());
+						this.simulator.log(LogType.DEADLOCK, "P"+this.pid+" roda com "+requestedResouce.getName());
 
 						this.simulator.getMutex().up();
 
-					} else {
-						requestedResouce.releaseInstance();
 					}
 
 
@@ -108,28 +118,47 @@ public class Process extends CoolThread {
 				this.simulator.getMutex().up();
 			}
 
-			decrementResourcesTimes(resourcesTimes);
+			if(this.keepAlive) {
 
-			targetResource = resourcesTimesIsZero(resourcesTimes);
 
-			if(targetResource!=-1)
-			{
-				// Logging the resource release
-				this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid+" liberou "+resourcesHeld.get(targetResource).getName());
+				decrementResourcesTimes(resourcesTimes);
 
-				// Removing resource data from the arrays
-				resourcesTimes.remove(targetResource);
-				this.resourcesInstances[resourcesHeld.get(targetResource).getId()-1]--;
-				resourcesHeld.get(targetResource).incrementInstances();
-				resourcesHeld.get(targetResource).releaseInstance();
-				resourcesHeld.remove(targetResource);
+				toc = resourcesTimesIsZero(resourcesTimes);
+
+				if(toc!=-1) {
+					// Logging the resource release
+					this.simulator.log(LogType.DEADLOCK, "P"+this.pid + " liberou " + resourcesHeld.get(toc).getName());
+
+					// Removing resource data from the arrays
+					resourcesTimes.remove(toc);
+					this.resourcesInstances[resourcesHeld.get(toc).getId()-1]--;
+					resourcesHeld.get(toc).incrementInstances();
+					resourcesHeld.get(toc).releaseInstance();
+					resourcesHeld.remove(toc);
+				}
+
+
 			}
-
 
 
 		}
 
-		this.simulator.log(LogType.PROCESS_CREATION, "P" + this.pid + " finalizou");
+		this.simulator.log(LogType.DEADLOCK, "P" + this.pid + " finalizou");
+
+		this.simulator.getMutex().down();
+
+		// Saying that the dead process has finished (if blocked previously)
+		if(this.currentRequest >= 0) {
+			this.requestedResouce.deadProcesses--;
+		}
+
+		// Releasing the instances
+		for(Resource resource : this.resourcesHeld) {
+			resource.incrementInstances();
+			resource.releaseInstance();
+		}
+
+		this.simulator.getMutex().up();
 
 	}
 

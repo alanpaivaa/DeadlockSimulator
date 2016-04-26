@@ -314,27 +314,16 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		try {
 			
 			Integer pid = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite o pid do processo:", "Excluir Processo", JOptionPane.QUESTION_MESSAGE));
-			int index = this.operationalSystem.getIndexOfProcessWihPid(pid);
+
+			
+			final int index = this.operationalSystem.getIndexOfProcessWihPid(pid);
+
 			if(index < 0) {
 				this.showInvalidPidMessage();
 			}
-			
-			// New Thread, so the mutex stuff will never block the UI.
-			btnDeleteProcess.setEnabled(operationalSystem.killProcessAtIndex(index));
-				
-//			new Thread(new Runnable() {
-//				@Override
-//				public void run() {
-//					if(operationalSystem.killProcessAtIndex(index)) {
-//						SwingUtilities.invokeLater(new Runnable() {
-//							@Override
-//							public void run() {
-//								btnDeleteProcess.setEnabled(false);
-//							}
-//						});
-//					}
-//				}
-//			}).start();
+
+			this.operationalSystem.killProcessAtIndex(index);
+
 			
 		} catch(Exception e) {
 			this.showInvalidPidMessage();

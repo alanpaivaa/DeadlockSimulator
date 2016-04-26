@@ -125,33 +125,28 @@ public class OperationalSystem extends CoolThread {
 	 * Kills the process at the given index.
 	 * @return true If all processes where killed.
 	 * */
-	public boolean killProcessAtIndex(int index) {
+	public void killProcessAtIndex(int index) {
 
-		// Locking
 		this.simulator.getMutex().down();
 
-		// Getting the resources instances used by the process
-		int[] resourcesIndexes = this.processes.get(index).getResourcesInstances();
-
-
 		// Telling the process that it does not need to run anymore
-		
-		this.processes.get(index).kill();
+
+		Process process = this.processes.get(index);
+
 		this.processes.remove(index);
 
-		// Releasing the resources
-		for(int i = 0; i < resourcesIndexes.length; i++) {
-			
-			this.resources.get(i).incrementInstances();
-			this.resources.get(i).releaseInstances(resourcesIndexes[i]);
+		process.kill();
+		
+		// If process is blocked
+		if(process.getCurrentRequest() >= 0) {
+			this.resources.get(process.getCurrentRequest()).deadProcesses++;
+
 		}
+		
+		this.resources.get(process.getCurrentRequest()).releaseInstance();
 
-		boolean empty = this.processes.isEmpty();
-
-		// Releasing
 		this.simulator.getMutex().up();
 
-		return !empty;
 
 	}
 
