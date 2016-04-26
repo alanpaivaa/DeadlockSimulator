@@ -134,6 +134,7 @@ public class OperationalSystem extends CoolThread {
 
 
 		// Telling the process that it does not need to run anymore
+		
 		this.processes.get(index).kill();
 		this.processes.remove(index);
 
@@ -148,7 +149,7 @@ public class OperationalSystem extends CoolThread {
 		// Releasing
 		this.simulator.getMutex().up();
 
-		return empty;
+		return !empty;
 
 	}
 

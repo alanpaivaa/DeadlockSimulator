@@ -70,6 +70,10 @@ public class Resource {
 	}
 	
 
+	public void releaseAllInstances()
+	{
+		this.available.release(amount);
+	}
 	// Getters and Setters
 	
 	public String getName() {

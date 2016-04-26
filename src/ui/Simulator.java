@@ -314,8 +314,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		try {
 			
 			Integer pid = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite o pid do processo:", "Excluir Processo", JOptionPane.QUESTION_MESSAGE));
-			final int index = this.operationalSystem.getIndexOfProcessWihPid(pid);
-			
+			int index = this.operationalSystem.getIndexOfProcessWihPid(pid);
 			if(index < 0) {
 				this.showInvalidPidMessage();
 			}
