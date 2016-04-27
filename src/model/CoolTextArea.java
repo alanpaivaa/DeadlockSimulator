@@ -22,7 +22,7 @@ public class CoolTextArea extends JScrollPane {
 	 * */
 	public CoolTextArea() {
 		this.textArea = new JTextArea();
-		this.textArea.setEnabled(false);
+		this.textArea.setEnabled(true);
 		this.textArea.setEditable(false);
 		this.getViewport().add(textArea);
 	}

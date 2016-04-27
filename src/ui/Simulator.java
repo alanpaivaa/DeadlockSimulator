@@ -105,7 +105,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		m.add(center, c);
 
 
-		JLabel lbResourcesTypes = new JLabel("NÃºmero de Recursos");
+		JLabel lbResourcesTypes = new JLabel("Número de Recursos");
 		lbResourcesTypes.setHorizontalAlignment(SwingConstants.RIGHT);
 		center.add(lbResourcesTypes);
 		
@@ -116,11 +116,11 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		south.setLayout(new FlowLayout(FlowLayout.CENTER));
 		startUpZone.add(south, BorderLayout.SOUTH);
 		
-		this.btnStartSimulation = new JButton("Iniciar SimulaÃ§Ã£o");
+		this.btnStartSimulation = new JButton("Iniciar Simulação");
 		this.btnStartSimulation.addActionListener(this);
 		south.add(btnStartSimulation);
 
-		btnStopSimulation = new JButton("Parar SimulaÃ§Ã£o");
+		btnStopSimulation = new JButton("Parar Simulação");
 		btnStopSimulation.setEnabled(false);
 		south.add(btnStopSimulation);
 		
@@ -138,7 +138,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		middle.setBorder(new EmptyBorder(0, 40, 0, 40));
 		processCreationZone.add(middle, BorderLayout.CENTER);
 		
-		JLabel lbRequestTime = new JLabel("Intervalo de solicitaÃ§Ãµes");
+		JLabel lbRequestTime = new JLabel("Intervalo de solicitações");
 		lbRequestTime.setHorizontalAlignment(SwingConstants.RIGHT);
 		middle.add(lbRequestTime);
 		
@@ -146,7 +146,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		tfRequestTime.setEnabled(false);
 		middle.add(tfRequestTime);
 		
-		JLabel lbUsageTime = new JLabel("Tempo de UtilizaÃ§Ã£o");
+		JLabel lbUsageTime = new JLabel("Tempo de Utilização");
 		lbUsageTime.setHorizontalAlignment(SwingConstants.RIGHT);
 		middle.add(lbUsageTime);
 
@@ -276,11 +276,11 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 		// Validating the input data
 		if(tfTypesResources.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Por favor, insira o nÃºmero de tipos de recursos");
+			JOptionPane.showMessageDialog(null, "Por favor, insira o número de tipos de recursos");
 			return;
 		} else {
 			if(Integer.parseInt(tfTypesResources.getText().trim()) > 10) {
-				JOptionPane.showMessageDialog(null, "NÃºmero mÃ¡ximo de tipos de recursos Ã© 10, insira um valor menor");
+				JOptionPane.showMessageDialog(null, "Número máximo de tipos de recursos é 10, insira um valor menor");
 				return;
 			}
 		}
@@ -295,7 +295,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private void didClickOnBtnCreateProcess() {
 		if(tfRequestTime.getText().isEmpty() || tfUsageTime.getText().isEmpty())
 		{
-			JOptionPane.showMessageDialog(null, "Por favor, insira todas as informaÃ§Ãµes sobre o Processo");
+			JOptionPane.showMessageDialog(null, "Por favor, insira todas as informações sobre o Processo");
 			return;
 		}
 		Process process = new Process(Integer.parseInt(tfTypesResources.getText().trim()), Integer.parseInt(tfRequestTime.getText().trim()), Integer.parseInt(tfUsageTime.getText().trim()),operationalSystem.getSimulator());
@@ -368,7 +368,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	@Override
 	public void log(LogType logType, String text) {
-
+		if(simulatorDataWindow.isOn())simulatorDataWindow.redrawCurrentStructure(); //data structures changed, redraw panels
+		
 		switch (logType) {
 		case PROCESS_CREATION:
 			this.taProcessCreation.log(text);
@@ -394,7 +395,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 			break;
 		case DEADLOCK:
 			this.taDeadlockProcess.log(text);
-			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawCurrentStructure(); //data structures changed, redraw panels
 			break;
 		}
 

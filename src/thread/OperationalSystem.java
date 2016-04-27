@@ -36,7 +36,7 @@ public class OperationalSystem extends CoolThread {
 
 			if(deadlockedProcesses != null) {
 				this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
-				System.out.println(this.deadlockString(deadlockedProcesses));
+				//System.out.println(this.deadlockString(deadlockedProcesses));
 			}
 
 			sleep(this.interval);
