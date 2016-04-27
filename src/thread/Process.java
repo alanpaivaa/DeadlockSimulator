@@ -77,7 +77,6 @@ public class Process extends CoolThread {
 					this.simulator.getMutex().up();
 
 					// Passing through semaphore
-
 					boolean blocked;
 					do {
 						requestedResouce.takeInstance();
@@ -112,11 +111,12 @@ public class Process extends CoolThread {
 						this.simulator.getMutex().up();
 					}
 				}
-			} 
-			else 
+				else 
 				{
 					this.simulator.getMutex().up();
 				}
+			} 
+
 
 			if(this.keepAlive) {
 				decrementResourcesTimes(resourcesTimes);
@@ -129,25 +129,29 @@ public class Process extends CoolThread {
 			}
 		}
 
+		
+		finalizaProcesso();
+
+
+	}
+	
+	private void finalizaProcesso() {
 		this.simulator.log(LogType.PROCESS_CREATION, "P" + this.pid + " finalizou");
-
+		
 		this.simulator.getMutex().down();
-
 		// Saying that the dead process has finished (if blocked previously)
 		if(this.currentRequest >= 0) {
 			this.requestedResouce.deadProcesses--;
 		}
-
 		// Releasing the instances
 		for(Resource resource : this.resourcesHeld) {
 			resource.incrementInstances();
 			resource.releaseInstance();
 		}
-
 		this.simulator.getMutex().up();
-
+		
 	}
-	
+
 	public void freeResouce(int resourceId)
 	{
 		// Logging the resource release
