@@ -41,19 +41,19 @@ public class Process extends CoolThread {
 	@Override
 	public void run() {
 		
-		int tic = 0;
+		int timer = 0;
 
-		int toc = 0;
+		int finishedResource = 0;
 		
 		while(keepAlive) {
 			
 
 			//Waits for the next time to get a resource
 			sleep(1);
-			tic++;
+			timer++;
 
 
-			if(tic%processRequestTime==0) //the time to request resources arrived
+			if(timer % processRequestTime==0) //the time to request resources arrived
 			{
 
 				this.simulator.getMutex().down();
@@ -83,13 +83,15 @@ public class Process extends CoolThread {
 						requestedResouce.takeInstance();
 						this.simulator.getMutex().down();
 						blocked = this.keepAlive && this.requestedResouce.deadProcesses > 0;
-						if(blocked) {
+						if(blocked) 
+						{
 							this.requestedResouce.releaseInstance();
 						}
 						this.simulator.getMutex().up();
 					} while(blocked);
 
-					if(this.keepAlive) {
+					if(this.keepAlive) 
+					{
 
 						this.simulator.getMutex().down();
 
@@ -108,39 +110,23 @@ public class Process extends CoolThread {
 						this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com "+requestedResouce.getName());
 
 						this.simulator.getMutex().up();
-
 					}
-
-
 				}
-
-			} else {
-				this.simulator.getMutex().up();
-			}
+			} 
+			else 
+				{
+					this.simulator.getMutex().up();
+				}
 
 			if(this.keepAlive) {
-
-
 				decrementResourcesTimes(resourcesTimes);
-
-				toc = resourcesTimesIsZero(resourcesTimes);
-
-				if(toc!=-1) {
-					// Logging the resource release
-					this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid + " liberou " + resourcesHeld.get(toc).getName());
-
-					// Removing resource data from the arrays
-					resourcesTimes.remove(toc);
-					this.resourcesInstances[resourcesHeld.get(toc).getId()-1]--;
-					resourcesHeld.get(toc).incrementInstances();
-					resourcesHeld.get(toc).releaseInstance();
-					resourcesHeld.remove(toc);
+				
+				finishedResource = resourcesTimesIsZero(resourcesTimes);
+				if(finishedResource!=-1) 
+				{
+					freeResouce(finishedResource);
 				}
-
-
 			}
-
-
 		}
 
 		this.simulator.log(LogType.PROCESS_CREATION, "P" + this.pid + " finalizou");
@@ -160,6 +146,20 @@ public class Process extends CoolThread {
 
 		this.simulator.getMutex().up();
 
+	}
+	
+	public void freeResouce(int resourceId)
+	{
+		// Logging the resource release
+		this.simulator.log(LogType.RESOURCE_RELEASE, "P"+this.pid + " liberou " + resourcesHeld.get(resourceId).getName());
+
+		// Removing resource data from the arrays
+		resourcesTimes.remove(resourceId);
+		this.resourcesInstances[resourcesHeld.get(resourceId).getId()-1]--;
+		resourcesHeld.get(resourceId).incrementInstances();
+		resourcesHeld.get(resourceId).releaseInstance();
+		resourcesHeld.remove(resourceId);
+		
 	}
 
 	/**
