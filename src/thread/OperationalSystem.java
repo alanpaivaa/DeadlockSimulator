@@ -15,6 +15,8 @@ import model.Resource;
  * */
 public class OperationalSystem extends CoolThread {
 
+	private boolean deadlockFlag = false; 
+	
 	private ArrayList<Resource> resources = new ArrayList<Resource>();
 	private ArrayList<Process> processes = new ArrayList<Process>();
 
@@ -22,6 +24,7 @@ public class OperationalSystem extends CoolThread {
 	private SimulatorFacade simulator;
 
 	public OperationalSystem(int interval, SimulatorFacade simulator) {
+		
 		this.interval = interval;
 		this.simulator = simulator;
 	}
@@ -35,8 +38,13 @@ public class OperationalSystem extends CoolThread {
 			this.simulator.getMutex().up();
 
 			if(deadlockedProcesses != null) {
-				this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
-				//System.out.println(this.deadlockString(deadlockedProcesses));
+				if(!this.deadlockFlag){
+					this.deadlockFlag = true;
+					this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
+					//System.out.println(this.deadlockString(deadlockedProcesses));
+				}
+			}else{
+				this.deadlockFlag = false;
 			}
 
 			sleep(this.interval);
