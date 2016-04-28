@@ -3,6 +3,7 @@ package interfaces;
 import enums.LogType;
 import model.CoolSemaphore;
 import model.Resource;
+import ui.SimulatorData;
 
 /**
  * Contains all the methods that must be visible by the classes that uses the simulator.
@@ -53,5 +54,8 @@ public interface SimulatorFacade {
 	 * @param id The id of the process that wants a resource.
 	 * */
 	public int randomResourceIndexForProcessWithId(int id);
+	
+	public SimulatorData getSimulatorDataWindow();
+	
 	
 }

@@ -368,27 +368,19 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	@Override
 	public void log(LogType logType, String text) {
-		if(simulatorDataWindow.isOn())simulatorDataWindow.redrawCurrentStructure(); //data structures changed, redraw panels
-		
+
 		switch (logType) {
 		case PROCESS_CREATION:
 			this.taProcessCreation.log(text);
-			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawAvailableStructure();
-			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawCurrentStructure();
-			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawRequestStructure();
 			break;
 		case PROCESS_REQUEST:
 			this.taProcessRequest.log(text);
-			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawAvailableStructure();
-			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawRequestStructure();
 			break;
 		case PROCESS_RUNNING:
 			this.taProcessExecution.log(text);
 			break;
 		case RESOURCE_RELEASE:
 			this.taProcessRelease.log(text);
-			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawAvailableStructure();
-			if(simulatorDataWindow.isOn())simulatorDataWindow.redrawRequestStructure();
 			break;
 		case RESOURCE_BLOCK:
 			this.taProcessBlocked.log(text);
@@ -438,6 +430,12 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	public Object[][] getProcessesRequest() {
 		
 		return this.operationalSystem.retrieveProcessesRequestData();
+	}
+
+	@Override
+	public SimulatorData getSimulatorDataWindow() {
+		return this.simulatorDataWindow;
+		
 	}
 
 }

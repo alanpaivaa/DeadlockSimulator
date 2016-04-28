@@ -36,7 +36,11 @@ public class Process extends CoolThread {
 		this.simulator = simulator;
 		this.pid = ++lastPid;
 		this.simulator.log(LogType.PROCESS_CREATION, "Processo"+this.pid+" criado");
+		
+		drawStructures();
 	}
+
+
 
 	@Override
 	public void run() {
@@ -44,6 +48,8 @@ public class Process extends CoolThread {
 		int timer = 0;
 
 		int finishedResource = 0;
+		
+		boolean wasBlocked = false;
 		
 		while(keepAlive) {
 			
@@ -67,11 +73,12 @@ public class Process extends CoolThread {
 					requestedResouce = this.simulator.getResourceById(currentRequest + 1);
 
 					this.simulator.log(LogType.PROCESS_REQUEST, "P"+this.pid+" solicitou "+requestedResouce.getName());
-
+					drawStructures();
 					//if there are no resources left, the process will be blocked
 					if(requestedResouce.getAvailableInstances() == 0)
 					{
-						this.simulator.log(LogType.RESOURCE_BLOCK, "P"+this.pid+" bloqueiou com  "+requestedResouce.getName());	
+						this.simulator.log(LogType.RESOURCE_BLOCK, "P"+this.pid+" bloqueiou com  "+requestedResouce.getName());
+						wasBlocked = true;
 					}
 
 					this.simulator.getMutex().up();
@@ -80,6 +87,12 @@ public class Process extends CoolThread {
 					boolean blocked;
 					do {
 						requestedResouce.takeInstance();
+						if(wasBlocked)
+						{
+							this.simulator.log(LogType.RESOURCE_BLOCK, "P"+this.pid+" desbloqueiou com  "+requestedResouce.getName());
+							wasBlocked = false;
+							drawStructures();
+						}
 						this.simulator.getMutex().down();
 						blocked = this.keepAlive && this.requestedResouce.deadProcesses > 0;
 						if(blocked) 
@@ -107,7 +120,7 @@ public class Process extends CoolThread {
 
 						//process runs for a certain amount of time
 						this.simulator.log(LogType.PROCESS_RUNNING, "P"+this.pid+" roda com "+requestedResouce.getName());
-
+						drawStructures();	
 						this.simulator.getMutex().up();
 					}
 				}
@@ -137,7 +150,7 @@ public class Process extends CoolThread {
 	
 	private void finalizaProcesso() {
 		this.simulator.log(LogType.PROCESS_CREATION, "P" + this.pid + " finalizou");
-		
+		drawStructures();
 		this.simulator.getMutex().down();
 		// Saying that the dead process has finished (if blocked previously)
 		if(this.currentRequest >= 0) {
@@ -204,7 +217,13 @@ public class Process extends CoolThread {
 		}
 
 	}
-
+	
+	private void drawStructures() {
+		if(this.simulator.getSimulatorDataWindow().isOn())this.simulator.getSimulatorDataWindow().redrawAvailableStructure();
+		if(this.simulator.getSimulatorDataWindow().isOn())this.simulator.getSimulatorDataWindow().redrawCurrentStructure();
+		if(this.simulator.getSimulatorDataWindow().isOn())this.simulator.getSimulatorDataWindow().redrawRequestStructure();
+		
+	}
 
 	// Getters and Setters
 	public int[] getResourcesInstances() {
