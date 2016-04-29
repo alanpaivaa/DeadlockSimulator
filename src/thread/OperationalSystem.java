@@ -163,6 +163,10 @@ public class OperationalSystem extends CoolThread {
 	public int getInterval() {
 		return interval;
 	}
+	
+	public void setInterval(int newInterval) {
+		this.interval = newInterval;
+	}
 
 	public SimulatorFacade getSimulator() {
 		return simulator;
