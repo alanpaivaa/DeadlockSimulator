@@ -91,10 +91,14 @@ public class SimulatorData extends JFrame {
 	public void redrawRequestStructure()
 	{
 			
-		String[] columnNames = new String[resources.size()];
+		String[] columnNames = new String[resources.size()+1];
 
 		Object[][] dataRequests= simulator.getProcessesRequest();
-		int j = 0;
+		
+		columnNames[0] = "Processos";
+		
+		int j = 1;
+		
 		for(Iterator<Resource> i = resources.iterator(); i.hasNext(); ) {
 			Resource rs = i.next();
 			columnNames[j++] = rs.getName();
@@ -114,11 +118,13 @@ public class SimulatorData extends JFrame {
 	public void redrawCurrentStructure()
 	{
 			
-		String[] columnNames = new String[resources.size()];
+		String[] columnNames = new String[resources.size()+1];
 
 		Object[][] dataCurrent= simulator.getProcessesData();
-
-		int j = 0;
+		
+		columnNames[0] = "Processos";
+		
+		int j = 1;
 		for(Iterator<Resource> i = resources.iterator(); i.hasNext(); ) {
 			Resource rs = i.next();
 			columnNames[j++] = rs.getName();
