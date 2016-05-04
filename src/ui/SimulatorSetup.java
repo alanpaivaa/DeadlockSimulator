@@ -103,8 +103,8 @@ public class SimulatorSetup extends JDialog implements ActionListener {
 			JLabel _lbResourceName = new JLabel("Nome:");
 			JTextField _tfResourceName = new JTextField();
 			_tfResourceName.setColumns(10);
-			JLabel _lbResourceInstance = new JLabel("Instâncias:");
-			JTextField _tfResourceInstance = new JTextField();
+			JLabel _lbResourceInstance = new JLabel("Instï¿½ncias:");
+			JTextField _tfResourceInstance = new JTextField("1");
 			_tfResourceName.setColumns(10);
 			_tfResourceInstance.setColumns(10);
 
@@ -184,7 +184,7 @@ public class SimulatorSetup extends JDialog implements ActionListener {
 	 * Displays an error message telling that inputs has wrong values.
 	 * */
 	private void displayErrorMessage() {
-		JOptionPane.showMessageDialog(this, "Valores inválidos!");
+		JOptionPane.showMessageDialog(this, "Valores invï¿½lidos!");
 	}
 
 

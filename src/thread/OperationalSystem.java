@@ -147,11 +147,12 @@ public class OperationalSystem extends CoolThread {
 		
 		// If process is blocked
 		if(process.getCurrentRequest() >= 0) {
+			
 			this.resources.get(process.getCurrentRequest()).deadProcesses++;
-
+			
+			// To wake up the process sleeping on the resource semaphore
+			this.resources.get(process.getCurrentRequest()).releaseInstance(); 
 		}
-		
-		this.resources.get(process.getCurrentRequest()).releaseInstance();
 
 		this.simulator.getMutex().up();
 

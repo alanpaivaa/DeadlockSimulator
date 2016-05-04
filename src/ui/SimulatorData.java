@@ -132,7 +132,8 @@ public class SimulatorData extends JFrame {
 		}
 		
 		currentAlocation.removeAll();
-		/*Avialable Resources Table*/
+		
+		/*Available Resources Table*/
 		currentAlocation.add(lblVetorDeAlocao);
 		JTable tableCurrentAlocation = new JTable(dataCurrent,columnNames );
 		currentAlocation.add(tableCurrentAlocation.getTableHeader(), BorderLayout.PAGE_START);

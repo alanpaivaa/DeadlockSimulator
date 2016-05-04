@@ -73,12 +73,12 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		setTitle("Simulador de Deadlocks");
 		setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 		JPanel root = new JPanel();
 		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 		getContentPane().add(root, BorderLayout.CENTER);
 		root.setBorder(new EmptyBorder(Constants.WINDOW_GAPS, Constants.WINDOW_GAPS, Constants.WINDOW_GAPS, Constants.WINDOW_GAPS));
-		
+
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new GridLayout(1, 2, Constants.WINDOW_GAPS, 0));
 		root.add(topPanel);
@@ -92,11 +92,11 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 		JLabel lbSetupSystem = this.horizontallyCenteredJLabel("Configurar Sistema");
 		startUpZone.add(lbSetupSystem, BorderLayout.NORTH);
-		
+
 		JPanel m = new JPanel();
 		m.setLayout(new GridBagLayout());
 		startUpZone.add(m, BorderLayout.CENTER);
-		
+
 		JPanel center = new JPanel();
 		center.setLayout(new GridLayout(1, 2));
 		center.setPreferredSize(new Dimension(300, 35)); // TODO Magic Numbers
@@ -107,14 +107,14 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		JLabel lbResourcesTypes = new JLabel("N�mero de Recursos");
 		lbResourcesTypes.setHorizontalAlignment(SwingConstants.RIGHT);
 		center.add(lbResourcesTypes);
-		
+
 		tfTypesResources = new JTextField();
 		center.add(tfTypesResources);
-		
+
 		JPanel south = new JPanel();
 		south.setLayout(new FlowLayout(FlowLayout.CENTER));
 		startUpZone.add(south, BorderLayout.SOUTH);
-		
+
 		this.btnStartSimulation = new JButton("Configurar Recursos");
 		this.btnStartSimulation.addActionListener(this);
 		south.add(btnStartSimulation);
@@ -123,7 +123,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		//btnConfiureOS.setEnabled(false);
 		this.btnConfiureOS.addActionListener(this);
 		south.add(btnConfiureOS);
-		
+
 		/*Process creation zone components*/
 		JPanel processCreationZone = new JPanel();
 		processCreationZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -137,15 +137,15 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		middle.setLayout(new GridLayout(2, 2));
 		middle.setBorder(new EmptyBorder(0, 40, 0, 40));
 		processCreationZone.add(middle, BorderLayout.CENTER);
-		
+
 		JLabel lbRequestTime = new JLabel("Intervalo de solicita��es");
 		lbRequestTime.setHorizontalAlignment(SwingConstants.RIGHT);
 		middle.add(lbRequestTime);
-		
+
 		tfRequestTime = new JTextField();
 		tfRequestTime.setEnabled(false);
 		middle.add(tfRequestTime);
-		
+
 		JLabel lbUsageTime = new JLabel("Tempo de Utiliza��o");
 		lbUsageTime.setHorizontalAlignment(SwingConstants.RIGHT);
 		middle.add(lbUsageTime);
@@ -153,11 +153,11 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		tfUsageTime = new JTextField();
 		tfUsageTime.setEnabled(false);
 		middle.add(tfUsageTime);
-		
+
 		JPanel bottom = new JPanel();
 		bottom.setLayout(new FlowLayout(FlowLayout.CENTER));
 		processCreationZone.add(bottom, BorderLayout.SOUTH);
-		
+
 		btnCreateProcess = new JButton("Criar processo");
 		btnCreateProcess.addActionListener(this);
 		btnCreateProcess.setEnabled(false);
@@ -167,7 +167,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		btnDeleteProcess.setEnabled(false);
 		btnDeleteProcess.addActionListener(this);
 		bottom.add(btnDeleteProcess);
-		
+
 		root.add(Box.createRigidArea(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_GAPS)));
 
 		/*Status zone components*/
@@ -180,41 +180,41 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		JPanel topStatusZone = new JPanel();
 		topStatusZone.setLayout(new GridLayout(1, 5));
 		statusZone.add(topStatusZone, BorderLayout.NORTH);
-		
+
 		JLabel lbBlocked = this.horizontallyCenteredJLabel("Bloqueados");
 		JLabel lbRequest = this.horizontallyCenteredJLabel("Solicita��o");
 		JLabel lbExecution = this.horizontallyCenteredJLabel("Executando");
 		JLabel lbRelease = this.horizontallyCenteredJLabel("Libera��o");
 		JLabel lbCreation = this.horizontallyCenteredJLabel("Cria��o");
-		
+
 		topStatusZone.add(lbCreation);
 		topStatusZone.add(lbBlocked);
 		topStatusZone.add(lbRequest);
 		topStatusZone.add(lbExecution);
 		topStatusZone.add(lbRelease);
-		
+
 		JPanel bottomStatusZone = new JPanel();
 		bottomStatusZone.setLayout(new GridLayout(1, 5));
 		statusZone.add(bottomStatusZone, BorderLayout.CENTER);
-		
+
 		this.taProcessCreation = new CoolTextArea();
 		this.taProcessExecution = new CoolTextArea();
 		this.taProcessRelease = new CoolTextArea();
 		this.taProcessRequest = new CoolTextArea();
 		this.taProcessBlocked = new CoolTextArea();
-		
+
 		bottomStatusZone.add(this.taProcessCreation);
 		bottomStatusZone.add(this.taProcessBlocked);
 		bottomStatusZone.add(this.taProcessRequest);
 		bottomStatusZone.add(this.taProcessExecution);
 		bottomStatusZone.add(this.taProcessRelease);
 		//bottomStatusZone.add(this.taProcessExecution);
-		
-		
-		
-		
+
+
+
+
 		root.add(Box.createRigidArea(new Dimension(Constants.WINDOW_WIDTH, Constants.WINDOW_GAPS)));
-		
+
 		/*Deadlock zone components*/
 		JPanel deadlockZone = new JPanel();
 		deadlockZone.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -224,17 +224,17 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 		JLabel lblDeadlockProcess = this.horizontallyCenteredJLabel("Processos em Deadlock");
 		deadlockZone.add(lblDeadlockProcess, BorderLayout.NORTH);
-		
+
 		this.taDeadlockProcess = new CoolTextArea();
 		deadlockZone.add(this.taDeadlockProcess,  BorderLayout.CENTER);
 
 		this.pack();
 		this.setVisible(true);
-		
+
 		// Starting the SO
 		this.setupOpeationalSystem();
 	}
-	
+
 	/**
 	 * Returns a label that is horizontally centered.
 	 * */
@@ -312,42 +312,47 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	 * Called whenever the user clicks on the delete process button.
 	 * */
 	private void didClickOnBtnDeleteProcess() {
-		
+
 		try {
-			
-			Integer pid = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite o pid do processo:", "Excluir Processo", JOptionPane.QUESTION_MESSAGE));
 
+			String temp = JOptionPane.showInputDialog(this, "Digite o pid do processo:", "Excluir Processo", JOptionPane.QUESTION_MESSAGE);
 			
-			final int index = this.operationalSystem.getIndexOfProcessWihPid(pid);
+			if(temp != null) {
+				
+				Integer pid = Integer.parseInt(temp);
 
-			if(index < 0) {
-				this.showInvalidPidMessage();
+				final int index = this.operationalSystem.getIndexOfProcessWihPid(pid);
+
+				if(index < 0) {
+					this.showInvalidPidMessage();
+				} else {
+					this.operationalSystem.killProcessAtIndex(index);
+				}
+				
 			}
 
-			this.operationalSystem.killProcessAtIndex(index);
 
-			
 		} catch(Exception e) {
 			this.showInvalidPidMessage();
 		}		
-		
+
 	}
-	
+
 	/**
 	 * Called whenever the user clicks on the Configure OS button.
 	 * */
 	private void didClickOnBtnConfigureOS() {
-		
+
 		try {
-			
+
 			Integer interval = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite o intervalo entre as verifica��es de deadlock:", "Confirmar", JOptionPane.QUESTION_MESSAGE));
 
 			this.operationalSystem.setInterval(interval);
-					
+
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(this, "Tempo Inv�lido");
 		}		
-		
+
 	}
 
 
@@ -363,10 +368,10 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		btnCreateProcess.setEnabled(true);
 		tfRequestTime.setEnabled(true);
 		tfUsageTime.setEnabled(true);
-		
+
 		this.simulatorDataWindow.setVisible(true);
 		this.simulatorDataWindow.setResources(resources);
-		
+
 		this.operationalSystem.addResources(resources);
 
 
@@ -421,9 +426,9 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		return this.operationalSystem.randomResourceIndexForProcessWithId(id);
 	}
 
-	
+
 	// Other methods
-	
+
 	/**
 	 * Displays a message of invalid pid.
 	 * */
@@ -433,26 +438,26 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	@Override
 	public Resource getResourceById(int id) {
-		
+
 		return this.operationalSystem.getResourceById(id);
 	}
 
 	@Override
 	public Object[][] getProcessesData() {
-		
+
 		return this.operationalSystem.retrieveProcessesData();
 	}
 
 	@Override
 	public Object[][] getProcessesRequest() {
-		
+
 		return this.operationalSystem.retrieveProcessesRequestData();
 	}
 
 	@Override
 	public SimulatorData getSimulatorDataWindow() {
 		return this.simulatorDataWindow;
-		
+
 	}
 
 }

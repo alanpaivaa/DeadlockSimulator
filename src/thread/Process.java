@@ -73,7 +73,9 @@ public class Process extends CoolThread {
 					requestedResouce = this.simulator.getResourceById(currentRequest + 1);
 
 					this.simulator.log(LogType.PROCESS_REQUEST, "P"+this.pid+" solicitou "+requestedResouce.getName());
+					
 					drawStructures();
+					
 					//if there are no resources left, the process will be blocked
 					if(requestedResouce.getAvailableInstances() == 0)
 					{
@@ -148,19 +150,27 @@ public class Process extends CoolThread {
 
 	}
 	
+	/**
+	 * Releases all the allocated resources and make the logs.
+	 * */
 	private void finalizaProcesso() {
-		this.simulator.log(LogType.PROCESS_CREATION, "P" + this.pid + " finalizou");
 		drawStructures();
 		this.simulator.getMutex().down();
+		
 		// Saying that the dead process has finished (if blocked previously)
 		if(this.currentRequest >= 0) {
 			this.requestedResouce.deadProcesses--;
 		}
+		
 		// Releasing the instances
 		for(Resource resource : this.resourcesHeld) {
+			this.simulator.log(LogType.RESOURCE_RELEASE, "P" + this.pid + " liberou " + resource.getName());
 			resource.incrementInstances();
 			resource.releaseInstance();
 		}
+		
+		this.simulator.log(LogType.PROCESS_CREATION, "P" + this.pid + " finalizou");
+		
 		this.simulator.getMutex().up();
 		
 	}
