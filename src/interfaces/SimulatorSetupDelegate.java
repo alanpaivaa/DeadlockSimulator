@@ -3,7 +3,6 @@ package interfaces;
 import java.util.ArrayList;
 
 import model.Resource;
-import ui.SimulatorData;
 import ui.SimulatorSetup;
 
 /**
