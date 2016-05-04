@@ -15,6 +15,8 @@ import model.Resource;
  * */
 public class OperationalSystem extends CoolThread {
 
+	private boolean deadlockFlag = false; 
+	
 	private ArrayList<Resource> resources = new ArrayList<Resource>();
 	private ArrayList<Process> processes = new ArrayList<Process>();
 
@@ -22,6 +24,7 @@ public class OperationalSystem extends CoolThread {
 	private SimulatorFacade simulator;
 
 	public OperationalSystem(int interval, SimulatorFacade simulator) {
+		
 		this.interval = interval;
 		this.simulator = simulator;
 	}
@@ -35,8 +38,13 @@ public class OperationalSystem extends CoolThread {
 			this.simulator.getMutex().up();
 
 			if(deadlockedProcesses != null) {
-				this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
-				//System.out.println(this.deadlockString(deadlockedProcesses));
+				if(!this.deadlockFlag){
+					this.deadlockFlag = true;
+					this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
+					//System.out.println(this.deadlockString(deadlockedProcesses));
+				}
+			}else{
+				this.deadlockFlag = false;
 			}
 
 			sleep(this.interval);
@@ -155,6 +163,10 @@ public class OperationalSystem extends CoolThread {
 	public int getInterval() {
 		return interval;
 	}
+	
+	public void setInterval(int newInterval) {
+		this.interval = newInterval;
+	}
 
 	public SimulatorFacade getSimulator() {
 		return simulator;
@@ -229,12 +241,13 @@ public class OperationalSystem extends CoolThread {
 	 * @return An bidimensional object  array with the current alocation info
 	 */
 	public Object[][] retrieveProcessesData() {
-		Object[][] data = new Object[processes.size()][resources.size()];
+		Object[][] data = new Object[processes.size()][resources.size()+1];
 		int i = 0, j;
 		for (Process proc : processes) {
-			for(j=0; j<resources.size();j++)
+			data[i][0] = "P"+proc.getPid();
+			for(j=1; j<resources.size()+1;j++)
 			{
-				data[i][j] = proc.getResourcesInstances()[j];
+				data[i][j] = proc.getResourcesInstances()[j-1];
 			}
 			i++;
 
@@ -246,12 +259,13 @@ public class OperationalSystem extends CoolThread {
 	 * @return An bidimensional object  array with the request info 
 	 */
 	public Object[][] retrieveProcessesRequestData() {
-		Object[][] data = new Object[processes.size()][resources.size()];
+		Object[][] data = new Object[processes.size()][resources.size()+1];
 		int i = 0, j;
 		for (Process proc : processes) {
-			for(j=0; j<resources.size();j++)
+			data[i][0]="P"+proc.getPid();
+			for(j=1; j<resources.size()+1;j++)
 			{
-				if(j == (proc.getCurrentRequest()))
+				if((j-1) == (proc.getCurrentRequest()))
 					data[i][j] = 1;
 				else
 					data[i][j] = 0;	

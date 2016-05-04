@@ -53,7 +53,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 	private SimulatorData simulatorDataWindow = new SimulatorData(this);
 
-	private JButton btnStopSimulation;
+	private JButton btnConfiureOS;
 	private JButton btnCreateProcess;
 	private JButton btnDeleteProcess;
 
@@ -116,13 +116,14 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		south.setLayout(new FlowLayout(FlowLayout.CENTER));
 		startUpZone.add(south, BorderLayout.SOUTH);
 		
-		this.btnStartSimulation = new JButton("Iniciar Simulação");
+		this.btnStartSimulation = new JButton("Configurar Recursos");
 		this.btnStartSimulation.addActionListener(this);
 		south.add(btnStartSimulation);
 
-		btnStopSimulation = new JButton("Parar Simulação");
-		btnStopSimulation.setEnabled(false);
-		south.add(btnStopSimulation);
+		btnConfiureOS = new JButton("Configurar SO");
+		//btnConfiureOS.setEnabled(false);
+		this.btnConfiureOS.addActionListener(this);
+		south.add(btnConfiureOS);
 		
 		/*Process creation zone components*/
 		JPanel processCreationZone = new JPanel();
@@ -263,6 +264,8 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 			this.didClickOnBtnCreateProcess();
 		} else if(e.getSource() == this.btnDeleteProcess) {
 			this.didClickOnBtnDeleteProcess();
+		} else if(e.getSource() == this.btnConfiureOS){
+			this.didClickOnBtnConfigureOS();
 		}
 	}
 
@@ -331,7 +334,22 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		
 	}
 	
-	
+	/**
+	 * Called whenever the user clicks on the Configure OS button.
+	 * */
+	private void didClickOnBtnConfigureOS() {
+		
+		try {
+			
+			Integer interval = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite o intervalo entre as verificações de deadlock:", "Confirmar", JOptionPane.QUESTION_MESSAGE));
+
+			this.operationalSystem.setInterval(interval);
+					
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(this, "Tempo Inválido");
+		}		
+		
+	}
 
 
 	// SimulatorSetupDelegate implementations.
@@ -340,7 +358,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources) {
 
 		btnStartSimulation.setEnabled(false);
-		btnStopSimulation.setEnabled(true);
+		//btnConfiureOS.setEnabled(true);
 		tfTypesResources.setEnabled(false);
 
 		btnCreateProcess.setEnabled(true);
