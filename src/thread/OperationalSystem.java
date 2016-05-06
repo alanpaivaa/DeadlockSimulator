@@ -15,13 +15,13 @@ import model.Resource;
  * */
 public class OperationalSystem extends CoolThread {
 
-	private boolean deadlockFlag = false; 
-	
 	private ArrayList<Resource> resources = new ArrayList<Resource>();
 	private ArrayList<Process> processes = new ArrayList<Process>();
 
 	private int interval;
 	private SimulatorFacade simulator;
+
+	String lastDeadlockString = "";
 
 	public OperationalSystem(int interval, SimulatorFacade simulator) {
 		this.interval = interval;
@@ -37,12 +37,16 @@ public class OperationalSystem extends CoolThread {
 			this.simulator.getMutex().up();
 
 			if(deadlockedProcesses != null) {
-				if(!this.deadlockFlag){
-					this.deadlockFlag = true;
+				String str = this.deadlockString(deadlockedProcesses);
+				if(!str.equals(this.lastDeadlockString)) {
+					this.lastDeadlockString = str;
 					this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
 				}
-			}else{
-				this.deadlockFlag = false;
+			} else {
+				if(!this.lastDeadlockString.equals("")) {
+					this.lastDeadlockString = "";
+					this.simulator.log(LogType.DEADLOCK, "Deadlock encerrado");
+				}
 			}
 
 			sleep(this.interval);
@@ -60,7 +64,7 @@ public class OperationalSystem extends CoolThread {
 		int n = this.processes.size();
 		int m = this.resources.size();
 
-		// Available
+		// Availableeu
 		int a[] = new int[m];
 		for(int i = 0; i < m; i++) {
 			a[i] = this.resources.get(i).availableInstances();
@@ -142,12 +146,12 @@ public class OperationalSystem extends CoolThread {
 		this.processes.remove(index);
 
 		process.kill();
-		
+
 		// If process is blocked
 		if(process.getCurrentRequest() >= 0) {
-			
+
 			this.resources.get(process.getCurrentRequest()).deadProcesses++;
-			
+
 			// To wake up the process sleeping on the resource semaphore
 			this.resources.get(process.getCurrentRequest()).releaseInstance(); 
 		}
@@ -161,7 +165,7 @@ public class OperationalSystem extends CoolThread {
 	public int getInterval() {
 		return interval;
 	}
-	
+
 	public void setInterval(int newInterval) {
 		this.interval = newInterval;
 	}
@@ -180,14 +184,13 @@ public class OperationalSystem extends CoolThread {
 	}
 
 	public void addProcess(Process process) {
-
 		this.processes.add(process);
 	}
 
 	public void addProcesses(ArrayList<Process> processes) {
 		this.processes.addAll(processes);
 	}
-	
+
 	/**Returns a resouce with a given id
 	 * @param id The id of the resouce
 	 * @return The resouce or null if no resource has that id
@@ -200,7 +203,7 @@ public class OperationalSystem extends CoolThread {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns the index of a process with the given pid.
 	 * */
