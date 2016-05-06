@@ -26,7 +26,6 @@ import thread.Process;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import java.util.Random;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -364,7 +363,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	public void simulatorSetupDidSucceedWithResources(ArrayList<Resource> resources) {
 
 		btnStartSimulation.setEnabled(false);
-		//btnConfiureOS.setEnabled(true);
 		tfTypesResources.setEnabled(false);
 
 		btnCreateProcess.setEnabled(true);
@@ -375,7 +373,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		this.simulatorDataWindow.setResources(resources);
 
 		this.operationalSystem.addResources(resources);
-
 
 	}
 
@@ -414,12 +411,6 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 			break;
 		}
 
-	}
-
-	@Override
-	public int requestResourcePos() {
-		Random rand = new Random();
-		return rand.nextInt(Integer.parseInt(tfTypesResources.getText().trim()));
 	}
 
 

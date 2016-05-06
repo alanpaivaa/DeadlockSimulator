@@ -24,13 +24,6 @@ public interface SimulatorFacade {
 	public void log(LogType logType, String text);
 	
 	/**
-	 * Randomly selects a resource
-	 * @return Returns the position of the selected resource in the OS arrayLIST
-	 * 
-	 * */
-	public int requestResourcePos();
-	
-	/**
 	 * Gets a resource from the resources Array List at a certain id
 	 * @param id The id of the Resource
 	 * @return Returns the Resource or null

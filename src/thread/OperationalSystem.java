@@ -24,7 +24,6 @@ public class OperationalSystem extends CoolThread {
 	private SimulatorFacade simulator;
 
 	public OperationalSystem(int interval, SimulatorFacade simulator) {
-		
 		this.interval = interval;
 		this.simulator = simulator;
 	}
@@ -41,7 +40,6 @@ public class OperationalSystem extends CoolThread {
 				if(!this.deadlockFlag){
 					this.deadlockFlag = true;
 					this.simulator.log(LogType.DEADLOCK, this.deadlockString(deadlockedProcesses));
-					//System.out.println(this.deadlockString(deadlockedProcesses));
 				}
 			}else{
 				this.deadlockFlag = false;
@@ -156,7 +154,6 @@ public class OperationalSystem extends CoolThread {
 
 		this.simulator.getMutex().up();
 
-
 	}
 
 	// Getters and Setters
@@ -190,24 +187,6 @@ public class OperationalSystem extends CoolThread {
 	public void addProcesses(ArrayList<Process> processes) {
 		this.processes.addAll(processes);
 	}
-
-
-	
-	 /**
-	 * Rolls the system back to an initial state
-	 */
-	public void restartSystem()
-	 {
-		 for (Process process : processes) {
-			 process.setKeepAlice(false);
-		 }
-		 
-		 processes.clear();
-		 resources.clear();
-		 
-	 }
-
-
 	
 	/**Returns a resouce with a given id
 	 * @param id The id of the resouce

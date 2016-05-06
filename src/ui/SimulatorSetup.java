@@ -23,7 +23,8 @@ import model.CoolBorder;
 import model.Resource;
 
 /**
- * This dialog sets up the System parameters
+ * This dialog sets up the System parameters.
+ * The name and the number of instances for each resource.
  * @author TARDIS
  */
 public class SimulatorSetup extends JDialog implements ActionListener {
