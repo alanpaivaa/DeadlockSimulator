@@ -104,7 +104,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		m.add(center, c);
 
 
-		JLabel lbResourcesTypes = new JLabel("N�mero de Recursos");
+		JLabel lbResourcesTypes = new JLabel("Número de Recursos");
 		lbResourcesTypes.setHorizontalAlignment(SwingConstants.RIGHT);
 		center.add(lbResourcesTypes);
 
@@ -138,7 +138,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		middle.setBorder(new EmptyBorder(0, 40, 0, 40));
 		processCreationZone.add(middle, BorderLayout.CENTER);
 
-		JLabel lbRequestTime = new JLabel("Intervalo de solicita��es");
+		JLabel lbRequestTime = new JLabel("Intervalo de solicitações");
 		lbRequestTime.setHorizontalAlignment(SwingConstants.RIGHT);
 		middle.add(lbRequestTime);
 
@@ -146,7 +146,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		tfRequestTime.setEnabled(false);
 		middle.add(tfRequestTime);
 
-		JLabel lbUsageTime = new JLabel("Tempo de Utiliza��o");
+		JLabel lbUsageTime = new JLabel("Tempo de Utilização");
 		lbUsageTime.setHorizontalAlignment(SwingConstants.RIGHT);
 		middle.add(lbUsageTime);
 
@@ -182,10 +182,10 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 		statusZone.add(topStatusZone, BorderLayout.NORTH);
 
 		JLabel lbBlocked = this.horizontallyCenteredJLabel("Bloqueados");
-		JLabel lbRequest = this.horizontallyCenteredJLabel("Solicita��o");
+		JLabel lbRequest = this.horizontallyCenteredJLabel("Solicitação");
 		JLabel lbExecution = this.horizontallyCenteredJLabel("Executando");
-		JLabel lbRelease = this.horizontallyCenteredJLabel("Libera��o");
-		JLabel lbCreation = this.horizontallyCenteredJLabel("Cria��o");
+		JLabel lbRelease = this.horizontallyCenteredJLabel("Liberação");
+		JLabel lbCreation = this.horizontallyCenteredJLabel("Criação");
 
 		topStatusZone.add(lbCreation);
 		topStatusZone.add(lbBlocked);
@@ -278,11 +278,11 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 		// Validating the input data
 		if(tfTypesResources.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Por favor, insira o n�mero de tipos de recursos");
+			JOptionPane.showMessageDialog(null, "Por favor, insira o número de tipos de recursos");
 			return;
 		} else {
 			if(Integer.parseInt(tfTypesResources.getText().trim()) > 10) {
-				JOptionPane.showMessageDialog(null, "N�mero m�ximo de tipos de recursos � 10, insira um valor menor");
+				JOptionPane.showMessageDialog(null, "Número máximo de tipos de recursos é 10, insira um valor menor");
 				return;
 			}
 		}
@@ -297,7 +297,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	private void didClickOnBtnCreateProcess() {
 		if(tfRequestTime.getText().isEmpty() || tfUsageTime.getText().isEmpty())
 		{
-			JOptionPane.showMessageDialog(null, "Por favor, insira todas as informa��es sobre o Processo");
+			JOptionPane.showMessageDialog(null, "Por favor, insira todas as informações sobre o Processo");
 			return;
 		}
 		Process process = new Process(Integer.parseInt(tfTypesResources.getText().trim()), Integer.parseInt(tfRequestTime.getText().trim()), Integer.parseInt(tfUsageTime.getText().trim()),operationalSystem.getSimulator());
@@ -345,12 +345,12 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 		try {
 
-			Integer interval = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite o intervalo entre as verifica��es de deadlock:", "Confirmar", JOptionPane.QUESTION_MESSAGE));
+			Integer interval = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite o intervalo entre as verificações de deadlock:", "Confirmar", JOptionPane.QUESTION_MESSAGE));
 
 			this.operationalSystem.setInterval(interval);
 
 		} catch(Exception e) {
-			JOptionPane.showMessageDialog(this, "Tempo Inv�lido");
+			JOptionPane.showMessageDialog(this, "Tempo Inválido");
 		}		
 
 	}
@@ -433,7 +433,7 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 	 * Displays a message of invalid pid.
 	 * */
 	private void showInvalidPidMessage() {
-		JOptionPane.showMessageDialog(this, "Pid inv�lido!");
+		JOptionPane.showMessageDialog(this, "Pid inválido!");
 	}
 
 	@Override

@@ -179,7 +179,7 @@ public class SimulatorData extends JFrame {
 		contentPane.add(availableResources);
 		availableResources.setLayout(new BoxLayout(availableResources, BoxLayout.Y_AXIS));
 		
-		lblRecursosDisponveis = new JLabel("Recursos Dispon\u00EDveis");
+		lblRecursosDisponveis = new JLabel("Recursos Disponíveis");
 		
 		
 		requestVector = new JPanel();
@@ -188,7 +188,7 @@ public class SimulatorData extends JFrame {
 		contentPane.add(requestVector);
 		requestVector.setLayout(new BoxLayout(requestVector, BoxLayout.Y_AXIS));
 		
-		lblVetorDeSolicitaes = new JLabel("Requisi\u00E7\u00F5es");
+		lblVetorDeSolicitaes = new JLabel("Requisições");
 
 		
 		currentAlocation = new JPanel();
@@ -197,7 +197,7 @@ public class SimulatorData extends JFrame {
 		contentPane.add(currentAlocation);
 		currentAlocation.setLayout(new BoxLayout(currentAlocation, BoxLayout.Y_AXIS));
 		
-		lblVetorDeAlocao = new JLabel("Aloca\u00E7\u00E3o Corrente");
+		lblVetorDeAlocao = new JLabel("Alocação Corrente");
 		
 	}
 

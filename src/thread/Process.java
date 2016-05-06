@@ -115,7 +115,7 @@ public class Process extends CoolThread {
 						// Adding the resource data to the arrays
 						this.resourcesInstances[currentRequest]++;
 						resourcesHeld.add(requestedResouce);
-						resourcesTimes.add(processUsageTime);
+						resourcesTimes.add(processUsageTime + 1);
 
 						// Saying to SO: I got my resource, I don't anything else for now.
 						currentRequest = -1;
