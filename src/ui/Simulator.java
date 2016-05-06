@@ -345,9 +345,11 @@ public class Simulator extends JFrame implements ActionListener, SimulatorSetupD
 
 		try {
 
-			Integer interval = Integer.parseInt(JOptionPane.showInputDialog(this, "Digite o intervalo entre as verificações de deadlock:", "Confirmar", JOptionPane.QUESTION_MESSAGE));
-
-			this.operationalSystem.setInterval(interval);
+			String temp = JOptionPane.showInputDialog(this, "Digite o intervalo entre as verificações de deadlock:", "Confirmar", JOptionPane.QUESTION_MESSAGE);
+			if(temp != null) {
+				Integer interval = Integer.parseInt(temp);
+				this.operationalSystem.setInterval(interval);
+			}
 
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(this, "Tempo Inválido");
